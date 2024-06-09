@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/AiTools">
+        <file>icon/send.png</file>
+        <file>icon/AI.png</file>
+        <file>icon/copy.png</file>
+        <file>icon/link.png</file>
+    </qresource>
+</RCC>

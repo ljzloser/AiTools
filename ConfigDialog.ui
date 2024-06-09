@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ConfigDialogClass</class>
+ <widget class="QDialog" name="ConfigDialogClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>230</width>
+    <height>319</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>ConfigDialog</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="1" column="1">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="2">
+    <layout class="QFormLayout" name="formLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="Label">
+       <property name="text">
+        <string>窗口透明度</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QDoubleSpinBox" name="transparentDoubleSpinBox"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="Label_2">
+       <property name="text">
+        <string>主题</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="themeComboBox">
+       <item>
+        <property name="text">
+         <string>浅色</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>深色</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>跟随系统</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="Label_3">
+       <property name="text">
+        <string>自动填充剪切板内容</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="LSwitchButton" name="autoFillButton" native="true"/>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="Label_4">
+       <property name="text">
+        <string>打开窗口快捷键</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QKeySequenceEdit" name="keySequenceEdit"/>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="promptLabel">
+       <property name="text">
+        <string>prompt</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QPushButton" name="pushButton">
+       <property name="text">
+        <string>打开</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>LSwitchButton</class>
+   <extends>QWidget</extends>
+   <header>LWidget</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
