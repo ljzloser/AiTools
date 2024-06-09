@@ -4,5 +4,10 @@
         <file>icon/AI.png</file>
         <file>icon/copy.png</file>
         <file>icon/link.png</file>
+        <file>icon/exit.png</file>
+        <file>icon/login.png</file>
+        <file>icon/set.png</file>
+        <file>icon/update.png</file>
+        <file>icon/clear.png</file>
     </qresource>
 </RCC>

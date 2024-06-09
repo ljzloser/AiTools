@@ -1,31 +1,25 @@
 #pragma once
 
-#include <QDialog>
-#include <QVBoxLayout>
 #include <QWebEngineView>
 #include <QWebEnginePage>
 #include <QWebEngineProfile>
-#include <QUrl>
-#include <QTextEdit>
-#include <QTimer>
-#include <QCryptographicHash>
-#include <QThread>
+#include <QWidget>
 #include <LCore>
-class WebDialog : public QWidget
+
+class WebDialog final : public QWidget
 {
 	Q_OBJECT
-
 public:
-	WebDialog(QWidget* parent = nullptr);
-	~WebDialog();
-	QWebEngineView* view() { return _view; }
+	explicit WebDialog(QWidget* parent = nullptr);
+	~WebDialog() override;
+	QWebEngineView* view() const { return _view; }
 signals:
 	void reply(const QString& text);
 	void closed();
 public slots:
-	void request(const QString& text);
-	void setReplyRunning(bool running);
-	void load();
+	void request(const QString& text) const;
+	void setReplyRunning(bool running) const;
+	void load() const;
 private slots:
 	void timeouted();
 
@@ -35,5 +29,6 @@ private:
 	QWebEngineView* _view{ new QWebEngineView() };
 	QString _lastHash{ "" };
 	QTimer* _timer{ new QTimer(this) };
+protected:
 	void closeEvent(QCloseEvent* event) override;
 };

@@ -1,6 +1,11 @@
 #include "WebDialog.h"
-#include <QOffscreenSurface>
-#include <QOpenGLContext>
+#include <QVBoxLayout>
+#include <QUrl>
+#include <QTextEdit>
+#include <QTimer>
+#include <QCryptographicHash>
+#include <QThread>
+
 WebDialog::WebDialog(QWidget* parent)
 	: QWidget(parent)
 {
@@ -16,10 +21,9 @@ WebDialog::WebDialog(QWidget* parent)
 	connect(_timer, &QTimer::timeout, this, &WebDialog::timeouted);
 }
 
-WebDialog::~WebDialog()
-{}
+WebDialog::~WebDialog() = default;
 
-void WebDialog::request(const QString& text)
+void WebDialog::request(const QString& text) const
 {
 	QCoreApplication::sendPostedEvents(nullptr, 0);
 	QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
@@ -33,7 +37,6 @@ void WebDialog::request(const QString& text)
 		)");
 	_view->page()->runJavaScript(jsCode);
 	QThread::sleep(0.5);
-
 	jsCode = QString(R"(
                 (function() {
                     var textarea = document.evaluate('/html/body/div[1]/div/section/main/div/div[2]/div[2]/div/div/div[2]/div[3]/div[1]/div[1]/div[4]/div/div/div/div[2]/textarea', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
@@ -89,7 +92,7 @@ void WebDialog::closeEvent(QCloseEvent* event)
 	emit closed();
 }
 
-void WebDialog::setReplyRunning(bool running)
+void WebDialog::setReplyRunning(const bool running) const
 {
 	if (running)
 	{
@@ -101,7 +104,7 @@ void WebDialog::setReplyRunning(bool running)
 	}
 }
 
-void WebDialog::load()
+void WebDialog::load() const
 {
 	_view->load(QUrl("https://chatglm.cn/main/alltoolsdetail"));
 	_view->reload();

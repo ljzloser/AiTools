@@ -123,7 +123,12 @@ $(QtDllPath)/windeployqt $(TargetFileName)</Command>
     <QtRcc Include="AiTools.qrc" />
     <QtMoc Include="AiTools.h" />
     <ClCompile Include="AiTools.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="main.cpp">
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
+    </ClCompile>
     <QtRcc Include="dark\darkstyle.qrc" />
     <QtRcc Include="light\lightstyle.qrc" />
   </ItemGroup>

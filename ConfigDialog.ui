@@ -89,9 +89,89 @@
      <item row="4" column="1">
       <widget class="QPushButton" name="pushButton">
        <property name="text">
-        <string>打开</string>
+        <string>修改</string>
+       </property>
+       <property name="icon">
+        <iconset resource="AiTools.qrc">
+         <normaloff>:/AiTools/icon/update.png</normaloff>:/AiTools/icon/update.png</iconset>
        </property>
       </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="Label_5">
+       <property name="text">
+        <string>失去焦点自动隐藏</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="LSwitchButton" name="fousButton" native="true"/>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="Label_6">
+       <property name="text">
+        <string>窗口相对鼠标位置</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QComboBox" name="PointComboBox">
+       <item>
+        <property name="text">
+         <string>中心</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>左上</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>左下</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>右上</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>右下</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>上中</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>下中</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>左中</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>右中</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="7" column="0">
+      <widget class="QLabel" name="Label_7">
+       <property name="text">
+        <string>标题栏显示时间</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="1">
+      <widget class="LSwitchButton" name="showTimeButton" native="true"/>
      </item>
     </layout>
    </item>
@@ -106,6 +186,8 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="AiTools.qrc"/>
+ </resources>
  <connections/>
 </ui>

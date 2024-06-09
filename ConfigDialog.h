@@ -4,16 +4,17 @@
 #include "ui_ConfigDialog.h"
 #include <LCore>
 #include <QDesktopServices>
-class ConfigDialog : public QDialog
+
+class ConfigDialog final : public QDialog
 {
 	Q_OBJECT
 signals:
 	void saved();
 public:
-	ConfigDialog(QWidget* parent = nullptr);
-	~ConfigDialog();
+	explicit ConfigDialog(QWidget* parent = nullptr);
+	~ConfigDialog() override;
 	void accept() override;
 private:
 	Ui::ConfigDialogClass ui;
-	LJsonConfig* _config = new LJsonConfig(QApplication::applicationDirPath() + "/config.json");
+	LJsonConfig* _config{ new LJsonConfig(QApplication::applicationDirPath() + "/config.json") };
 };
