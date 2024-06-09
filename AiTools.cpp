@@ -151,7 +151,7 @@ void AiTools::loadConfig()
 	_showHotkey->setShortcut(obj.value("keySequence").toString(), true);
 	_autoFill = obj.value("autoFill").toBool();
 	bool isdark = false;
-	switch (obj.value("_theme").toInt())
+	switch (obj.value("theme").toInt())
 	{
 	case 0:
 		isdark = false;

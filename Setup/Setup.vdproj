@@ -1029,7 +1029,7 @@
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
-        "Compression" = "3:3"
+        "Compression" = "3:2"
         "SignOutput" = "11:FALSE"
         "CertificateFile" = "8:"
         "PrivateKeyFile" = "8:"
@@ -5085,7 +5085,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_D168416BC8054D429135BC9DD6F091F9"
             {
-            "SourcePath" = "8:..\\x64\\Release\\AiTools.exe"
+            "SourcePath" = "8:..\\x64\\Debug\\AiTools.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_26ECEF6C6819406F90BE56012970530E"
