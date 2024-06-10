@@ -49,7 +49,7 @@ private slots:
 private:
 	QHotkey* _showHotkey{ new QHotkey(QKeySequence(), true, this) };
 	QLineEdit* _inputLineEdit{ new QLineEdit(this) };
-	LCompleteComboBox* _comboBox{ new LCompleteComboBox(this) };
+	LCompleteComboBox* _promptComboBox{ new LCompleteComboBox(this) };
 	LTextEdit* _textEdit{ new LTextEdit(this) };
 	QSystemTrayIcon* _trayIcon{ new QSystemTrayIcon(this) };
 	QMenu* _trayMenu{ new QMenu(this) };
@@ -60,6 +60,7 @@ private:
 	QAction* _settingAction{ new QAction("设置", this) };
 	WebDialog* _webDialog{ new WebDialog(this) };
 	WebDialog* _loginDialog{ nullptr };
+	ConfigDialog* _configDialog{ nullptr };
 	Widget* _parent{ nullptr };
 	QPushButton* _openButton{ new QPushButton(this) };
 	QPushButton* _copyButton{ new QPushButton(this) };
@@ -67,4 +68,6 @@ private:
 	bool _autoFill{ true };
 	int _theme{ -1 };
 	int _pointMode{ 0 };
+	bool _lastPrompt{ true };
+	int _promptPoint{ 0 };
 };

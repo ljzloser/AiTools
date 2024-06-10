@@ -6,178 +6,258 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>230</width>
-    <height>319</height>
+    <width>264</width>
+    <height>291</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>ConfigDialog</string>
+   <string>设置</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="1">
+  <layout class="QGridLayout" name="gridLayout_2">
+   <property name="leftMargin">
+    <number>3</number>
+   </property>
+   <property name="topMargin">
+    <number>3</number>
+   </property>
+   <property name="rightMargin">
+    <number>3</number>
+   </property>
+   <property name="bottomMargin">
+    <number>3</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>242</width>
+        <height>256</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <item row="0" column="0">
+        <layout class="QFormLayout" name="formLayout">
+         <item row="0" column="0">
+          <widget class="QLabel" name="Label">
+           <property name="text">
+            <string>窗口透明度</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QDoubleSpinBox" name="transparentDoubleSpinBox">
+           <property name="maximum">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="Label_2">
+           <property name="text">
+            <string>主题</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QComboBox" name="themeComboBox">
+           <item>
+            <property name="text">
+             <string>浅色</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>深色</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>跟随系统</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="Label_3">
+           <property name="text">
+            <string>自动填充剪切板内容</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="LSwitchButton" name="autoFillButton" native="true"/>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="Label_4">
+           <property name="text">
+            <string>打开窗口快捷键</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QKeySequenceEdit" name="keySequenceEdit"/>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="promptLabel">
+           <property name="text">
+            <string>prompt</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QPushButton" name="pushButton">
+           <property name="text">
+            <string>修改</string>
+           </property>
+           <property name="icon">
+            <iconset resource="AiTools.qrc">
+             <normaloff>:/AiTools/icon/update.png</normaloff>:/AiTools/icon/update.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="Label_5">
+           <property name="text">
+            <string>失去焦点自动隐藏</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1">
+          <widget class="LSwitchButton" name="fousButton" native="true"/>
+         </item>
+         <item row="6" column="0">
+          <widget class="QLabel" name="Label_6">
+           <property name="text">
+            <string>窗口相对鼠标位置</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="1">
+          <widget class="QComboBox" name="PointComboBox">
+           <item>
+            <property name="text">
+             <string>中心</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>左上</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>左下</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>右上</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>右下</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>上中</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>下中</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>左中</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>右中</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="7" column="0">
+          <widget class="QLabel" name="Label_7">
+           <property name="text">
+            <string>标题栏显示时间</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="1">
+          <widget class="LSwitchButton" name="showTimeButton" native="true"/>
+         </item>
+         <item row="8" column="0">
+          <widget class="QLabel" name="promptLabel_2">
+           <property name="text">
+            <string>保留上次prompt</string>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="1">
+          <widget class="LSwitchButton" name="lastPromptButton" native="true"/>
+         </item>
+         <item row="9" column="0">
+          <widget class="QLabel" name="promptLabel_3">
+           <property name="text">
+            <string>prompt附加位置</string>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="1">
+          <widget class="QComboBox" name="promptPointComboBox">
+           <item>
+            <property name="text">
+             <string>文本前方</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>文本后方</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item row="1" column="0">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
     </widget>
-   </item>
-   <item row="0" column="0" colspan="2">
-    <layout class="QFormLayout" name="formLayout">
-     <item row="0" column="0">
-      <widget class="QLabel" name="Label">
-       <property name="text">
-        <string>窗口透明度</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QDoubleSpinBox" name="transparentDoubleSpinBox">
-       <property name="maximum">
-        <double>1.000000000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="Label_2">
-       <property name="text">
-        <string>主题</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QComboBox" name="themeComboBox">
-       <item>
-        <property name="text">
-         <string>浅色</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>深色</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>跟随系统</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="Label_3">
-       <property name="text">
-        <string>自动填充剪切板内容</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="LSwitchButton" name="autoFillButton" native="true"/>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="Label_4">
-       <property name="text">
-        <string>打开窗口快捷键</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QKeySequenceEdit" name="keySequenceEdit"/>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="promptLabel">
-       <property name="text">
-        <string>prompt</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="1">
-      <widget class="QPushButton" name="pushButton">
-       <property name="text">
-        <string>修改</string>
-       </property>
-       <property name="icon">
-        <iconset resource="AiTools.qrc">
-         <normaloff>:/AiTools/icon/update.png</normaloff>:/AiTools/icon/update.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="0">
-      <widget class="QLabel" name="Label_5">
-       <property name="text">
-        <string>失去焦点自动隐藏</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="1">
-      <widget class="LSwitchButton" name="fousButton" native="true"/>
-     </item>
-     <item row="6" column="0">
-      <widget class="QLabel" name="Label_6">
-       <property name="text">
-        <string>窗口相对鼠标位置</string>
-       </property>
-      </widget>
-     </item>
-     <item row="6" column="1">
-      <widget class="QComboBox" name="PointComboBox">
-       <item>
-        <property name="text">
-         <string>中心</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>左上</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>左下</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>右上</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>右下</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>上中</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>下中</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>左中</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>右中</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item row="7" column="0">
-      <widget class="QLabel" name="Label_7">
-       <property name="text">
-        <string>标题栏显示时间</string>
-       </property>
-      </widget>
-     </item>
-     <item row="7" column="1">
-      <widget class="LSwitchButton" name="showTimeButton" native="true"/>
-     </item>
-    </layout>
    </item>
   </layout>
  </widget>

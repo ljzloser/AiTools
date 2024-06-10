@@ -1,5 +1,5 @@
 ﻿#include "ConfigDialog.h"
-#include <QMessageBox>
+
 ConfigDialog::ConfigDialog(QWidget* parent)
 	: QDialog(parent)
 {
@@ -8,13 +8,15 @@ ConfigDialog::ConfigDialog(QWidget* parent)
 	if (_config->readJson().isNull())
 	{
 		_config->init(QJsonDocument({
-		{"transparent", 1},
-		{"theme", 2},
-		{"autoFill", true},
-		{"keySequence", "Ctrl+G"},
-		{"focusHide", false},
-		{"pointMode", 0},
-		{"showTime", true},
+			{"transparent", 1},
+			{"theme", 2},
+			{"autoFill", true},
+			{"keySequence", "Ctrl+G"},
+			{"focusHide", false},
+			{"pointMode", 0},
+			{"showTime", true},
+			{"lastPrompt",true},
+			{"promptPoint",0},
 			}));
 	}
 	const QJsonObject obj = _config->readJson().object();
@@ -27,6 +29,8 @@ ConfigDialog::ConfigDialog(QWidget* parent)
 		ui.fousButton->setChecked(obj.value("focusHide").toBool());
 		ui.PointComboBox->setCurrentIndex(obj.value("pointMode").toInt());
 		ui.showTimeButton->setChecked(obj.value("showTime").toBool());
+		ui.lastPromptButton->setChecked(obj.value("lastPrompt").toBool());
+		ui.promptPointComboBox->setCurrentIndex(obj.value("promptPoint").toInt());
 	}
 
 	connect(ui.buttonBox->button(QDialogButtonBox::Ok), &QPushButton::clicked, this, &QDialog::accept);
@@ -53,6 +57,8 @@ void ConfigDialog::accept()
 		{"focusHide", ui.fousButton->isChecked()},
 		{"pointMode", ui.PointComboBox->currentIndex()},
 		{"showTime", ui.showTimeButton->isChecked()},
+		{"lastPrompt", ui.lastPromptButton->isChecked()},
+		{"promptPoint", ui.promptPointComboBox->currentIndex()},
 		}));
 	emit saved();
 	QDialog::accept();

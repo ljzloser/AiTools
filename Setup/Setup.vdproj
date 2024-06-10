@@ -4522,7 +4522,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:AiTools"
         "ProductCode" = "8:{642AF086-24E5-4810-A6FF-32839B01DBC5}"
-        "PackageCode" = "8:{C7655686-9EF1-453C-9C94-293D2C25EB41}"
+        "PackageCode" = "8:{6E99153C-1CA1-4E2B-9680-A4553710AB71}"
         "UpgradeCode" = "8:{64E8D631-57C3-4C0A-8A00-545DB4FC9E1F}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
@@ -5085,7 +5085,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_D168416BC8054D429135BC9DD6F091F9"
             {
-            "SourcePath" = "8:..\\x64\\Debug\\AiTools.exe"
+            "SourcePath" = "8:..\\x64\\Release\\AiTools.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_26ECEF6C6819406F90BE56012970530E"

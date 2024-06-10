@@ -53,8 +53,8 @@ AiTools::AiTools(QWidget* parent)
 
 AiTools::~AiTools()
 {
-	if (_loginDialog)
-		_loginDialog->deleteLater();
+	if (_loginDialog) _loginDialog->deleteLater();
+	if (_configDialog) _configDialog->deleteLater();
 }
 
 void AiTools::initUi()
@@ -66,8 +66,9 @@ void AiTools::initUi()
 	_openButton->setIcon(QIcon(":/AiTools/icon/link.png"));
 	_openButton->setFixedSize(_openButton->iconSize());
 	_openButton->setToolTip("打开链接");
+	_promptComboBox->lineEdit()->setPlaceholderText("请输入提示词。");
 	oneRow->addWidget(_openButton);
-	oneRow->addWidget(_comboBox);
+	oneRow->addWidget(_promptComboBox);
 
 	QHBoxLayout* twoRow = new QHBoxLayout();
 	_clearButton->setIcon(QIcon(":/AiTools/icon/clear.png"));
@@ -75,6 +76,7 @@ void AiTools::initUi()
 	_clearButton->setToolTip("清空");
 	_sendAction->setIcon(QIcon(":/AiTools/icon/send.png"));
 	_inputLineEdit->addAction(_sendAction, QLineEdit::TrailingPosition);
+	_inputLineEdit->setPlaceholderText("请输入提问的内容，按下回车发送。");
 	twoRow->addWidget(_clearButton);
 	twoRow->addWidget(_inputLineEdit);
 
@@ -87,6 +89,7 @@ void AiTools::initUi()
 	threeRow->addItem(item);
 
 	_textEdit->setReadOnly(true);
+	_textEdit->setPlaceholderText("智谱清言返回内容会在此展示，点击复制即可复制到粘贴板。");
 	_textEdit->setLineNumberAreaVisible(true);
 
 	_webDialog->setFixedHeight(1);
@@ -137,7 +140,7 @@ void AiTools::initConnect()
 	connect(_openButton, &QPushButton::clicked, this, &AiTools::openLoginDialog);
 	connect(_webDialog, &WebDialog::reply, this, &AiTools::reply);
 	connect(_loginAction, &QAction::triggered, this, &AiTools::openLoginDialog);
-	connect(_comboBox->lineEdit(), &QLineEdit::returnPressed, this, &AiTools::sendMessage);
+	connect(_promptComboBox->lineEdit(), &QLineEdit::returnPressed, this, &AiTools::sendMessage);
 	connect(_copyButton, &QPushButton::clicked, [=]() {QApplication::clipboard()->setText(_textEdit->toPlainText()); });
 	connect(_settingAction, &QAction::triggered, this, &AiTools::openSettingDialog);
 }
@@ -185,6 +188,8 @@ void AiTools::loadConfig()
 	_showHotkey->setShortcut(QKeySequence::fromString(obj.value("keySequence").toString()), true);
 	_parent->focusHide = obj.value("focusHide").toBool();
 	_pointMode = obj.value("pointMode").toInt();
+	_lastPrompt = obj.value("lastPrompt").toBool();
+	_promptPoint = obj.value("promptPoint").toInt();
 	TitleBar* titleBar = static_cast<TitleBar*>(_parent->getTitleBar());
 	titleBar->showTime = obj.value("showTime").toBool();
 	LJsonConfig prompt(QApplication::applicationDirPath() + "/prompt.json");
@@ -194,13 +199,13 @@ void AiTools::loadConfig()
 	obj = prompt.readJson().object();
 	if (!obj.isEmpty())
 	{
-		_comboBox->clear();
+		_promptComboBox->clear();
 		for (auto it = obj.begin(); it != obj.end(); it++)
 		{
-			_comboBox->addItem(it.key() + QString("(%1)").arg(it.value().toString()), it.value().toString());
+			_promptComboBox->addItem(it.key() + QString("(%1)").arg(it.value().toString()), it.value().toString());
 		}
 	}
-	_comboBox->setCurrentIndex(-1);
+	_promptComboBox->setCurrentIndex(-1);
 }
 
 void AiTools::reply(const QString& text) const
@@ -222,6 +227,8 @@ void AiTools::onHotkeyPressed() const
 	}
 	else
 	{
+		if (!_lastPrompt)
+			_promptComboBox->setCurrentIndex(-1);
 		QRect rect = this->parentWidget()->geometry();
 		auto pos = QCursor::pos();
 		switch (_pointMode)
@@ -300,15 +307,19 @@ void AiTools::systemTrayIconActivated(QSystemTrayIcon::ActivationReason reason) 
 
 void AiTools::sendMessage() const
 {
-	_webDialog->request(_inputLineEdit->text() + _comboBox->currentData().toString());
+	const QString text = _inputLineEdit->text();
+	if (text.isEmpty())
+		return;
+	const QString prompt = _promptComboBox->currentData().toString();
+	const QString question = _promptPoint == 0 ? (prompt + " " + text) : (text + " " + prompt);
+	_webDialog->request(question);
 }
 
 void AiTools::openLoginDialog()
 {
 	// 打开指定网页
 	//QDesktopServices::openUrl(QUrl("https://chatglm.cn/main/alltoolsdetail"));
-	if (_loginDialog != nullptr)
-		_loginDialog->deleteLater();
+	if (_loginDialog != nullptr) _loginDialog->deleteLater();
 	_loginDialog = new WebDialog();
 	_loginDialog->setWindowFlag(Qt::Tool);
 	_loginDialog->resize(1600, 900);
@@ -318,9 +329,10 @@ void AiTools::openLoginDialog()
 
 void AiTools::openSettingDialog()
 {
-	ConfigDialog dialog;
+	if (_configDialog) _configDialog->deleteLater();
+	_configDialog = new ConfigDialog();
 	_parent->hide();
 	_showHotkey->setShortcut(_showHotkey->shortcut(), false); // 这一句好像没有用
-	connect(&dialog, &ConfigDialog::saved, this, &AiTools::loadConfig);
-	dialog.exec();
+	connect(_configDialog, &ConfigDialog::saved, this, &AiTools::loadConfig);
+	_configDialog->show();
 }
