@@ -1,5 +1,32 @@
 ﻿#include "AiTools.h"
 #include <QClipboard>
+#include <Windows.h>
+
+static UINT simulateCtrlC() {
+	INPUT inputs[4];
+
+	// Press Ctrl key
+	inputs[0].type = INPUT_KEYBOARD;
+	inputs[0].ki.wVk = VK_CONTROL;
+	inputs[0].ki.dwFlags = 0;
+
+	// Press C key
+	inputs[1].type = INPUT_KEYBOARD;
+	inputs[1].ki.wVk = 'C';
+	inputs[1].ki.dwFlags = 0;
+
+	// Release C key
+	inputs[2].type = INPUT_KEYBOARD;
+	inputs[2].ki.wVk = 'C';
+	inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
+
+	// Release Ctrl key
+	inputs[3].type = INPUT_KEYBOARD;
+	inputs[3].ki.wVk = VK_CONTROL;
+	inputs[3].ki.dwFlags = KEYEVENTF_KEYUP;
+
+	return SendInput(4, inputs, sizeof(INPUT));
+}
 
 TitleBar::TitleBar(QWidget* parent)
 	: LTitleBar(parent)
@@ -14,7 +41,7 @@ TitleBar::TitleBar(QWidget* parent)
 void TitleBar::paintEvent(QPaintEvent* event)
 {
 	LTitleBar::paintEvent(event);
-	if (!showTime) return;
+	if (!Config::instance().showTime) return;
 	QPainter painter(this);
 	QFont font = this->font();
 	font.setBold(true);
@@ -38,7 +65,7 @@ Widget::Widget(LBaseTitleBar* titleBar, QWidget* mainWidget, QWidget* parent)
 void Widget::changeEvent(QEvent* event)
 {
 	if (event->type() == QEvent::ActivationChange)
-		if (!isActiveWindow() && focusHide)
+		if (!isActiveWindow() && Config::instance().focusHide)
 			this->hide();
 	QWidget::changeEvent(event);
 }
@@ -151,10 +178,9 @@ void AiTools::loadConfig()
 		_parent = static_cast<Widget*>(this->parent());
 	LJsonConfig config(QApplication::applicationDirPath() + "/config.json");
 	QJsonObject obj = config.readJson().object();
-	_showHotkey->setShortcut(obj.value("keySequence").toString(), true);
-	_autoFill = obj.value("autoFill").toBool();
+
 	bool isdark = false;
-	switch (obj.value("theme").toInt())
+	switch (Config::instance().theme)
 	{
 	case 0:
 		isdark = false;
@@ -168,7 +194,7 @@ void AiTools::loadConfig()
 	default:
 		break;
 	}
-	if ((isdark != (_theme == 1)) || _theme == -1)
+	if ((isdark != (Config::instance().theme == 1)) || Config::instance().theme == -1)
 	{
 		QString filename = isdark ? ":/qdarkstyle/dark/darkstyle.qss" : ":/qdarkstyle/light/lightstyle.qss";
 		QFile file(filename);
@@ -176,22 +202,17 @@ void AiTools::loadConfig()
 		if (file.isOpen())
 		{
 			qobject_cast<QApplication*>(QCoreApplication::instance())->setStyleSheet(QLatin1String(file.readAll()));
-			_theme = isdark;
-			QColor color = _theme == 0 ? QColor("#fafafa") : QColor("#19232D");
+			Config::instance().theme = isdark;
+			QColor color = Config::instance().theme == 0 ? QColor("#fafafa") : QColor("#19232D");
 			LWidget::Info info = _parent->info();
 			info.backgroundColor = color;
 			info.splitLineColor = color;
 			_parent->setInfo(info);
 		}
 	}
-	_parent->setWindowOpacity(obj.value("transparent").toDouble());
-	_showHotkey->setShortcut(QKeySequence::fromString(obj.value("keySequence").toString()), true);
-	_parent->focusHide = obj.value("focusHide").toBool();
-	_pointMode = obj.value("pointMode").toInt();
-	_lastPrompt = obj.value("lastPrompt").toBool();
-	_promptPoint = obj.value("promptPoint").toInt();
-	TitleBar* titleBar = static_cast<TitleBar*>(_parent->getTitleBar());
-	titleBar->showTime = obj.value("showTime").toBool();
+	_parent->setWindowOpacity(Config::instance().transparent);
+	_showHotkey->setShortcut(Config::instance().keySequence, true);
+
 	LJsonConfig prompt(QApplication::applicationDirPath() + "/prompt.json");
 	QJsonDocument doc = prompt.readJson();
 	if (doc.isNull())
@@ -227,11 +248,13 @@ void AiTools::onHotkeyPressed() const
 	}
 	else
 	{
-		if (!_lastPrompt)
+		if (Config::instance().autoCopy)
+			simulateCtrlC();
+		if (!Config::instance().lastPrompt)
 			_promptComboBox->setCurrentIndex(-1);
 		QRect rect = this->parentWidget()->geometry();
 		auto pos = QCursor::pos();
-		switch (_pointMode)
+		switch (Config::instance().pointMode)
 		{
 		case 0:
 			rect.moveCenter(pos);
@@ -278,9 +301,19 @@ void AiTools::onHotkeyPressed() const
 		this->parentWidget()->setGeometry(rect);
 		this->parentWidget()->show();
 		_parent->activateWindow();
-		_inputLineEdit->setText(_autoFill ? QApplication::clipboard()->text() : "");
-		_inputLineEdit->setFocus();
-		_inputLineEdit->setCursorPosition(_inputLineEdit->text().length());
+		_inputLineEdit->setText(Config::instance().autoFill ? QApplication::clipboard()->text() : "");
+		switch (Config::instance().focusPoint)
+		{
+		case 0:
+			_promptComboBox->lineEdit()->setFocus();
+			break;
+		case 1:
+			_inputLineEdit->setFocus();
+			_inputLineEdit->setCursorPosition(_inputLineEdit->text().length());
+			break;
+		default:
+			break;
+		}
 		_webDialog->setReplyRunning(true);
 	}
 }
@@ -311,7 +344,7 @@ void AiTools::sendMessage() const
 	if (text.isEmpty())
 		return;
 	const QString prompt = _promptComboBox->currentData().toString();
-	const QString question = _promptPoint == 0 ? (prompt + " " + text) : (text + " " + prompt);
+	const QString question = Config::instance().promptPoint == 0 ? (prompt + " " + text) : (text + " " + prompt);
 	_webDialog->request(question);
 }
 

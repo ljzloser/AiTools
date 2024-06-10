@@ -6,13 +6,13 @@
 #include <QWidget>
 #include <LCore>
 
-class WebDialog final : public QWidget
+class WebDialog : public QWidget
 {
 	Q_OBJECT
 public:
 	explicit WebDialog(QWidget* parent = nullptr);
 	~WebDialog() override;
-	QWebEngineView* view() const { return _view; }
+	[[nodiscard]] QWebEngineView* view() const { return _view; }
 signals:
 	void reply(const QString& text);
 	void closed();

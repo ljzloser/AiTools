@@ -17,7 +17,6 @@ WebDialog::WebDialog(QWidget* parent)
 	layout->addWidget(_view);
 	this->setLayout(layout);
 	_timer->setInterval(100);
-
 	connect(_timer, &QTimer::timeout, this, &WebDialog::timeouted);
 }
 

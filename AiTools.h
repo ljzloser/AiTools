@@ -12,7 +12,7 @@ class TitleBar final :public LTitleBar
 {
 public:
 	explicit TitleBar(QWidget* parent = nullptr);
-	bool showTime = true;
+	//bool showTime = true;
 protected:
 	void paintEvent(QPaintEvent* event) override;
 };
@@ -22,7 +22,7 @@ class Widget final : public LWidget
 public:
 	Widget(LBaseTitleBar* titleBar, QWidget* mainWidget, QWidget* parent = nullptr);
 	void changeEvent(QEvent* event) override;
-	bool focusHide = false;
+	//bool focusHide = false;
 };
 
 class AiTools final : public QWidget
@@ -65,9 +65,11 @@ private:
 	QPushButton* _openButton{ new QPushButton(this) };
 	QPushButton* _copyButton{ new QPushButton(this) };
 	QPushButton* _clearButton{ new QPushButton(this) };
-	bool _autoFill{ true };
-	int _theme{ -1 };
-	int _pointMode{ 0 };
-	bool _lastPrompt{ true };
-	int _promptPoint{ 0 };
+	//bool _autoFill{ true };
+	//int _theme{ -1 };
+	//int _pointMode{ 0 };
+	//bool _lastPrompt{ true };
+	//int _promptPoint{ 0 };
+	//int _focusPoint{ 0 };
+	//bool _autoCopy{ true };
 };

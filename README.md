@@ -1,4 +1,5 @@
 # AiTools
+This project bulid on Visual Studio 2022 and Qt 6.6.1_msvc2019_64
 
 ### First
 ```bash
@@ -13,7 +14,7 @@ Pay attention to the Qt versions used by both projects.
 
 ### Third
 ```bash
-git clone https://github.com/ljzloser/AiTools
+git clone https://github.com/ljzloser/AiTools.git
 ```
 
 ### Fourth

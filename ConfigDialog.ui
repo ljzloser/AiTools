@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>264</width>
-    <height>291</height>
+    <width>434</width>
+    <height>350</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -39,8 +39,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>242</width>
-        <height>256</height>
+        <width>426</width>
+        <height>313</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout">
@@ -122,21 +122,24 @@
           <widget class="QKeySequenceEdit" name="keySequenceEdit"/>
          </item>
          <item row="4" column="0">
-          <widget class="QLabel" name="promptLabel">
+          <widget class="QLabel" name="label">
            <property name="text">
-            <string>prompt</string>
+            <string>打开窗口后焦点位置</string>
            </property>
           </widget>
          </item>
          <item row="4" column="1">
-          <widget class="QPushButton" name="pushButton">
-           <property name="text">
-            <string>修改</string>
-           </property>
-           <property name="icon">
-            <iconset resource="AiTools.qrc">
-             <normaloff>:/AiTools/icon/update.png</normaloff>:/AiTools/icon/update.png</iconset>
-           </property>
+          <widget class="QComboBox" name="focusPointComboBox">
+           <item>
+            <property name="text">
+             <string>提示词输入框</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>内容输入框</string>
+            </property>
+           </item>
           </widget>
          </item>
          <item row="5" column="0">
@@ -148,13 +151,6 @@
          </item>
          <item row="5" column="1">
           <widget class="LSwitchButton" name="fousButton" native="true"/>
-         </item>
-         <item row="6" column="0">
-          <widget class="QLabel" name="Label_6">
-           <property name="text">
-            <string>窗口相对鼠标位置</string>
-           </property>
-          </widget>
          </item>
          <item row="6" column="1">
           <widget class="QComboBox" name="PointComboBox">
@@ -205,16 +201,6 @@
            </item>
           </widget>
          </item>
-         <item row="7" column="0">
-          <widget class="QLabel" name="Label_7">
-           <property name="text">
-            <string>标题栏显示时间</string>
-           </property>
-          </widget>
-         </item>
-         <item row="7" column="1">
-          <widget class="LSwitchButton" name="showTimeButton" native="true"/>
-         </item>
          <item row="8" column="0">
           <widget class="QLabel" name="promptLabel_2">
            <property name="text">
@@ -245,6 +231,51 @@
             </property>
            </item>
           </widget>
+         </item>
+         <item row="10" column="0">
+          <widget class="QLabel" name="promptLabel">
+           <property name="text">
+            <string>prompt</string>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="1">
+          <widget class="QPushButton" name="pushButton">
+           <property name="text">
+            <string>修改</string>
+           </property>
+           <property name="icon">
+            <iconset resource="AiTools.qrc">
+             <normaloff>:/AiTools/icon/update.png</normaloff>:/AiTools/icon/update.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0">
+          <widget class="QLabel" name="Label_6">
+           <property name="text">
+            <string>打开窗口相对鼠标位置</string>
+           </property>
+          </widget>
+         </item>
+         <item row="11" column="0">
+          <widget class="QLabel" name="Label_7">
+           <property name="text">
+            <string>标题栏显示时间</string>
+           </property>
+          </widget>
+         </item>
+         <item row="11" column="1">
+          <widget class="LSwitchButton" name="showTimeButton" native="true"/>
+         </item>
+         <item row="7" column="0">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>打开窗口自动复制选中内容</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="1">
+          <widget class="LSwitchButton" name="autoCopyButton" native="true"/>
          </item>
         </layout>
        </item>
