@@ -21,6 +21,9 @@
       <UniqueIdentifier>{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}</UniqueIdentifier>
       <Extensions>ts</Extensions>
     </Filter>
+    <Filter Include="Other Files">
+      <UniqueIdentifier>{453ac264-fd62-49f0-841d-3e30fcc066c1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="AiTools.qrc">
@@ -72,5 +75,10 @@
     <ResourceCompile Include="AiTools.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md">
+      <Filter>Other Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
