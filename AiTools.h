@@ -12,7 +12,6 @@ class TitleBar final :public LTitleBar
 {
 public:
 	explicit TitleBar(QWidget* parent = nullptr);
-	//bool showTime = true;
 protected:
 	void paintEvent(QPaintEvent* event) override;
 };
@@ -23,7 +22,6 @@ public:
 	Widget(LBaseTitleBar* titleBar, QWidget* mainWidget, QWidget* parent = nullptr);
 	void changeEvent(QEvent* event) override;
 	void resizeEvent(QResizeEvent* event) override;
-	//bool focusHide = false;
 };
 
 class AiTools final : public QWidget
@@ -39,11 +37,11 @@ private:
 signals:
 	void request(const QString& text);
 public slots:
-	void reply(const QString& text) const;
+	void reply(const QString& text);
 	void loadConfig(bool init = false);
 private slots:
-	void onHotkeyPressed() const;
-	void systemTrayIconActivated(QSystemTrayIcon::ActivationReason reason) const;
+	void onHotkeyPressed();
+	void systemTrayIconActivated(QSystemTrayIcon::ActivationReason reason);
 	void sendMessage() const;
 	void openLoginDialog();
 	void openSettingDialog();
@@ -59,6 +57,7 @@ private:
 	QAction* _bootStrapAction{ new QAction("开机启动", this) };
 	QAction* _loginAction{ new QAction("登录", this) };
 	QAction* _settingAction{ new QAction("设置", this) };
+	QAction* _updatePromptAction{ new QAction("更新提示词", this) };
 	WebDialog* _webDialog{ new WebDialog(this) };
 	WebDialog* _loginDialog{ nullptr };
 	ConfigDialog* _configDialog{ nullptr };
@@ -68,11 +67,4 @@ private:
 	QPushButton* _clearButton{ new QPushButton(this) };
 	QPushButton* _settingButton{ new QPushButton(this) };
 	bool _isdark = false;
-	//bool _autoFill{ true };
-	//int _theme{ -1 };
-	//int _pointMode{ 0 };
-	//bool _lastPrompt{ true };
-	//int _promptPoint{ 0 };
-	//int _focusPoint{ 0 };
-	//bool _autoCopy{ true };
 };

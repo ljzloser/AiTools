@@ -9,5 +9,7 @@
         <file>icon/set.png</file>
         <file>icon/update.png</file>
         <file>icon/clear.png</file>
+        <file>icon/show.png</file>
+        <file>icon/hide.png</file>
     </qresource>
 </RCC>

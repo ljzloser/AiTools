@@ -68,6 +68,12 @@ void Widget::changeEvent(QEvent* event)
 	if (event->type() == QEvent::ActivationChange)
 		if (!isActiveWindow() && Config::instance().focusHide)
 			this->hide();
+	if (event->type() == QEvent::WindowStateChange)
+		if (this->isMinimized())
+		{
+			this->showNormal();
+			this->hide();
+		}
 	QWidget::changeEvent(event);
 }
 
@@ -102,6 +108,8 @@ void AiTools::initUi()
 	_settingButton->setFixedSize(_settingButton->iconSize());
 	_settingButton->setToolTip("设置");
 	_promptComboBox->lineEdit()->setPlaceholderText("请输入提示词。");
+	_updatePromptAction->setIcon(QIcon(":/AiTools/icon/update.png"));
+	_promptComboBox->lineEdit()->addAction(_updatePromptAction, QLineEdit::TrailingPosition);
 	oneRow->addWidget(_settingButton);
 	oneRow->addWidget(_promptComboBox);
 
@@ -131,7 +139,6 @@ void AiTools::initUi()
 	_textEdit->setReadOnly(true);
 	_textEdit->setPlaceholderText("智谱清言返回内容会在此展示，点击复制即可复制到粘贴板。");
 	_textEdit->setLineNumberAreaVisible(true);
-
 	_webDialog->setFixedHeight(1);
 
 	layout->addLayout(oneRow);
@@ -184,6 +191,12 @@ void AiTools::initConnect()
 	connect(_copyButton, &QPushButton::clicked, [=]() {QApplication::clipboard()->setText(_textEdit->toPlainText()); });
 	connect(_settingAction, &QAction::triggered, this, &AiTools::openSettingDialog);
 	connect(_settingButton, &QPushButton::clicked, this, &AiTools::openSettingDialog);
+	connect(_updatePromptAction, &QAction::triggered, [=]()
+		{
+			const QString path = "file:///" + QApplication::applicationDirPath() + "/prompt.json";
+			QDesktopServices::openUrl(QUrl(path));
+			_parent->hide();
+		});
 }
 
 void AiTools::loadConfig(bool init)
@@ -240,7 +253,7 @@ void AiTools::loadConfig(bool init)
 	_promptComboBox->setCurrentIndex(-1);
 }
 
-void AiTools::reply(const QString& text) const
+void AiTools::reply(const QString& text)
 {
 	QTextDocument doc;
 	doc.setHtml(text);
@@ -248,7 +261,7 @@ void AiTools::reply(const QString& text) const
 	_textEdit->moveCursor(QTextCursor::End);
 }
 
-void AiTools::onHotkeyPressed() const
+void AiTools::onHotkeyPressed()
 {
 	if (this->parentWidget() == nullptr)
 		return;
@@ -259,6 +272,7 @@ void AiTools::onHotkeyPressed() const
 	}
 	else
 	{
+		this->loadConfig();
 		if (Config::instance().autoCopy)
 			simulateCtrlC();
 		if (!Config::instance().lastPrompt)
@@ -329,13 +343,19 @@ void AiTools::onHotkeyPressed() const
 	}
 }
 
-void AiTools::systemTrayIconActivated(QSystemTrayIcon::ActivationReason reason) const
+void AiTools::systemTrayIconActivated(QSystemTrayIcon::ActivationReason reason)
 {
 	switch (reason)
 	{
 	case QSystemTrayIcon::DoubleClick:
+	{
 		this->onHotkeyPressed();
+		QRect rect = this->parentWidget()->geometry();
+		QPoint center = QGuiApplication::primaryScreen()->availableGeometry().center();
+		rect.moveCenter(center);
+		this->parentWidget()->setGeometry(rect);
 		break;
+	}
 	case QSystemTrayIcon::Unknown:
 		break;
 	case QSystemTrayIcon::Context:
