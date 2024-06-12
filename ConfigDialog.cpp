@@ -3,10 +3,7 @@
 Config& Config::instance()
 {
 	static Config instance;
-	if (instance.config()->readJson().isNull())
-		instance.config()->init(QJsonDocument(instance.toJson()));
-	else
-		instance.fromJson(instance.config()->readJson().object(), true);
+
 	return instance;
 }
 
@@ -24,24 +21,35 @@ QJsonObject Config::toJson() const
 		{"promptPoint", promptPoint},
 		{"keySequence", keySequence},
 		{"showTime", showTime},
+		{"width", width},
+		{"height", height}
 	};
 }
 
 void Config::fromJson(const QJsonObject& obj, bool init)
 {
-	transparent = obj.value("transparent").toDouble();
-	theme = obj.value("theme").toInt();
-	autoFill = obj.value("autoFill").toBool();
-	focusPoint = obj.value("focusPoint").toInt();
-	focusHide = obj.value("focusHide").toBool();
-	pointMode = obj.value("pointMode").toInt();
-	autoCopy = obj.value("autoCopy").toBool();
-	lastPrompt = obj.value("lastPrompt").toBool();
-	promptPoint = obj.value("promptPoint").toInt();
-	keySequence = obj.value("keySequence").toString();
-	showTime = obj.value("showTime").toBool();
+	auto newObj = obj;
+	transparent = newObj.value("transparent").toDouble();
+	theme = newObj.value("theme").toInt();
+	autoFill = newObj.value("autoFill").toBool();
+	focusPoint = newObj.value("focusPoint").toInt();
+	focusHide = newObj.value("focusHide").toBool();
+	pointMode = newObj.value("pointMode").toInt();
+	autoCopy = newObj.value("autoCopy").toBool();
+	lastPrompt = newObj.value("lastPrompt").toBool();
+	promptPoint = newObj.value("promptPoint").toInt();
+	keySequence = newObj.value("keySequence").toString();
+	showTime = newObj.value("showTime").toBool();
+	if (newObj.contains("width"))
+		width = newObj.value("width").toInt();
+	else
+		newObj.insert("width", width);
+	if (newObj.contains("height"))
+		height = newObj.value("height").toInt();
+	else
+		newObj.insert("height", height);
 	if (!init)
-		config()->init(QJsonDocument(obj));
+		config()->init(QJsonDocument(newObj));
 }
 
 LJsonConfig* Config::config()
@@ -49,8 +57,17 @@ LJsonConfig* Config::config()
 	return _config;
 }
 
+Config::Config()
+{
+	if (this->config()->readJson().isNull()) // 初始化防止有的人把config.json删了
+		this->config()->init(QJsonDocument(this->toJson()));
+	else
+		this->fromJson(this->config()->readJson().object(), true);
+}
+
 Config::~Config()
 {
+	_config->init(QJsonDocument(this->toJson()));
 	delete _config;
 }
 
@@ -102,6 +119,6 @@ void ConfigDialog::accept()
 		{"keySequence", ui.keySequenceEdit->keySequence().toString()},
 		{"showTime", ui.showTimeButton->isChecked()},
 		});
-	emit saved();
+	emit saved(false);
 	QDialog::accept();
 }

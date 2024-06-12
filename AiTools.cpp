@@ -5,22 +5,22 @@
 static UINT simulateCtrlC() {
 	INPUT inputs[4];
 
-	// Press Ctrl key
+	// 按下 Ctrl
 	inputs[0].type = INPUT_KEYBOARD;
 	inputs[0].ki.wVk = VK_CONTROL;
 	inputs[0].ki.dwFlags = 0;
 
-	// Press C key
+	// 按下 C
 	inputs[1].type = INPUT_KEYBOARD;
 	inputs[1].ki.wVk = 'C';
 	inputs[1].ki.dwFlags = 0;
 
-	// Release C key
+	// 释放 C
 	inputs[2].type = INPUT_KEYBOARD;
 	inputs[2].ki.wVk = 'C';
 	inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
 
-	// Release Ctrl key
+	// 释放 Ctrl
 	inputs[3].type = INPUT_KEYBOARD;
 	inputs[3].ki.wVk = VK_CONTROL;
 	inputs[3].ki.dwFlags = KEYEVENTF_KEYUP;
@@ -56,10 +56,11 @@ Widget::Widget(LBaseTitleBar* titleBar, QWidget* mainWidget, QWidget* parent)
 	: LWidget(titleBar, mainWidget, parent)
 {
 	AiTools* tool = static_cast<AiTools*>(mainWidget);
-	connect(this, &LWidget::systemSettingsChanged, tool, &AiTools::loadConfig);
-	tool->loadConfig();
+	connect(this, &LWidget::systemSettingsChanged, [tool]() { tool->loadConfig(false); });
+	tool->loadConfig(true);
 	this->setWindowIcon(QIcon(":/AiTools/icon/AI.png"));
 	this->setWindowFlags(this->windowFlags() | Qt::SubWindow | Qt::WindowStaysOnTopHint);
+	this->resize(Config::instance().width, Config::instance().height);
 }
 
 void Widget::changeEvent(QEvent* event)
@@ -68,6 +69,13 @@ void Widget::changeEvent(QEvent* event)
 		if (!isActiveWindow() && Config::instance().focusHide)
 			this->hide();
 	QWidget::changeEvent(event);
+}
+
+void Widget::resizeEvent(QResizeEvent* event)
+{
+	LWidget::resizeEvent(event);
+	Config::instance().width = this->width();
+	Config::instance().height = this->height();
 }
 
 AiTools::AiTools(QWidget* parent)
@@ -90,11 +98,11 @@ void AiTools::initUi()
 	layout->setContentsMargins(0, 0, 0, 0);
 
 	QHBoxLayout* oneRow = new QHBoxLayout();
-	_openButton->setIcon(QIcon(":/AiTools/icon/link.png"));
-	_openButton->setFixedSize(_openButton->iconSize());
-	_openButton->setToolTip("打开链接");
+	_settingButton->setIcon(QIcon(":/AiTools/icon/set.png"));
+	_settingButton->setFixedSize(_settingButton->iconSize());
+	_settingButton->setToolTip("设置");
 	_promptComboBox->lineEdit()->setPlaceholderText("请输入提示词。");
-	oneRow->addWidget(_openButton);
+	oneRow->addWidget(_settingButton);
 	oneRow->addWidget(_promptComboBox);
 
 	QHBoxLayout* twoRow = new QHBoxLayout();
@@ -102,6 +110,7 @@ void AiTools::initUi()
 	_clearButton->setFixedSize(_clearButton->iconSize());
 	_clearButton->setToolTip("清空");
 	_sendAction->setIcon(QIcon(":/AiTools/icon/send.png"));
+	_sendAction->setToolTip("发送");
 	_inputLineEdit->addAction(_sendAction, QLineEdit::TrailingPosition);
 	_inputLineEdit->setPlaceholderText("请输入提问的内容，按下回车发送。");
 	twoRow->addWidget(_clearButton);
@@ -111,8 +120,12 @@ void AiTools::initUi()
 	_copyButton->setIcon(QIcon(":/AiTools/icon/copy.png"));
 	_copyButton->setFixedSize(_copyButton->iconSize());
 	_copyButton->setToolTip("复制");
+	_openButton->setIcon(QIcon(":/AiTools/icon/link.png"));
+	_openButton->setFixedSize(_openButton->iconSize());
+	_openButton->setToolTip("打开链接");
 	QSpacerItem* item = new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Fixed);
 	threeRow->addWidget(_copyButton);
+	threeRow->addWidget(_openButton);
 	threeRow->addItem(item);
 
 	_textEdit->setReadOnly(true);
@@ -170,15 +183,13 @@ void AiTools::initConnect()
 	connect(_promptComboBox->lineEdit(), &QLineEdit::returnPressed, this, &AiTools::sendMessage);
 	connect(_copyButton, &QPushButton::clicked, [=]() {QApplication::clipboard()->setText(_textEdit->toPlainText()); });
 	connect(_settingAction, &QAction::triggered, this, &AiTools::openSettingDialog);
+	connect(_settingButton, &QPushButton::clicked, this, &AiTools::openSettingDialog);
 }
 
-void AiTools::loadConfig()
+void AiTools::loadConfig(bool init)
 {
 	if (_parent == nullptr)
 		_parent = static_cast<Widget*>(this->parent());
-	LJsonConfig config(QApplication::applicationDirPath() + "/config.json");
-	QJsonObject obj = config.readJson().object();
-
 	bool isdark = false;
 	switch (Config::instance().theme)
 	{
@@ -194,7 +205,7 @@ void AiTools::loadConfig()
 	default:
 		break;
 	}
-	if ((isdark != (Config::instance().theme == 1)) || Config::instance().theme == -1)
+	if (_isdark != isdark || init)
 	{
 		QString filename = isdark ? ":/qdarkstyle/dark/darkstyle.qss" : ":/qdarkstyle/light/lightstyle.qss";
 		QFile file(filename);
@@ -202,8 +213,8 @@ void AiTools::loadConfig()
 		if (file.isOpen())
 		{
 			qobject_cast<QApplication*>(QCoreApplication::instance())->setStyleSheet(QLatin1String(file.readAll()));
-			Config::instance().theme = isdark;
-			QColor color = Config::instance().theme == 0 ? QColor("#fafafa") : QColor("#19232D");
+			_isdark = isdark;
+			QColor color = !_isdark ? QColor("#fafafa") : QColor("#19232D");
 			LWidget::Info info = _parent->info();
 			info.backgroundColor = color;
 			info.splitLineColor = color;
@@ -215,13 +226,13 @@ void AiTools::loadConfig()
 
 	LJsonConfig prompt(QApplication::applicationDirPath() + "/prompt.json");
 	QJsonDocument doc = prompt.readJson();
-	if (doc.isNull())
+	if (doc.isNull()) // 初始化防止有人吧prompt.json删了
 		prompt.init(QJsonDocument::fromJson("{}"));
-	obj = prompt.readJson().object();
+	auto obj = prompt.readJson().object();
 	if (!obj.isEmpty())
 	{
 		_promptComboBox->clear();
-		for (auto it = obj.begin(); it != obj.end(); it++)
+		for (auto it = obj.begin(); it != obj.end(); ++it)
 		{
 			_promptComboBox->addItem(it.key() + QString("(%1)").arg(it.value().toString()), it.value().toString());
 		}

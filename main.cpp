@@ -15,7 +15,6 @@ int main(int argc, char* argv[])
 	TitleBar* titleBar = new TitleBar();
 	AiTools* tool = new AiTools();
 	Widget widget(titleBar, tool);
-	widget.resize(300, 200);
 	app.setMainWindow(&widget);
 	app.setQuitOnLastWindowClosed(false);
 

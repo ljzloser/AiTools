@@ -22,6 +22,7 @@ class Widget final : public LWidget
 public:
 	Widget(LBaseTitleBar* titleBar, QWidget* mainWidget, QWidget* parent = nullptr);
 	void changeEvent(QEvent* event) override;
+	void resizeEvent(QResizeEvent* event) override;
 	//bool focusHide = false;
 };
 
@@ -39,7 +40,7 @@ signals:
 	void request(const QString& text);
 public slots:
 	void reply(const QString& text) const;
-	void loadConfig();
+	void loadConfig(bool init = false);
 private slots:
 	void onHotkeyPressed() const;
 	void systemTrayIconActivated(QSystemTrayIcon::ActivationReason reason) const;
@@ -65,6 +66,8 @@ private:
 	QPushButton* _openButton{ new QPushButton(this) };
 	QPushButton* _copyButton{ new QPushButton(this) };
 	QPushButton* _clearButton{ new QPushButton(this) };
+	QPushButton* _settingButton{ new QPushButton(this) };
+	bool _isdark = false;
 	//bool _autoFill{ true };
 	//int _theme{ -1 };
 	//int _pointMode{ 0 };

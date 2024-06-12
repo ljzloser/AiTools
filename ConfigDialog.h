@@ -4,6 +4,7 @@
 #include "ui_ConfigDialog.h"
 #include <LCore>
 #include <QDesktopServices>
+
 class Config
 {
 public:
@@ -18,15 +19,15 @@ public:
 	int promptPoint = 0;
 	QString keySequence = "Ctrl+G";
 	bool showTime = true;
+	double width = 300;
+	double height = 200;
 	static Config& instance();
-
 	[[nodiscard]] QJsonObject toJson() const;
-
 	void fromJson(const QJsonObject& obj, bool init = false);
 	LJsonConfig* config();
 
 private:
-	Config() = default;
+	Config();
 	~Config();
 	LJsonConfig* _config{ new LJsonConfig(QApplication::applicationDirPath() + "/config.json") };
 };
@@ -35,7 +36,7 @@ class ConfigDialog final : public QDialog
 {
 	Q_OBJECT
 signals:
-	void saved();
+	void saved(bool init = false);
 public:
 	explicit ConfigDialog(QWidget* parent = nullptr);
 	~ConfigDialog() override;
