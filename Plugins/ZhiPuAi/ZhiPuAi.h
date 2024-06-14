@@ -1,18 +1,20 @@
-#pragma once
+﻿#pragma once
 
+#include "zhipuai_global.h"
+#include "../../BasePlugin.h"
 #include <QWebEngineView>
 #include <QWebEnginePage>
 #include <QWebEngineProfile>
 #include <QWidget>
 #include <LCore>
-#include "BasePlugin.h"
 
-class WebDialog : public BasePlugin
+class ZHIPUAI_EXPORT ZhiPuAi : public BasePlugin
 {
 	Q_OBJECT
+
 public:
-	explicit WebDialog(QWidget* parent = nullptr);
-	~WebDialog() override;
+	explicit ZhiPuAi(QWidget* parent = nullptr);
+	~ZhiPuAi() override;
 	[[nodiscard]] QWebEngineView* view() const { return _view; }
 signals:
 	void reply(const QString& text);
@@ -30,4 +32,14 @@ private:
 	QWebEngineView* _view{ new QWebEngineView() };
 	QString _lastHash{ "" };
 	QTimer* _timer{ new QTimer(this) };
+};
+
+class ZHIPUAI_EXPORT ZhiPuAiPlugin : public QObject, public BasePluginFactory
+{
+	Q_OBJECT
+		Q_PLUGIN_METADATA(IID BasePlugin_IID)
+		Q_INTERFACES(BasePluginFactory)
+public:
+	BasePlugin* create() override { return new ZhiPuAi(); };
+	~ZhiPuAiPlugin() override = default;
 };

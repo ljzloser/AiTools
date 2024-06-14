@@ -58,8 +58,8 @@ private:
 	QAction* _loginAction{ new QAction("登录", this) };
 	QAction* _settingAction{ new QAction("设置", this) };
 	QAction* _updatePromptAction{ new QAction("更新提示词", this) };
-	WebDialog* _webDialog{ new WebDialog(this) };
-	WebDialog* _loginDialog{ nullptr };
+	BasePlugin* _webDialog{ new WebDialog() };
+	BasePlugin* _loginDialog{ nullptr };
 	ConfigDialog* _configDialog{ nullptr };
 	Widget* _parent{ nullptr };
 	QPushButton* _openButton{ new QPushButton(this) };

@@ -139,13 +139,11 @@ void AiTools::initUi()
 	_textEdit->setReadOnly(true);
 	_textEdit->setPlaceholderText("智谱清言返回内容会在此展示，点击复制即可复制到粘贴板。");
 	_textEdit->setLineNumberAreaVisible(true);
-	_webDialog->setFixedHeight(1);
 
 	layout->addLayout(oneRow);
 	layout->addLayout(twoRow);
 	layout->addLayout(threeRow);
 	layout->addWidget(_textEdit);
-	layout->addWidget(_webDialog);
 	layout->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Fixed));
 
 	this->setLayout(layout);
@@ -185,7 +183,6 @@ void AiTools::initConnect()
 	connect(_clearButton, &QPushButton::clicked, _inputLineEdit, &QLineEdit::clear);
 	connect(_clearButton, &QPushButton::clicked, _textEdit, &LTextEdit::clear);
 	connect(_openButton, &QPushButton::clicked, this, &AiTools::openLoginDialog);
-	connect(_webDialog, &WebDialog::reply, this, &AiTools::reply);
 	connect(_loginAction, &QAction::triggered, this, &AiTools::openLoginDialog);
 	connect(_promptComboBox->lineEdit(), &QLineEdit::returnPressed, this, &AiTools::sendMessage);
 	connect(_copyButton, &QPushButton::clicked, [=]() {QApplication::clipboard()->setText(_textEdit->toPlainText()); });
@@ -201,6 +198,27 @@ void AiTools::initConnect()
 
 void AiTools::loadConfig(bool init)
 {
+	if (_webDialog != nullptr || _webDialog->objectName().isEmpty())
+	{
+		QString name = _webDialog->objectName();
+		if (name != Config::instance().aiPlugin)
+		{
+			this->layout()->removeWidget(_webDialog);
+			_webDialog->deleteLater();
+			_webDialog = nullptr;
+		}
+	}
+	if (_webDialog == nullptr)
+	{
+		_webDialog = Config::instance().plugin();
+		if (_webDialog)
+		{
+			_webDialog->setFixedHeight(1);
+			this->layout()->addWidget(_webDialog);
+			connect(_webDialog, &BasePlugin::reply, this, &AiTools::reply);
+		}
+	}
+
 	if (_parent == nullptr)
 		_parent = static_cast<Widget*>(this->parent());
 	bool isdark = false;
@@ -268,7 +286,8 @@ void AiTools::onHotkeyPressed()
 	if (this->isVisible())
 	{
 		this->parentWidget()->hide();
-		_webDialog->setReplyRunning(false);
+		if (_webDialog)
+			_webDialog->setReplyRunning(false);
 	}
 	else
 	{
@@ -339,7 +358,8 @@ void AiTools::onHotkeyPressed()
 		default:
 			break;
 		}
-		_webDialog->setReplyRunning(true);
+		if (_webDialog)
+			_webDialog->setReplyRunning(true);
 	}
 }
 
@@ -376,7 +396,8 @@ void AiTools::sendMessage() const
 		return;
 	const QString prompt = _promptComboBox->currentData().toString();
 	const QString question = Config::instance().promptPoint == 0 ? (prompt + " " + text) : (text + " " + prompt);
-	_webDialog->request(question);
+	if (_webDialog)
+		_webDialog->request(question);
 }
 
 void AiTools::openLoginDialog()
@@ -384,11 +405,12 @@ void AiTools::openLoginDialog()
 	// 打开指定网页
 	//QDesktopServices::openUrl(QUrl("https://chatglm.cn/main/alltoolsdetail"));
 	if (_loginDialog != nullptr) _loginDialog->deleteLater();
-	_loginDialog = new WebDialog();
+	_loginDialog = Config::instance().plugin();
+	if (_loginDialog == nullptr) return;
 	_loginDialog->setWindowFlag(Qt::Tool);
 	_loginDialog->resize(1600, 900);
 	_loginDialog->show();
-	connect(_loginDialog, &WebDialog::closed, _webDialog, &WebDialog::load);
+	connect(_loginDialog, &BasePlugin::closed, _webDialog, &BasePlugin::load);
 }
 
 void AiTools::openSettingDialog()

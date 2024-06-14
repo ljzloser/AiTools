@@ -2,6 +2,7 @@
 
 #include <QDialog>
 #include "ui_ConfigDialog.h"
+#include "BasePlugin.h"
 #include <LCore>
 #include <QDesktopServices>
 
@@ -21,10 +22,12 @@ public:
 	bool showTime = true;
 	double width = 300;
 	double height = 200;
+	QString aiPlugin = "ZhiPuAi";
 	static Config& instance();
 	[[nodiscard]] QJsonObject toJson() const;
 	void fromJson(const QJsonObject& obj, bool init = false);
 	LJsonConfig* config();
+	BasePlugin* plugin();
 
 private:
 	Config();

@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{4835D409-1360-47D0-9C2E-08070F38E48B}</ProjectGuid>
+    <ProjectGuid>{667D29AA-23EE-4125-843B-5A054427596B}</ProjectGuid>
     <Keyword>QtVS_v304</Keyword>
     <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">10.0</WindowsTargetPlatformVersion>
@@ -19,13 +19,13 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -37,12 +37,12 @@
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>6.6.3_msvc2019_64</QtInstall>
-    <QtModules>core;gui;widgets;webenginewidgets</QtModules>
+    <QtModules>core;gui;network;widgets;sql;xml;webenginewidgets</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
     <QtInstall>6.6.3_msvc2019_64</QtInstall>
-    <QtModules>core;gui;widgets;webenginewidgets</QtModules>
+    <QtModules>core;gui;network;widgets;sql;xml;webenginewidgets</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
@@ -60,40 +60,29 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <IncludePath>$(LocalDebuggerWorkingDirectory)..\LClass\LCore\include\;$(LocalDebuggerWorkingDirectory)..\LClass\LWidget\include\;$(LocalDebuggerWorkingDirectory)..\QHotkey\QHotkey\;$(IncludePath)</IncludePath>
-    <GenerateManifest>true</GenerateManifest>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\Plugins\$(ProjectName)\</OutDir>
+    <IncludePath>$(LocalDebuggerWorkingDirectory)..\..\..\LClass\LCore\include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <IncludePath>$(LocalDebuggerWorkingDirectory)..\LClass\LCore\include\;$(LocalDebuggerWorkingDirectory)..\LClass\LWidget\include\;$(LocalDebuggerWorkingDirectory)..\QHotkey\QHotkey\;$(IncludePath)</IncludePath>
-    <GenerateManifest>true</GenerateManifest>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\Plugins\$(ProjectName)\</OutDir>
+    <IncludePath>$(LocalDebuggerWorkingDirectory)..\..\..\LClass\LCore\include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Link>
-      <AdditionalLibraryDirectories>$(LocalDebuggerWorkingDirectory)..\LClass\x64\$(Configuration);$(LocalDebuggerWorkingDirectory)..\QHotkey\QHotkey\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>LWidget.lib;LCore.lib;QHotkey1.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
+      <AdditionalDependencies>LCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(LocalDebuggerWorkingDirectory)..\..\..\LClass\x64\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
-    <PostBuildEvent>
-      <Command>xcopy /r /y $(LocalDebuggerWorkingDirectory)..\QHotkey\QHotkey\$(Configuration)\QHotkey1.dll $(TargetDir)
-xcopy /r /y $(LocalDebuggerWorkingDirectory)..\LClass\x64\$(Configuration)\*.dll $(TargetDir)</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Link>
-      <AdditionalLibraryDirectories>$(LocalDebuggerWorkingDirectory)..\LClass\x64\$(Configuration);$(LocalDebuggerWorkingDirectory)..\QHotkey\QHotkey\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>LWidget.lib;LCore.lib;QHotkey1.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
+      <AdditionalDependencies>LCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(LocalDebuggerWorkingDirectory)..\..\..\LClass\x64\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
-    <PostBuildEvent>
-      <Command>xcopy /r /y $(LocalDebuggerWorkingDirectory)..\QHotkey\QHotkey\$(Configuration)\QHotkey1.dll $(TargetDir)
-xcopy /r /y $(LocalDebuggerWorkingDirectory)..\LClass\x64\$(Configuration)\L*.dll $(TargetDir)
-cd/d  $(TargetDir)
-$(QtDllPath)/windeployqt $(TargetFileName)</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PreprocessorDefinitions>ZHIPUAI_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
@@ -106,6 +95,7 @@ $(QtDllPath)/windeployqt $(TargetFileName)</Command>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PreprocessorDefinitions>ZHIPUAI_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
@@ -120,45 +110,10 @@ $(QtDllPath)/windeployqt $(TargetFileName)</Command>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ConfigDialog.cpp" />
-    <ClCompile Include="WebDialog.cpp" />
-    <QtRcc Include="AiTools.qrc" />
-    <QtMoc Include="AiTools.h" />
-    <ClCompile Include="AiTools.cpp" />
-    <ClCompile Include="main.cpp">
-      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
-      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
-      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
-      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
-    </ClCompile>
-    <QtRcc Include="dark\darkstyle.qrc" />
-    <QtRcc Include="light\lightstyle.qrc" />
-  </ItemGroup>
-  <ItemGroup>
-    <QtMoc Include="ConfigDialog.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <QtUic Include="ConfigDialog.ui" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="AI.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="AiTools.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="README.md" />
-  </ItemGroup>
-  <ItemGroup>
-    <QtMoc Include="BasePlugin.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="Plugins\ZhiPuAi\ZhiPuAi.vcxproj">
-      <Project>{667d29aa-23ee-4125-843b-5a054427596b}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <QtMoc Include="WebDialog.h" />
+    <QtMoc Include="..\..\BasePlugin.h" />
+    <ClInclude Include="zhipuai_global.h" />
+    <QtMoc Include="ZhiPuAi.h" />
+    <ClCompile Include="ZhiPuAi.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

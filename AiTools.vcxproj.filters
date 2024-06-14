@@ -43,21 +43,24 @@
     </QtRcc>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="WebDialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ConfigDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WebDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="WebDialog.h">
+    <QtMoc Include="ConfigDialog.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="ConfigDialog.h">
+    <QtMoc Include="BasePlugin.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="WebDialog.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

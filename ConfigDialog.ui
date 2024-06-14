@@ -277,6 +277,16 @@
          <item row="7" column="1">
           <widget class="LSwitchButton" name="autoCopyButton" native="true"/>
          </item>
+         <item row="12" column="0">
+          <widget class="QLabel" name="aILabel">
+           <property name="text">
+            <string>AI插件</string>
+           </property>
+          </widget>
+         </item>
+         <item row="12" column="1">
+          <widget class="QComboBox" name="aIComboBox"/>
+         </item>
         </layout>
        </item>
       </layout>

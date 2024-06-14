@@ -1,5 +1,5 @@
 ﻿#include "ConfigDialog.h"
-
+#include <QPluginLoader>
 Config& Config::instance()
 {
 	static Config instance;
@@ -22,7 +22,8 @@ QJsonObject Config::toJson() const
 		{"keySequence", keySequence},
 		{"showTime", showTime},
 		{"width", width},
-		{"height", height}
+		{"height", height},
+		{"aiPlugin", aiPlugin}
 	};
 }
 
@@ -40,6 +41,10 @@ void Config::fromJson(const QJsonObject& obj, bool init)
 	promptPoint = newObj.value("promptPoint").toInt();
 	keySequence = newObj.value("keySequence").toString();
 	showTime = newObj.value("showTime").toBool();
+	if (newObj.contains("aiPlugin"))
+		aiPlugin = newObj.value("aiPlugin").toString();
+	else
+		newObj.insert("aiPlugin", aiPlugin);
 	if (newObj.contains("width"))
 		width = newObj.value("width").toInt();
 	else
@@ -55,6 +60,24 @@ void Config::fromJson(const QJsonObject& obj, bool init)
 LJsonConfig* Config::config()
 {
 	return _config;
+}
+
+BasePlugin* Config::plugin()
+{
+	QString path = QString("%1/%2/%3/%3.dll").arg(QApplication::applicationDirPath(), "Plugins", aiPlugin);
+	QPluginLoader loader(path);
+	QObject* plugin = loader.instance();
+	if (plugin)
+	{
+		BasePluginFactory* factory = qobject_cast<BasePluginFactory*>(plugin);
+		if (factory)
+		{
+			BasePlugin* plugin = factory->create();
+			plugin->setObjectName(aiPlugin);
+			return plugin;
+		}
+	}
+	return nullptr;
 }
 
 Config::Config()
@@ -76,22 +99,24 @@ ConfigDialog::ConfigDialog(QWidget* parent)
 {
 	ui.setupUi(this);
 	this->setWindowFlag(Qt::Tool);
+	QDir dir = QApplication::applicationDirPath() + "/Plugins";
+	// 遍历里面的每一个文件夹
 
-	const QJsonObject obj = Config::instance().toJson();
-	if (!obj.isEmpty())
-	{
-		ui.transparentDoubleSpinBox->setValue(obj.value("transparent").toDouble());
-		ui.themeComboBox->setCurrentIndex(obj.value("theme").toInt());
-		ui.autoFillButton->setChecked(obj.value("autoFill").toBool());
-		ui.focusPointComboBox->setCurrentIndex(obj.value("focusPoint").toInt());
-		ui.fousButton->setChecked(obj.value("focusHide").toBool());
-		ui.PointComboBox->setCurrentIndex(obj.value("pointMode").toInt());
-		ui.autoCopyButton->setChecked(obj.value("autoCopy").toBool());
-		ui.lastPromptButton->setChecked(obj.value("lastPrompt").toBool());
-		ui.promptPointComboBox->setCurrentIndex(obj.value("promptPoint").toInt());
-		ui.keySequenceEdit->setKeySequence(obj.value("keySequence").toString());
-		ui.showTimeButton->setChecked(obj.value("showTime").toBool());
-	}
+	QStringList pluginDirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+	ui.aIComboBox->addItems(pluginDirs);
+
+	ui.transparentDoubleSpinBox->setValue(Config::instance().transparent);
+	ui.themeComboBox->setCurrentIndex(Config::instance().theme);
+	ui.autoFillButton->setChecked(Config::instance().autoFill);
+	ui.focusPointComboBox->setCurrentIndex(Config::instance().focusPoint);
+	ui.fousButton->setChecked(Config::instance().focusHide);
+	ui.PointComboBox->setCurrentIndex(Config::instance().pointMode);
+	ui.autoCopyButton->setChecked(Config::instance().autoCopy);
+	ui.lastPromptButton->setChecked(Config::instance().lastPrompt);
+	ui.promptPointComboBox->setCurrentIndex(Config::instance().promptPoint);
+	ui.keySequenceEdit->setKeySequence(Config::instance().keySequence);
+	ui.showTimeButton->setChecked(Config::instance().showTime);
+	ui.aIComboBox->setCurrentText(Config::instance().aiPlugin);
 
 	connect(ui.buttonBox->button(QDialogButtonBox::Ok), &QPushButton::clicked, this, &QDialog::accept);
 	connect(ui.buttonBox->button(QDialogButtonBox::Cancel), &QPushButton::clicked, this, &QDialog::reject);
@@ -118,6 +143,7 @@ void ConfigDialog::accept()
 		{"promptPoint", ui.promptPointComboBox->currentIndex()},
 		{"keySequence", ui.keySequenceEdit->keySequence().toString()},
 		{"showTime", ui.showTimeButton->isChecked()},
+		{"aiPlugin", ui.aIComboBox->currentText()}
 		});
 	emit saved(false);
 	QDialog::accept();
