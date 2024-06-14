@@ -153,11 +153,6 @@ $(QtDllPath)/windeployqt $(TargetFileName)</Command>
     <QtMoc Include="BasePlugin.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Plugins\ZhiPuAi\ZhiPuAi.vcxproj">
-      <Project>{667d29aa-23ee-4125-843b-5a054427596b}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <QtMoc Include="WebDialog.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
