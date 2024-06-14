@@ -131,13 +131,16 @@ void AiTools::initUi()
 	_openButton->setIcon(QIcon(":/AiTools/icon/link.png"));
 	_openButton->setFixedSize(_openButton->iconSize());
 	_openButton->setToolTip("打开链接");
+	_debugButton->setIcon(QIcon(":/AiTools/icon/Debug.png"));
+	_debugButton->setFixedSize(_debugButton->iconSize());
+	_debugButton->setToolTip("打开交互窗口");
 	QSpacerItem* item = new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Fixed);
 	threeRow->addWidget(_copyButton);
 	threeRow->addWidget(_openButton);
+	threeRow->addWidget(_debugButton);
 	threeRow->addItem(item);
 
 	_textEdit->setReadOnly(true);
-	_textEdit->setPlaceholderText("智谱清言返回内容会在此展示，点击复制即可复制到粘贴板。");
 	_textEdit->setLineNumberAreaVisible(true);
 
 	layout->addLayout(oneRow);
@@ -194,6 +197,7 @@ void AiTools::initConnect()
 			QDesktopServices::openUrl(QUrl(path));
 			_parent->hide();
 		});
+	connect(_debugButton, &QPushButton::clicked, this, &AiTools::debugButtonClicked);
 }
 
 void AiTools::loadConfig(bool init)
@@ -201,7 +205,7 @@ void AiTools::loadConfig(bool init)
 	if (_webDialog != nullptr || _webDialog->objectName().isEmpty())
 	{
 		QString name = _webDialog->objectName();
-		if (name != Config::instance().aiPlugin)
+		if (name != Config::instance().pluginInfo.fileName)
 		{
 			this->layout()->removeWidget(_webDialog);
 			_webDialog->deleteLater();
@@ -213,11 +217,12 @@ void AiTools::loadConfig(bool init)
 		_webDialog = Config::instance().plugin();
 		if (_webDialog)
 		{
-			_webDialog->setFixedHeight(1);
+			_webDialog->setMaximumHeight(1);
 			this->layout()->addWidget(_webDialog);
 			connect(_webDialog, &BasePlugin::reply, this, &AiTools::reply);
 		}
 	}
+	_textEdit->setPlaceholderText(QString("%1返回内容会在此展示，点击复制即可复制到剪切板。").arg(Config::instance().pluginInfo.name));
 
 	if (_parent == nullptr)
 		_parent = static_cast<Widget*>(this->parent());
@@ -394,7 +399,9 @@ void AiTools::sendMessage() const
 	const QString text = _inputLineEdit->text();
 	if (text.isEmpty())
 		return;
-	const QString prompt = _promptComboBox->currentData().toString();
+	QString prompt = _promptComboBox->currentData().toString();
+	const QString comboBoxText = _promptComboBox->lineEdit()->text();
+	prompt = comboBoxText == QString("%1(%2)").arg(_promptComboBox->currentText(), prompt) ? prompt : comboBoxText;
 	const QString question = Config::instance().promptPoint == 0 ? (prompt + " " + text) : (text + " " + prompt);
 	if (_webDialog)
 		_webDialog->request(question);
@@ -421,4 +428,18 @@ void AiTools::openSettingDialog()
 	_showHotkey->setShortcut(_showHotkey->shortcut(), false); // 这一句好像没有用
 	connect(_configDialog, &ConfigDialog::saved, this, &AiTools::loadConfig);
 	_configDialog->show();
+}
+
+void AiTools::debugButtonClicked()
+{
+	int height = _webDialog->maximumHeight();
+	if (height < 10)
+	{
+		_webDialog->setMaximumHeight(QWIDGETSIZE_MAX);
+		_webDialog->resize(_webDialog->width(), 200);
+	}
+	else
+	{
+		_webDialog->setMaximumHeight(1);
+	}
 }

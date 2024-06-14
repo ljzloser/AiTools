@@ -23,7 +23,7 @@ QJsonObject Config::toJson() const
 		{"showTime", showTime},
 		{"width", width},
 		{"height", height},
-		{"aiPlugin", aiPlugin}
+		{"aiPlugin", pluginInfo.fileName}
 	};
 }
 
@@ -42,9 +42,9 @@ void Config::fromJson(const QJsonObject& obj, bool init)
 	keySequence = newObj.value("keySequence").toString();
 	showTime = newObj.value("showTime").toBool();
 	if (newObj.contains("aiPlugin"))
-		aiPlugin = newObj.value("aiPlugin").toString();
+		pluginInfo.fileName = newObj.value("aiPlugin").toString();
 	else
-		newObj.insert("aiPlugin", aiPlugin);
+		newObj.insert("aiPlugin", pluginInfo.fileName);
 	if (newObj.contains("width"))
 		width = newObj.value("width").toInt();
 	else
@@ -64,7 +64,7 @@ LJsonConfig* Config::config()
 
 BasePlugin* Config::plugin()
 {
-	QString path = QString("%1/%2/%3/%3.dll").arg(QApplication::applicationDirPath(), "Plugins", aiPlugin);
+	QString path = QString("%1/%2/%3/%3.dll").arg(QApplication::applicationDirPath(), "Plugins", pluginInfo.fileName);
 	QPluginLoader loader(path);
 	QObject* plugin = loader.instance();
 	if (plugin)
@@ -73,7 +73,8 @@ BasePlugin* Config::plugin()
 		if (factory)
 		{
 			BasePlugin* plugin = factory->create();
-			plugin->setObjectName(aiPlugin);
+			plugin->setObjectName(pluginInfo.fileName);
+			pluginInfo.name = plugin->getName();
 			return plugin;
 		}
 	}
@@ -116,7 +117,7 @@ ConfigDialog::ConfigDialog(QWidget* parent)
 	ui.promptPointComboBox->setCurrentIndex(Config::instance().promptPoint);
 	ui.keySequenceEdit->setKeySequence(Config::instance().keySequence);
 	ui.showTimeButton->setChecked(Config::instance().showTime);
-	ui.aIComboBox->setCurrentText(Config::instance().aiPlugin);
+	ui.aIComboBox->setCurrentText(Config::instance().pluginInfo.fileName);
 
 	connect(ui.buttonBox->button(QDialogButtonBox::Ok), &QPushButton::clicked, this, &QDialog::accept);
 	connect(ui.buttonBox->button(QDialogButtonBox::Cancel), &QPushButton::clicked, this, &QDialog::reject);

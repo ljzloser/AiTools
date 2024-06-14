@@ -17,7 +17,7 @@ ZhiPuAi::ZhiPuAi(QWidget* parent)
 	layout->addWidget(_view);
 	this->setLayout(layout);
 	_timer->setInterval(100);
-	connect(_timer, &QTimer::timeout, this, &ZhiPuAi::timeouted);
+	ZhiPuAi::connect(_timer, &QTimer::timeout, this, &ZhiPuAi::timeouted);
 }
 
 ZhiPuAi::~ZhiPuAi()
@@ -26,9 +26,17 @@ ZhiPuAi::~ZhiPuAi()
 
 void ZhiPuAi::request(const QString& text)
 {
-	QCoreApplication::sendPostedEvents(nullptr, 0);
-	QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 	QString jsCode = QString(R"(
+			(function() {
+				var button = document.evaluate('/html/body/div[1]/div/section/main/div/div[2]/div[2]/div/div/div[2]/div[3]/div[1]/div[1]/div[4]/div/div/div/div[3]/img', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+				if(button){
+					newButton.click();
+				}
+			})();
+		)");
+	_view->page()->runJavaScript(jsCode);
+	QThread::sleep(0.1);
+	jsCode = QString(R"(
 			(function() {
 				var newButton = document.evaluate('/html/body/div[1]/div/section/main/div/div[1]/div/div[1]/div[2]/div', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
 				if(newButton){

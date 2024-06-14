@@ -1,46 +1,43 @@
 ﻿#pragma once
 
-#include "zhipuai_global.h"
-#include "../../BasePlugin.h"
+#include "tongyiai_global.h"
+
 #include <QWebEngineView>
 #include <QWebEnginePage>
 #include <QWebEngineProfile>
 #include <QWidget>
-#include <LCore>
+#include <QTimer>
+#include "../../BasePlugin.h"
 
-class ZHIPUAI_EXPORT ZhiPuAi : public BasePlugin
+class TONGYIAI_EXPORT TongYiAi : public BasePlugin
 {
 	Q_OBJECT
-
 public:
-	explicit ZhiPuAi(QWidget* parent = nullptr);
-	~ZhiPuAi();
-	QString getName() override { return "智谱清言"; };
-	[[nodiscard]] QWebEngineView* view() const { return _view; }
-signals:
-	void reply(const QString& text);
-	void closed();
+	explicit TongYiAi(QWidget* parent = nullptr);
+	~TongYiAi() = default;
+	QString getName() override { return "通义千问"; }
 public slots:
 	void request(const QString& text) override;
 	void setReplyRunning(bool running) override;
+	void setReply(const QString& text) override;
 	void load() override;
 private slots:
 	void timeouted();
-
-private:
+protected:
 	QWebEngineProfile* _profile{ new QWebEngineProfile(QString::fromLatin1("AiTools.%1").arg(qWebEngineChromiumVersion())) };
 	QWebEnginePage* _page{ new QWebEnginePage(_profile) };
 	QWebEngineView* _view{ new QWebEngineView() };
 	QString _lastHash{ "" };
 	QTimer* _timer{ new QTimer(this) };
+	QUrl _url{ QUrl("https://tongyi.aliyun.com/qianwen/?spm=5176.28326591.0.0.40f76ee1zBYunq") };
 };
 
-class ZHIPUAI_EXPORT ZhiPuAiPlugin : public QObject, public BasePluginFactory
+class TONGYIAI_EXPORT TongYiAiPlugin : public QObject, public BasePluginFactory
 {
 	Q_OBJECT
 		Q_PLUGIN_METADATA(IID BasePlugin_IID)
 		Q_INTERFACES(BasePluginFactory)
 public:
-	BasePlugin* create() override { return new ZhiPuAi(); };
-	~ZhiPuAiPlugin() override = default;
+	BasePlugin* create() override { return new TongYiAi(); }
+	~TongYiAiPlugin() override = default;
 };

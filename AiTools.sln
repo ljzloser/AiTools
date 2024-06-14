@@ -4,12 +4,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.11.34929.205
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AiTools", "AiTools.vcxproj", "{4835D409-1360-47D0-9C2E-08070F38E48B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{667D29AA-23EE-4125-843B-5A054427596B} = {667D29AA-23EE-4125-843B-5A054427596B}
+		{BC981CF7-0FCC-460B-8D35-4E5B0DBBF317} = {BC981CF7-0FCC-460B-8D35-4E5B0DBBF317}
+	EndProjectSection
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{843D7C57-16E3-4DD6-A104-55F7A7DE03AB}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZhiPuAi", "Plugins\ZhiPuAi\ZhiPuAi.vcxproj", "{667D29AA-23EE-4125-843B-5A054427596B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{420FDB40-B89F-4E2A-943C-FAC0751DD1D9}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TongYiAi", "Plugins\TongYiAi\TongYiAi.vcxproj", "{BC981CF7-0FCC-460B-8D35-4E5B0DBBF317}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,12 +47,21 @@ Global
 		{667D29AA-23EE-4125-843B-5A054427596B}.Release|Any CPU.Build.0 = Release|x64
 		{667D29AA-23EE-4125-843B-5A054427596B}.Release|x64.ActiveCfg = Release|x64
 		{667D29AA-23EE-4125-843B-5A054427596B}.Release|x64.Build.0 = Release|x64
+		{BC981CF7-0FCC-460B-8D35-4E5B0DBBF317}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{BC981CF7-0FCC-460B-8D35-4E5B0DBBF317}.Debug|Any CPU.Build.0 = Debug|x64
+		{BC981CF7-0FCC-460B-8D35-4E5B0DBBF317}.Debug|x64.ActiveCfg = Debug|x64
+		{BC981CF7-0FCC-460B-8D35-4E5B0DBBF317}.Debug|x64.Build.0 = Debug|x64
+		{BC981CF7-0FCC-460B-8D35-4E5B0DBBF317}.Release|Any CPU.ActiveCfg = Release|x64
+		{BC981CF7-0FCC-460B-8D35-4E5B0DBBF317}.Release|Any CPU.Build.0 = Release|x64
+		{BC981CF7-0FCC-460B-8D35-4E5B0DBBF317}.Release|x64.ActiveCfg = Release|x64
+		{BC981CF7-0FCC-460B-8D35-4E5B0DBBF317}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{667D29AA-23EE-4125-843B-5A054427596B} = {420FDB40-B89F-4E2A-943C-FAC0751DD1D9}
+		{BC981CF7-0FCC-460B-8D35-4E5B0DBBF317} = {420FDB40-B89F-4E2A-943C-FAC0751DD1D9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {44F6DA5E-3563-4E6A-B2EF-67C34AC6FE31}

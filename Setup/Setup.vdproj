@@ -285,6 +285,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_56E695508E20436489B63310E294F61F"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_56F0B5C2B4D046F596FD7FF834CD925B"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -334,6 +340,12 @@
         "Entry"
         {
         "MsmKey" = "8:_5F87F86AF8CC4DA2851E3A538FBAD306"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_61D0E8C19D474064A47C0A252DC0DD98"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -891,6 +903,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_ED6716D54704460BA8BCD8433FBF2583"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_F05A7230864647A1AC02A15E32888FEF"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -1048,7 +1066,7 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "FrameworkVersion" = "8:v4.7.2 "
+                "FrameworkVersion" = "8:v4.7.2  "
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=863262"
                 }
@@ -1956,6 +1974,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_56E695508E20436489B63310E294F61F"
+            {
+            "SourcePath" = "8:..\\x64\\Release\\Plugins\\TongYiAi\\TongYiAi.dll"
+            "TargetName" = "8:TongYiAi.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_0DF81F3E33FE4C9D875F92FAC5540BB1"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_56F0B5C2B4D046F596FD7FF834CD925B"
             {
             "SourcePath" = "8:..\\x64\\Release\\translations\\qtwebengine_locales\\mr.pak"
@@ -2122,6 +2160,26 @@
             "TargetName" = "8:qt_gd.qm"
             "Tag" = "8:"
             "Folder" = "8:_59BE42DC4B594E60AB1E7FC248201760"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_61D0E8C19D474064A47C0A252DC0DD98"
+            {
+            "SourcePath" = "8:..\\x64\\Release\\Plugins\\TongYiAi\\TongYiAi.lib"
+            "TargetName" = "8:TongYiAi.lib"
+            "Tag" = "8:"
+            "Folder" = "8:_0DF81F3E33FE4C9D875F92FAC5540BB1"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -3956,6 +4014,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_ED6716D54704460BA8BCD8433FBF2583"
+            {
+            "SourcePath" = "8:..\\x64\\Release\\Plugins\\TongYiAi\\TongYiAi.exp"
+            "TargetName" = "8:TongYiAi.exp"
+            "Tag" = "8:"
+            "Folder" = "8:_0DF81F3E33FE4C9D875F92FAC5540BB1"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F05A7230864647A1AC02A15E32888FEF"
             {
             "SourcePath" = "8:..\\AI-64×64.ico"
@@ -4232,6 +4310,17 @@
                     "Property" = "8:_5B085F38F2E04B34AB186C569A6C658B"
                         "Folders"
                         {
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_0DF81F3E33FE4C9D875F92FAC5540BB1"
+                            {
+                            "Name" = "8:TongYiAi"
+                            "AlwaysCreate" = "11:FALSE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_70DE8CF69376416889FA462201B264E1"
+                                "Folders"
+                                {
+                                }
+                            }
                             "{9EF0B969-E518-4E46-987F-47570745A589}:_3FD6993800B24D53A2C200E440F22572"
                             {
                             "Name" = "8:ZhiPuAi"

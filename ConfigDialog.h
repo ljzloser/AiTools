@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <QDialog>
 #include "ui_ConfigDialog.h"
@@ -6,6 +6,14 @@
 #include <LCore>
 #include <QDesktopServices>
 
+struct PluginInfo
+{
+	QString fileName;
+	QString name;
+	PluginInfo() = default;
+	PluginInfo(const QString& fileName, const QString& name) : fileName(fileName), name(name) {}
+	QString toString() const { return QString("%1;%2").arg(fileName, name); }
+};
 class Config
 {
 public:
@@ -22,7 +30,7 @@ public:
 	bool showTime = true;
 	double width = 300;
 	double height = 200;
-	QString aiPlugin = "ZhiPuAi";
+	PluginInfo pluginInfo = { "ZhiPuAi", "智谱清言" };
 	static Config& instance();
 	[[nodiscard]] QJsonObject toJson() const;
 	void fromJson(const QJsonObject& obj, bool init = false);

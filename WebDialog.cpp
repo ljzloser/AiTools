@@ -1,4 +1,4 @@
-#include "WebDialog.h"
+﻿#include "WebDialog.h"
 
 WebDialog::WebDialog(QWidget* parent)
 	: BasePlugin(parent)

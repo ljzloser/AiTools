@@ -45,6 +45,7 @@ private slots:
 	void sendMessage() const;
 	void openLoginDialog();
 	void openSettingDialog();
+	void debugButtonClicked();
 private:
 	QHotkey* _showHotkey{ new QHotkey(QKeySequence(), true, this) };
 	QLineEdit* _inputLineEdit{ new QLineEdit(this) };
@@ -66,5 +67,6 @@ private:
 	QPushButton* _copyButton{ new QPushButton(this) };
 	QPushButton* _clearButton{ new QPushButton(this) };
 	QPushButton* _settingButton{ new QPushButton(this) };
+	QPushButton* _debugButton{ new QPushButton(this) };
 	bool _isdark = false;
 };

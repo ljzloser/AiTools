@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <QWebEngineView>
 #include <QWebEnginePage>
@@ -14,6 +14,7 @@ public:
 	explicit WebDialog(QWidget* parent = nullptr);
 	~WebDialog() override;
 	[[nodiscard]] QWebEngineView* view() const { return _view; }
+	QString getName() override { return "WebDialog"; };
 signals:
 	void reply(const QString& text);
 	void closed();

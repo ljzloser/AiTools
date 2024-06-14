@@ -7,6 +7,7 @@ class BasePlugin : public QWidget
 public:
 	explicit BasePlugin(QWidget* parent = nullptr);
 	~BasePlugin() override;
+	virtual QString getName() = 0;
 signals:
 	void reply(const QString& text);
 	void closed();
@@ -27,7 +28,8 @@ public slots:
 	/*
 	 * 发送回复的文本
 	 */
-	virtual	void setReply(const QString& text);;
+	virtual	void setReply(const QString& text);
+
 protected:
 	void closeEvent(QCloseEvent* event) override;
 };
