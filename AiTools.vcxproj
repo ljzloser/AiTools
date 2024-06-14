@@ -36,12 +36,12 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
-    <QtInstall>6.6.1_msvc2019_64</QtInstall>
+    <QtInstall>6.6.3_msvc2019_64</QtInstall>
     <QtModules>core;gui;widgets;webenginewidgets</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
-    <QtInstall>6.6.1_msvc2019_64</QtInstall>
+    <QtInstall>6.6.3_msvc2019_64</QtInstall>
     <QtModules>core;gui;widgets;webenginewidgets</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
@@ -60,16 +60,16 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <IncludePath>I:\project\C++\Qt\LClass\LCore\include\;I:\project\C++\Qt\LClass\LWidget\include\;I:\project\C++\Qt\QHotkey\QHotkey\;$(IncludePath)</IncludePath>
+    <IncludePath>$(LocalDebuggerWorkingDirectory)..\LClass\LCore\include\;$(LocalDebuggerWorkingDirectory)..\LClass\LWidget\include\;$(LocalDebuggerWorkingDirectory)..\QHotkey\QHotkey\;$(IncludePath)</IncludePath>
     <GenerateManifest>true</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <IncludePath>I:\project\C++\Qt\LClass\LCore\include\;I:\project\C++\Qt\LClass\LWidget\include\;I:\project\C++\Qt\QHotkey\QHotkey\;$(IncludePath)</IncludePath>
+    <IncludePath>$(LocalDebuggerWorkingDirectory)..\LClass\LCore\include\;$(LocalDebuggerWorkingDirectory)..\LClass\LWidget\include\;$(LocalDebuggerWorkingDirectory)..\QHotkey\QHotkey\;$(IncludePath)</IncludePath>
     <GenerateManifest>true</GenerateManifest>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Link>
-      <AdditionalLibraryDirectories>I:\project\C++\Qt\LClass\x64\$(Configuration);I:\project\C++\Qt\QHotkey\QHotkey\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(LocalDebuggerWorkingDirectory)..\LClass\x64\$(Configuration);$(LocalDebuggerWorkingDirectory)..\QHotkey\QHotkey\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>LWidget.lib;LCore.lib;QHotkey1.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
     </Link>
@@ -80,7 +80,7 @@ xcopy /r /y $(LocalDebuggerWorkingDirectory)..\LClass\x64\$(Configuration)\*.dll
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Link>
-      <AdditionalLibraryDirectories>I:\project\C++\Qt\LClass\x64\$(Configuration);I:\project\C++\Qt\QHotkey\QHotkey\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(LocalDebuggerWorkingDirectory)..\LClass\x64\$(Configuration);$(LocalDebuggerWorkingDirectory)..\QHotkey\QHotkey\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>LWidget.lib;LCore.lib;QHotkey1.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
     </Link>
