@@ -7,7 +7,7 @@
 #include <QMenu>
 #include "WebDialog.h"
 #include "ConfigDialog.h"
-
+#include "StringManager.h"
 class TitleBar final :public LTitleBar
 {
 public:
@@ -54,11 +54,11 @@ private:
 	QSystemTrayIcon* _trayIcon{ new QSystemTrayIcon(this) };
 	QMenu* _trayMenu{ new QMenu(this) };
 	QAction* _sendAction{ new QAction(this) };
-	QAction* _quitAction{ new QAction("退出", this) };
-	QAction* _bootStrapAction{ new QAction("开机启动", this) };
-	QAction* _loginAction{ new QAction("登录", this) };
-	QAction* _settingAction{ new QAction("设置", this) };
-	QAction* _updatePromptAction{ new QAction("更新提示词", this) };
+	QAction* _quitAction{ new QAction(StrMgr::str.quit, this) };
+	QAction* _bootStrapAction{ new QAction(StrMgr::str.bootStart, this) };
+	QAction* _loginAction{ new QAction(StrMgr::str.login, this) };
+	QAction* _settingAction{ new QAction(StrMgr::str.setting, this) };
+	QAction* _updatePromptAction{ new QAction(StrMgr::str.updatePrompt, this) };
 	BasePlugin* _webDialog{ new WebDialog() };
 	BasePlugin* _loginDialog{ nullptr };
 	ConfigDialog* _configDialog{ nullptr };

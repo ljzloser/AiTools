@@ -6,6 +6,7 @@
 #include <QWidget>
 #include <LCore>
 #include "BasePlugin.h"
+#include "StringManager.h"
 
 class WebDialog : public BasePlugin
 {
@@ -14,7 +15,7 @@ public:
 	explicit WebDialog(QWidget* parent = nullptr);
 	~WebDialog() override;
 	[[nodiscard]] QWebEngineView* view() const { return _view; }
-	QString getName() override { return "WebDialog"; };
+	QString getName() override { return "WebDialog"; }
 signals:
 	void reply(const QString& text);
 	void closed();
@@ -26,7 +27,7 @@ private slots:
 	void timeouted();
 
 private:
-	QWebEngineProfile* _profile{ new QWebEngineProfile(QString::fromLatin1("AiTools.%1").arg(qWebEngineChromiumVersion())) };
+	QWebEngineProfile* _profile{ new QWebEngineProfile(QString::fromLatin1("%1.%2").arg(StrMgr::str.appName,qWebEngineChromiumVersion())) };
 	QWebEnginePage* _page{ new QWebEnginePage(_profile) };
 	QWebEngineView* _view{ new QWebEngineView() };
 	QString _lastHash{ "" };

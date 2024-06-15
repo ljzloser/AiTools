@@ -591,6 +591,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_98772EE34C1A43F790DDA2A9BA9131D2"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_99569264417D474B885DE92C55670777"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -635,6 +641,12 @@
         {
         "MsmKey" = "8:_A24F878757604D2FABF067B8F09E8381"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A3B592D4976138326540A4991CE77C40"
+        "OwnerKey" = "8:_98772EE34C1A43F790DDA2A9BA9131D2"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -979,6 +991,18 @@
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_A3B592D4976138326540A4991CE77C40"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_98772EE34C1A43F790DDA2A9BA9131D2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -1051,6 +1075,20 @@
     {
         "CustomAction"
         {
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_B4901CD3F8F94B3489D301F3C1D19DED"
+            {
+            "Name" = "8:主输出 from AfterInstall (Active)"
+            "Condition" = "8:"
+            "Object" = "8:_98772EE34C1A43F790DDA2A9BA9131D2"
+            "FileType" = "3:2"
+            "InstallAction" = "3:1"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_A7E0B407_9F06_4259_9D65_45C588FC3C1A"
+            "InstallerClass" = "11:FALSE"
+            "CustomActionData" = "8:"
+            }
         }
         "DefaultFeature"
         {
@@ -1066,7 +1104,7 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "FrameworkVersion" = "8:v4.7.2  "
+                "FrameworkVersion" = "8:v4.7.2      "
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=863262"
                 }
@@ -3154,6 +3192,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A3B592D4976138326540A4991CE77C40"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:System.Net.Http, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
+                "ScatterAssemblies"
+                {
+                    "_A3B592D4976138326540A4991CE77C40"
+                    {
+                    "Name" = "8:System.Net.Http.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:System.Net.Http.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_26ECEF6C6819406F90BE56012970530E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A3FBA306BA4943C192B57AF8D6A95845"
             {
             "SourcePath" = "8:..\\x64\\Release\\opengl32sw.dll"
@@ -4518,7 +4587,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:AiTools"
         "ProductCode" = "8:{30C1F850-2A88-40B6-AF0A-EA6D5F4B06FA}"
-        "PackageCode" = "8:{17FD9623-ACA4-40D5-ACE7-56537D21D372}"
+        "PackageCode" = "8:{84F3F45C-E9E7-453E-BBC7-BDE76EAF0679}"
         "UpgradeCode" = "8:{64E8D631-57C3-4C0A-8A00-545DB4FC9E1F}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
@@ -5079,6 +5148,34 @@
         }
         "ProjectOutput"
         {
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_98772EE34C1A43F790DDA2A9BA9131D2"
+            {
+            "SourcePath" = "8:..\\AfterInstall\\obj\\Release\\AfterInstall.exe"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_26ECEF6C6819406F90BE56012970530E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:Built"
+            "OutputProjectGuid" = "8:{CDEBEBD3-7C68-4CDF-AAD3-14CE4B3D9F69}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_D168416BC8054D429135BC9DD6F091F9"
             {
             "SourcePath" = "8:..\\x64\\Release\\AiTools.exe"

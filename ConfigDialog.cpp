@@ -1,5 +1,6 @@
 ﻿#include "ConfigDialog.h"
 #include <QPluginLoader>
+#include <QDesktopServices>
 Config& Config::instance()
 {
 	static Config instance;
@@ -9,52 +10,56 @@ Config& Config::instance()
 
 QJsonObject Config::toJson() const
 {
+#define ConfigPair(Key,type,func) {Key.name , Key.value.value<type>()func}
 	return QJsonObject{
-		{"transparent", transparent},
-		{"theme", theme},
-		{"autoFill", autoFill},
-		{"focusPoint", focusPoint},
-		{"focusHide", focusHide},
-		{"pointMode", pointMode},
-		{"autoCopy", autoCopy},
-		{"lastPrompt", lastPrompt},
-		{"promptPoint", promptPoint},
-		{"keySequence", keySequence},
-		{"showTime", showTime},
-		{"width", width},
-		{"height", height},
-		{"aiPlugin", pluginInfo.fileName}
+		ConfigPair(transparent, double),
+		ConfigPair(theme, int),
+		ConfigPair(autoFill, bool),
+		ConfigPair(focusPoint, int),
+		ConfigPair(focusHide, bool),
+		ConfigPair(pointMode, int),
+		ConfigPair(autoCopy, bool),
+		ConfigPair(lastPrompt, bool),
+		ConfigPair(promptPoint, int),
+		ConfigPair(keySequence, QString),
+		ConfigPair(showTime, bool),
+		ConfigPair(width, int),
+		ConfigPair(height, int),
+		ConfigPair(pluginInfo, PluginInfo*,->fileName),
 	};
+#undef ConfigPair
 }
 
 void Config::fromJson(const QJsonObject& obj, bool init)
 {
 	auto newObj = obj;
-	transparent = newObj.value("transparent").toDouble();
-	theme = newObj.value("theme").toInt();
-	autoFill = newObj.value("autoFill").toBool();
-	focusPoint = newObj.value("focusPoint").toInt();
-	focusHide = newObj.value("focusHide").toBool();
-	pointMode = newObj.value("pointMode").toInt();
-	autoCopy = newObj.value("autoCopy").toBool();
-	lastPrompt = newObj.value("lastPrompt").toBool();
-	promptPoint = newObj.value("promptPoint").toInt();
-	keySequence = newObj.value("keySequence").toString();
-	showTime = newObj.value("showTime").toBool();
-	if (newObj.contains("aiPlugin"))
-		pluginInfo.fileName = newObj.value("aiPlugin").toString();
+	transparent.value = newObj.value(transparent.name).toDouble();
+	theme.value = newObj.value(theme.name).toInt();
+	autoFill.value = newObj.value(autoFill.name).toBool();
+	focusPoint.value = newObj.value(focusPoint.name).toInt();
+	focusHide.value = newObj.value(focusHide.name).toBool();
+	pointMode.value = newObj.value(pointMode.name).toInt();
+	autoCopy.value = newObj.value(autoCopy.name).toBool();
+	lastPrompt.value = newObj.value(lastPrompt.name).toBool();
+	promptPoint.value = newObj.value(promptPoint.name).toInt();
+	keySequence.value = newObj.value(keySequence.name).toString();
+	showTime.value = newObj.value(showTime.name).toBool();
+	if (newObj.contains(pluginInfo.name))
+		pluginInfo.value.value<PluginInfo*>()->fileName = newObj.value(pluginInfo.name).toString();
 	else
-		newObj.insert("aiPlugin", pluginInfo.fileName);
-	if (newObj.contains("width"))
-		width = newObj.value("width").toInt();
+		newObj.insert(pluginInfo.name, pluginInfo.value.value<PluginInfo*>()->fileName);
+	if (newObj.contains(width.name))
+		width.value = newObj.value(width.name).toInt();
 	else
-		newObj.insert("width", width);
-	if (newObj.contains("height"))
-		height = newObj.value("height").toInt();
+		newObj.insert(width.name, width.value.toInt());
+	if (newObj.contains(height.name))
+		height.value = newObj.value(height.name).toInt();
 	else
-		newObj.insert("height", height);
+		newObj.insert(height.name, height.value.toInt());
 	if (!init)
+	{
 		config()->init(QJsonDocument(newObj));
+	}
 }
 
 LJsonConfig* Config::config()
@@ -64,7 +69,7 @@ LJsonConfig* Config::config()
 
 BasePlugin* Config::plugin()
 {
-	QString path = QString("%1/%2/%3/%3.dll").arg(QApplication::applicationDirPath(), "Plugins", pluginInfo.fileName);
+	QString path = QString("%1/%2/%3/%3.dll").arg(QApplication::applicationDirPath(), StrMgr::str.pluginDir, pluginInfo.value.value<PluginInfo*>()->fileName);
 	QPluginLoader loader(path);
 	QObject* plugin = loader.instance();
 	if (plugin)
@@ -73,8 +78,8 @@ BasePlugin* Config::plugin()
 		if (factory)
 		{
 			BasePlugin* plugin = factory->create();
-			plugin->setObjectName(pluginInfo.fileName);
-			pluginInfo.name = plugin->getName();
+			plugin->setObjectName(pluginInfo.value.value<PluginInfo*>()->fileName);
+			pluginInfo.value.value<PluginInfo*>()->name = plugin->getName();
 			return plugin;
 		}
 	}
@@ -91,6 +96,7 @@ Config::Config()
 
 Config::~Config()
 {
+	delete pluginInfo.value.value<PluginInfo*>();
 	_config->init(QJsonDocument(this->toJson()));
 	delete _config;
 }
@@ -100,30 +106,30 @@ ConfigDialog::ConfigDialog(QWidget* parent)
 {
 	ui.setupUi(this);
 	this->setWindowFlag(Qt::Tool);
-	QDir dir = QApplication::applicationDirPath() + "/Plugins";
+	QDir dir = QApplication::applicationDirPath() + "/" + StrMgr::str.pluginDir;
 	// 遍历里面的每一个文件夹
 
 	QStringList pluginDirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
 	ui.aIComboBox->addItems(pluginDirs);
 
-	ui.transparentDoubleSpinBox->setValue(Config::instance().transparent);
-	ui.themeComboBox->setCurrentIndex(Config::instance().theme);
-	ui.autoFillButton->setChecked(Config::instance().autoFill);
-	ui.focusPointComboBox->setCurrentIndex(Config::instance().focusPoint);
-	ui.fousButton->setChecked(Config::instance().focusHide);
-	ui.PointComboBox->setCurrentIndex(Config::instance().pointMode);
-	ui.autoCopyButton->setChecked(Config::instance().autoCopy);
-	ui.lastPromptButton->setChecked(Config::instance().lastPrompt);
-	ui.promptPointComboBox->setCurrentIndex(Config::instance().promptPoint);
-	ui.keySequenceEdit->setKeySequence(Config::instance().keySequence);
-	ui.showTimeButton->setChecked(Config::instance().showTime);
-	ui.aIComboBox->setCurrentText(Config::instance().pluginInfo.fileName);
+	ui.transparentDoubleSpinBox->setValue(Config::instance().transparent.value.toDouble());
+	ui.themeComboBox->setCurrentIndex(Config::instance().theme.value.toInt());
+	ui.autoFillButton->setChecked(Config::instance().autoFill.value.toBool());
+	ui.focusPointComboBox->setCurrentIndex(Config::instance().focusPoint.value.toInt());
+	ui.fousButton->setChecked(Config::instance().focusHide.value.toBool());
+	ui.PointComboBox->setCurrentIndex(Config::instance().pointMode.value.toInt());
+	ui.autoCopyButton->setChecked(Config::instance().autoCopy.value.toBool());
+	ui.lastPromptButton->setChecked(Config::instance().lastPrompt.value.toBool());
+	ui.promptPointComboBox->setCurrentIndex(Config::instance().promptPoint.value.toInt());
+	ui.keySequenceEdit->setKeySequence(Config::instance().keySequence.value.toString());
+	ui.showTimeButton->setChecked(Config::instance().showTime.value.toBool());
+	ui.aIComboBox->setCurrentText(Config::instance().pluginInfo.value.value<PluginInfo*>()->fileName);
 
 	connect(ui.buttonBox->button(QDialogButtonBox::Ok), &QPushButton::clicked, this, &QDialog::accept);
 	connect(ui.buttonBox->button(QDialogButtonBox::Cancel), &QPushButton::clicked, this, &QDialog::reject);
 	connect(ui.pushButton, &QPushButton::clicked, [=]()
 		{
-			const QString path = "file:///" + QApplication::applicationDirPath() + "/prompt.json";
+			const QString path = "file:///" + QApplication::applicationDirPath() + "/" + StrMgr::str.promptFile;
 			QDesktopServices::openUrl(QUrl(path));
 		});
 }
@@ -133,18 +139,18 @@ ConfigDialog::~ConfigDialog() = default;
 void ConfigDialog::accept()
 {
 	Config::instance().fromJson({
-		{"transparent", ui.transparentDoubleSpinBox->value()},
-		{"theme", ui.themeComboBox->currentIndex()},
-		{"autoFill", ui.autoFillButton->isChecked()},
-		{"focusPoint",ui.focusPointComboBox->currentIndex()},
-		{"focusHide", ui.fousButton->isChecked()},
-		{"pointMode", ui.PointComboBox->currentIndex()},
-		{"autoCopy", ui.autoCopyButton->isChecked()},
-		{"lastPrompt", ui.lastPromptButton->isChecked()},
-		{"promptPoint", ui.promptPointComboBox->currentIndex()},
-		{"keySequence", ui.keySequenceEdit->keySequence().toString()},
-		{"showTime", ui.showTimeButton->isChecked()},
-		{"aiPlugin", ui.aIComboBox->currentText()}
+	{ StrMgr::str.transparent, ui.transparentDoubleSpinBox->value() },
+	{ StrMgr::str.theme, ui.themeComboBox->currentIndex() },
+	{ StrMgr::str.autoFill, ui.autoFillButton->isChecked() },
+	{ StrMgr::str.focusPoint, ui.focusPointComboBox->currentIndex() },
+	{ StrMgr::str.focusHide, ui.fousButton->isChecked() },
+	{ StrMgr::str.pointMode, ui.PointComboBox->currentIndex() },
+	{ StrMgr::str.autoCopy, ui.autoCopyButton->isChecked() },
+	{ StrMgr::str.lastPrompt, ui.lastPromptButton->isChecked() },
+	{ StrMgr::str.promptPoint, ui.promptPointComboBox->currentIndex() },
+	{ StrMgr::str.keySequence, ui.keySequenceEdit->keySequence().toString() },
+	{ StrMgr::str.showTime, ui.showTimeButton->isChecked() },
+	{ StrMgr::str.pluginInfo, ui.aIComboBox->currentText() }
 		});
 	emit saved(false);
 	QDialog::accept();

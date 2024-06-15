@@ -1,6 +1,7 @@
 ﻿#include "AiTools.h"
 #include <QClipboard>
 #include <Windows.h>
+#include <QDesktopServices>
 
 static UINT simulateCtrlC() {
 	INPUT inputs[4];
@@ -41,12 +42,12 @@ TitleBar::TitleBar(QWidget* parent)
 void TitleBar::paintEvent(QPaintEvent* event)
 {
 	LTitleBar::paintEvent(event);
-	if (!Config::instance().showTime) return;
+	if (!Config::instance().showTime.value.toBool()) return;
 	QPainter painter(this);
 	QFont font = this->font();
 	font.setBold(true);
 	painter.setFont(font);
-	const QString dateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss");
+	const QString dateTime = QDateTime::currentDateTime().toString(StrMgr::str.dateFormat);
 	QRect rect = this->rect();
 	rect.setHeight(rect.height() - 8);
 	painter.drawText(rect, Qt::AlignCenter, dateTime);
@@ -58,15 +59,15 @@ Widget::Widget(LBaseTitleBar* titleBar, QWidget* mainWidget, QWidget* parent)
 	AiTools* tool = static_cast<AiTools*>(mainWidget);
 	connect(this, &LWidget::systemSettingsChanged, [tool]() { tool->loadConfig(false); });
 	tool->loadConfig(true);
-	this->setWindowIcon(QIcon(":/AiTools/icon/AI.png"));
+	this->setWindowIcon(QIcon(StrMgr::rc.icon));
 	this->setWindowFlags(this->windowFlags() | Qt::SubWindow | Qt::WindowStaysOnTopHint);
-	this->resize(Config::instance().width, Config::instance().height);
+	this->resize(Config::instance().width.value.toInt(), Config::instance().height.value.toInt());
 }
 
 void Widget::changeEvent(QEvent* event)
 {
 	if (event->type() == QEvent::ActivationChange)
-		if (!isActiveWindow() && Config::instance().focusHide)
+		if (!isActiveWindow() && Config::instance().focusHide.value.toBool())
 			this->hide();
 	if (event->type() == QEvent::WindowStateChange)
 		if (this->isMinimized())
@@ -80,8 +81,8 @@ void Widget::changeEvent(QEvent* event)
 void Widget::resizeEvent(QResizeEvent* event)
 {
 	LWidget::resizeEvent(event);
-	Config::instance().width = this->width();
-	Config::instance().height = this->height();
+	Config::instance().width.value = this->width();
+	Config::instance().height.value = this->height();
 }
 
 AiTools::AiTools(QWidget* parent)
@@ -104,36 +105,36 @@ void AiTools::initUi()
 	layout->setContentsMargins(0, 0, 0, 0);
 
 	QHBoxLayout* oneRow = new QHBoxLayout();
-	_settingButton->setIcon(QIcon(":/AiTools/icon/set.png"));
+	_settingButton->setIcon(QIcon(StrMgr::rc.set));
 	_settingButton->setFixedSize(_settingButton->iconSize());
-	_settingButton->setToolTip("设置");
-	_promptComboBox->lineEdit()->setPlaceholderText("请输入提示词。");
-	_updatePromptAction->setIcon(QIcon(":/AiTools/icon/update.png"));
+	_settingButton->setToolTip(StrMgr::str.setting);
+	_promptComboBox->lineEdit()->setPlaceholderText(StrMgr::str.inPutPrompt);
+	_updatePromptAction->setIcon(QIcon(StrMgr::rc.update));
 	_promptComboBox->lineEdit()->addAction(_updatePromptAction, QLineEdit::TrailingPosition);
 	oneRow->addWidget(_settingButton);
 	oneRow->addWidget(_promptComboBox);
 
 	QHBoxLayout* twoRow = new QHBoxLayout();
-	_clearButton->setIcon(QIcon(":/AiTools/icon/clear.png"));
+	_clearButton->setIcon(QIcon(StrMgr::rc.clear));
 	_clearButton->setFixedSize(_clearButton->iconSize());
-	_clearButton->setToolTip("清空");
-	_sendAction->setIcon(QIcon(":/AiTools/icon/send.png"));
-	_sendAction->setToolTip("发送");
+	_clearButton->setToolTip(StrMgr::str.clear);
+	_sendAction->setIcon(QIcon(StrMgr::rc.send));
+	_sendAction->setToolTip(StrMgr::str.send);
 	_inputLineEdit->addAction(_sendAction, QLineEdit::TrailingPosition);
-	_inputLineEdit->setPlaceholderText("请输入提问的内容，按下回车发送。");
+	_inputLineEdit->setPlaceholderText(StrMgr::str.inputData);
 	twoRow->addWidget(_clearButton);
 	twoRow->addWidget(_inputLineEdit);
 
 	QHBoxLayout* threeRow = new QHBoxLayout();
-	_copyButton->setIcon(QIcon(":/AiTools/icon/copy.png"));
+	_copyButton->setIcon(QIcon(StrMgr::rc.copy));
 	_copyButton->setFixedSize(_copyButton->iconSize());
-	_copyButton->setToolTip("复制");
-	_openButton->setIcon(QIcon(":/AiTools/icon/link.png"));
+	_copyButton->setToolTip(StrMgr::str.copy);
+	_openButton->setIcon(QIcon(StrMgr::rc.link));
 	_openButton->setFixedSize(_openButton->iconSize());
-	_openButton->setToolTip("打开链接");
-	_debugButton->setIcon(QIcon(":/AiTools/icon/Debug.png"));
+	_openButton->setToolTip(StrMgr::str.openLink);
+	_debugButton->setIcon(QIcon(StrMgr::rc.debug));
 	_debugButton->setFixedSize(_debugButton->iconSize());
-	_debugButton->setToolTip("打开交互窗口");
+	_debugButton->setToolTip(StrMgr::str.debug);
 	QSpacerItem* item = new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Fixed);
 	threeRow->addWidget(_copyButton);
 	threeRow->addWidget(_openButton);
@@ -158,14 +159,15 @@ void AiTools::initTratIcon()
 	_trayMenu->addAction(_bootStrapAction);
 	LJsonConfig _config(QApplication::applicationDirPath() + "/config.json");
 	_bootStrapAction->setChecked(_config.read("autoRun").toBool());*/
-	_loginAction->setIcon(QIcon(":/AiTools/icon/login.png"));
+	_loginAction->setIcon(QIcon(StrMgr::rc.login));
 	_trayMenu->QWidget::addAction(_loginAction);
-	_settingAction->setIcon(QIcon(":/AiTools/icon/set.png"));
+	_settingAction->setIcon(QIcon(StrMgr::rc.set));
 	_trayMenu->QWidget::addAction(_settingAction);
-	_quitAction->setIcon(QIcon(":/AiTools/icon/exit.png"));
+	_quitAction->setIcon(QIcon(StrMgr::rc.quit));
 	_trayMenu->QWidget::addAction(_quitAction);
-	_trayIcon->setIcon(QIcon(":/AiTools/icon/AI.png"));
+	_trayIcon->setIcon(QIcon(StrMgr::rc.icon));
 	_trayIcon->setContextMenu(_trayMenu);
+	_trayIcon->setToolTip(StrMgr::str.appName);
 	_trayIcon->show();
 }
 
@@ -193,7 +195,7 @@ void AiTools::initConnect()
 	connect(_settingButton, &QPushButton::clicked, this, &AiTools::openSettingDialog);
 	connect(_updatePromptAction, &QAction::triggered, [=]()
 		{
-			const QString path = "file:///" + QApplication::applicationDirPath() + "/prompt.json";
+			const QString path = "file:///" + QApplication::applicationDirPath() + "/" + StrMgr::str.promptFile;
 			QDesktopServices::openUrl(QUrl(path));
 			_parent->hide();
 		});
@@ -205,7 +207,7 @@ void AiTools::loadConfig(bool init)
 	if (_webDialog != nullptr || _webDialog->objectName().isEmpty())
 	{
 		QString name = _webDialog->objectName();
-		if (name != Config::instance().pluginInfo.fileName)
+		if (name != Config::instance().pluginInfo.value.value<PluginInfo*>()->fileName)
 		{
 			this->layout()->removeWidget(_webDialog);
 			_webDialog->deleteLater();
@@ -222,12 +224,12 @@ void AiTools::loadConfig(bool init)
 			connect(_webDialog, &BasePlugin::reply, this, &AiTools::reply);
 		}
 	}
-	_textEdit->setPlaceholderText(QString("%1返回内容会在此展示，点击复制即可复制到剪切板。").arg(Config::instance().pluginInfo.name));
+	_textEdit->setPlaceholderText(QString("%1, %2").arg(Config::instance().pluginInfo.value.value<PluginInfo*>()->name, StrMgr::str.textEditTip));
 
 	if (_parent == nullptr)
 		_parent = static_cast<Widget*>(this->parent());
 	bool isdark = false;
-	switch (Config::instance().theme)
+	switch (Config::instance().theme.value.toInt())
 	{
 	case 0:
 		isdark = false;
@@ -243,24 +245,24 @@ void AiTools::loadConfig(bool init)
 	}
 	if (_isdark != isdark || init)
 	{
-		QString filename = isdark ? ":/qdarkstyle/dark/darkstyle.qss" : ":/qdarkstyle/light/lightstyle.qss";
+		QString filename = isdark ? StrMgr::rc.darkQss : StrMgr::rc.lightQss;
 		QFile file(filename);
 		file.open(QFile::ReadOnly);
 		if (file.isOpen())
 		{
 			qobject_cast<QApplication*>(QCoreApplication::instance())->setStyleSheet(QLatin1String(file.readAll()));
 			_isdark = isdark;
-			QColor color = !_isdark ? QColor("#fafafa") : QColor("#19232D");
+			QColor color = !_isdark ? QColor(StrMgr::color.light) : QColor(StrMgr::color.dark);
 			LWidget::Info info = _parent->info();
 			info.backgroundColor = color;
 			info.splitLineColor = color;
 			_parent->setInfo(info);
 		}
 	}
-	_parent->setWindowOpacity(Config::instance().transparent);
-	_showHotkey->setShortcut(Config::instance().keySequence, true);
+	_parent->setWindowOpacity(Config::instance().transparent.value.toDouble());
+	_showHotkey->setShortcut(Config::instance().keySequence.value.toString(), true);
 
-	LJsonConfig prompt(QApplication::applicationDirPath() + "/prompt.json");
+	LJsonConfig prompt(QApplication::applicationDirPath() + "/" + StrMgr::str.promptFile);
 	QJsonDocument doc = prompt.readJson();
 	if (doc.isNull()) // 初始化防止有人吧prompt.json删了
 		prompt.init(QJsonDocument::fromJson("{}"));
@@ -297,13 +299,13 @@ void AiTools::onHotkeyPressed()
 	else
 	{
 		this->loadConfig();
-		if (Config::instance().autoCopy)
+		if (Config::instance().autoCopy.value.toBool())
 			simulateCtrlC();
-		if (!Config::instance().lastPrompt)
+		if (!Config::instance().lastPrompt.value.toBool())
 			_promptComboBox->setCurrentIndex(-1);
 		QRect rect = this->parentWidget()->geometry();
 		auto pos = QCursor::pos();
-		switch (Config::instance().pointMode)
+		switch (Config::instance().pointMode.value.toInt())
 		{
 		case 0:
 			rect.moveCenter(pos);
@@ -350,8 +352,8 @@ void AiTools::onHotkeyPressed()
 		this->parentWidget()->setGeometry(rect);
 		this->parentWidget()->show();
 		_parent->activateWindow();
-		_inputLineEdit->setText(Config::instance().autoFill ? QApplication::clipboard()->text() : "");
-		switch (Config::instance().focusPoint)
+		_inputLineEdit->setText(Config::instance().autoFill.value.toBool() ? QApplication::clipboard()->text() : "");
+		switch (Config::instance().focusPoint.value.toInt())
 		{
 		case 0:
 			_promptComboBox->lineEdit()->setFocus();
@@ -402,7 +404,7 @@ void AiTools::sendMessage() const
 	QString prompt = _promptComboBox->currentData().toString();
 	const QString comboBoxText = _promptComboBox->lineEdit()->text();
 	prompt = comboBoxText == QString("%1(%2)").arg(_promptComboBox->currentText(), prompt) ? prompt : comboBoxText;
-	const QString question = Config::instance().promptPoint == 0 ? (prompt + " " + text) : (text + " " + prompt);
+	const QString question = Config::instance().promptPoint.value.toInt() == 0 ? (prompt + " " + text) : (text + " " + prompt);
 	if (_webDialog)
 		_webDialog->request(question);
 }

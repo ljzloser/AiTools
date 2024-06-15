@@ -1,6 +1,5 @@
 ﻿#include "TongYiAi.h"
 #include <QVBoxLayout>
-#include <QThread>
 #include <LCore>
 TongYiAi::TongYiAi(QWidget* parent)
 {

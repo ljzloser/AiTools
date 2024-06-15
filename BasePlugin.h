@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "QWidget"
-#include <QtPlugin>
+
 class BasePlugin : public QWidget
 {
 	Q_OBJECT

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("InstallCompenent")]
+[assembly: AssemblyTitle("AfterInstall")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("InstallCompenent")]
+[assembly: AssemblyProduct("AfterInstall")]
 [assembly: AssemblyCopyright("Copyright ©  2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // 如果此项目向 COM 公开，则下列 GUID 用于类型库的 ID
-[assembly: Guid("70296512-8ae9-41a2-916f-f9ca3656a203")]
+[assembly: Guid("cdebebd3-7c68-4cdf-aad3-14ce4b3d9f69")]
 
 // 程序集的版本信息由下列四个值组成: 
 //
@@ -29,8 +29,5 @@ using System.Runtime.InteropServices;
 //      生成号
 //      修订号
 //
-//可以指定所有这些值，也可以使用“生成号”和“修订号”的默认值
-//通过使用 "*"，如下所示:
-// [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]

@@ -1,5 +1,5 @@
 # AiTools
-This project bulid on Visual Studio 2022 and Qt 6.6.1_msvc2019_64
+This project bulid on Visual Studio 2022 and Qt 6.6.3_msvc2019_64
 
 ### First
 ```bash
