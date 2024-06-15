@@ -157,6 +157,12 @@ $(QtDllPath)/windeployqt $(TargetFileName)</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StringManager.h" />
+    <ClInclude Include="Update.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="UpdateProgram\UpdateProgram.csproj">
+      <Project>{31e7745a-1e73-473a-93ef-6b73b1a84c4e}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

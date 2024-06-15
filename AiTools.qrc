@@ -12,5 +12,6 @@
         <file>icon/show.png</file>
         <file>icon/hide.png</file>
         <file>icon/Debug.png</file>
+        <file>icon/updateApp.png</file>
     </qresource>
 </RCC>

@@ -1,6 +1,7 @@
 ﻿#include "ConfigDialog.h"
 #include <QPluginLoader>
 #include <QDesktopServices>
+#include "Update.h"
 Config& Config::instance()
 {
 	static Config instance;
@@ -138,6 +139,10 @@ ConfigDialog::ConfigDialog(QWidget* parent)
 		{
 			const QString path = LFunc::FString("file:///", QApplication::applicationDirPath(), "/", StrMgr::str.promptFile);
 			QDesktopServices::openUrl(QUrl(path));
+		});
+	connect(ui.updatePushButton, &QPushButton::clicked, [=]()
+		{
+			Update();
 		});
 }
 
