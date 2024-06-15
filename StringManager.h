@@ -23,7 +23,7 @@ class StrMgr
 		STATIC_STR(copy, "复制");
 		STATIC_STR(openLink, "打开链接");
 		STATIC_STR(debug, "打开调试窗口");
-		STATIC_STR(promptFile, "prompt.txt");
+		STATIC_STR(promptFile, "prompt.json");
 		STATIC_STR(textEditTip, "返回内容会在此展示，点击复制即可复制到剪切板。");
 		STATIC_STR(configFile, "config.json");
 		STATIC_STR(pluginDir, "Plugins");

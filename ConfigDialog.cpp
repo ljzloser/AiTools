@@ -32,6 +32,13 @@ QJsonObject Config::toJson() const
 
 void Config::fromJson(const QJsonObject& obj, bool init)
 {
+#define FSTRING(...) \
+    ([&]() { \
+        std::ostringstream oss; \
+        oss << __VA_ARGS__; \
+        return oss.str(); \
+    }())
+
 	auto newObj = obj;
 	transparent.value = newObj.value(transparent.name).toDouble();
 	theme.value = newObj.value(theme.name).toInt();
@@ -106,7 +113,7 @@ ConfigDialog::ConfigDialog(QWidget* parent)
 {
 	ui.setupUi(this);
 	this->setWindowFlag(Qt::Tool);
-	QDir dir = QApplication::applicationDirPath() + "/" + StrMgr::str.pluginDir;
+	QDir dir = LFunc::FString(QApplication::applicationDirPath(), "/", StrMgr::str.pluginDir);
 	// 遍历里面的每一个文件夹
 
 	QStringList pluginDirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
@@ -129,7 +136,7 @@ ConfigDialog::ConfigDialog(QWidget* parent)
 	connect(ui.buttonBox->button(QDialogButtonBox::Cancel), &QPushButton::clicked, this, &QDialog::reject);
 	connect(ui.pushButton, &QPushButton::clicked, [=]()
 		{
-			const QString path = "file:///" + QApplication::applicationDirPath() + "/" + StrMgr::str.promptFile;
+			const QString path = LFunc::FString("file:///", QApplication::applicationDirPath(), "/", StrMgr::str.promptFile);
 			QDesktopServices::openUrl(QUrl(path));
 		});
 }
