@@ -1,6 +1,7 @@
 ﻿#include "ConfigDialog.h"
 #include <QPluginLoader>
 #include <QDesktopServices>
+#include "Update.h"
 Config& Config::instance()
 {
 	static Config instance;
@@ -26,19 +27,13 @@ QJsonObject Config::toJson() const
 		ConfigPair(width, int),
 		ConfigPair(height, int),
 		ConfigPair(pluginInfo, PluginInfo*,->fileName),
+		ConfigPair(autoUpdate, bool),
 	};
 #undef ConfigPair
 }
 
 void Config::fromJson(const QJsonObject& obj, bool init)
 {
-#define FSTRING(...) \
-    ([&]() { \
-        std::ostringstream oss; \
-        oss << __VA_ARGS__; \
-        return oss.str(); \
-    }())
-
 	auto newObj = obj;
 	transparent.value = newObj.value(transparent.name).toDouble();
 	theme.value = newObj.value(theme.name).toInt();
@@ -63,6 +58,10 @@ void Config::fromJson(const QJsonObject& obj, bool init)
 		height.value = newObj.value(height.name).toInt();
 	else
 		newObj.insert(height.name, height.value.toInt());
+	if (newObj.contains(autoUpdate.name))
+		autoUpdate.value = newObj.value(autoUpdate.name).toBool();
+	else
+		newObj.insert(autoUpdate.name, autoUpdate.value.toBool());
 	if (!init)
 	{
 		config()->init(QJsonDocument(newObj));
@@ -131,6 +130,7 @@ ConfigDialog::ConfigDialog(QWidget* parent)
 	ui.keySequenceEdit->setKeySequence(Config::instance().keySequence.value.toString());
 	ui.showTimeButton->setChecked(Config::instance().showTime.value.toBool());
 	ui.aIComboBox->setCurrentText(Config::instance().pluginInfo.value.value<PluginInfo*>()->fileName);
+	ui.autoUpdateButton->setChecked(Config::instance().autoUpdate.value.toBool());
 
 	connect(ui.buttonBox->button(QDialogButtonBox::Ok), &QPushButton::clicked, this, &QDialog::accept);
 	connect(ui.buttonBox->button(QDialogButtonBox::Cancel), &QPushButton::clicked, this, &QDialog::reject);
@@ -138,6 +138,10 @@ ConfigDialog::ConfigDialog(QWidget* parent)
 		{
 			const QString path = LFunc::FString("file:///", QApplication::applicationDirPath(), "/", StrMgr::str.promptFile);
 			QDesktopServices::openUrl(QUrl(path));
+		});
+	connect(ui.updatePushButton, &QPushButton::clicked, [=]()
+		{
+			Update(true);
 		});
 }
 
@@ -157,7 +161,8 @@ void ConfigDialog::accept()
 	{ StrMgr::str.promptPoint, ui.promptPointComboBox->currentIndex() },
 	{ StrMgr::str.keySequence, ui.keySequenceEdit->keySequence().toString() },
 	{ StrMgr::str.showTime, ui.showTimeButton->isChecked() },
-	{ StrMgr::str.pluginInfo, ui.aIComboBox->currentText() }
+	{ StrMgr::str.pluginInfo, ui.aIComboBox->currentText() },
+	{ StrMgr::str.autoUpdate, ui.autoUpdateButton->isChecked() },
 		});
 	emit saved(false);
 	QDialog::accept();

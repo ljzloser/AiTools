@@ -3,13 +3,15 @@
 // 字符串管理类
 class StrMgr
 {
-#define STATIC_STR(name,val) inline static const char* name = val
+#define STATIC_STR(name,val) inline static const QString name = val
 	/*
 	 *	字符串
 	 */
 	struct Str
 	{
+		// 程序名
 		STATIC_STR(appName, "AiTools");
+		STATIC_STR(version, "1.3");
 		STATIC_STR(quit, "退出");
 		STATIC_STR(bootStart, "开机启动");
 		STATIC_STR(login, "登录");
@@ -27,7 +29,7 @@ class StrMgr
 		STATIC_STR(textEditTip, "返回内容会在此展示，点击复制即可复制到剪切板。");
 		STATIC_STR(configFile, "config.json");
 		STATIC_STR(pluginDir, "Plugins");
-		STATIC_STR(translationFile, "/translation/qt_zh_CN.qm");
+		STATIC_STR(translationFile, "/translations/qt_zh_CN.qm");
 		STATIC_STR(runArg, "show");
 		STATIC_STR(transparent, "transparent");
 		STATIC_STR(theme, "theme");
@@ -46,6 +48,7 @@ class StrMgr
 		STATIC_STR(defaultPluginFile, "ZhiPuAi");
 		STATIC_STR(defaultPluginName, "智谱清言");
 		STATIC_STR(defaultKeySequence, "Ctrl+G");
+		STATIC_STR(autoUpdate, "autoUpdate");
 	};
 	/*
 	 * 资源
@@ -62,10 +65,13 @@ class StrMgr
 		STATIC_STR(debug, ":/AiTools/icon/Debug.png");
 		STATIC_STR(login, ":/AiTools/icon/login.png");
 		STATIC_STR(quit, ":/AiTools/icon/exit.png");
+		STATIC_STR(updateApp, ":/AiTools/icon/updateApp.png");
 		STATIC_STR(darkQss, ":/qdarkstyle/dark/darkstyle.qss");
 		STATIC_STR(lightQss, ":/qdarkstyle/light/lightstyle.qss");
 	};
-
+	/*
+	 * 颜色
+	 */
 	struct Color
 	{
 		STATIC_STR(light, "#fafafa");

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>293</width>
-    <height>407</height>
+    <width>306</width>
+    <height>451</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -39,11 +39,11 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>281</width>
-        <height>366</height>
+        <width>294</width>
+        <height>410</height>
        </rect>
       </property>
-      <layout class="QGridLayout" name="gridLayout" rowstretch="0" columnstretch="0" rowminimumheight="0" columnminimumwidth="0">
+      <layout class="QGridLayout" name="gridLayout" rowstretch="0,0" columnstretch="0" rowminimumheight="0,0" columnminimumwidth="0">
        <property name="leftMargin">
         <number>5</number>
        </property>
@@ -59,7 +59,7 @@
        <property name="spacing">
         <number>5</number>
        </property>
-       <item row="0" column="0">
+       <item row="1" column="0">
         <layout class="QFormLayout" name="formLayout">
          <item row="0" column="0">
           <widget class="QLabel" name="Label">
@@ -152,6 +152,13 @@
          <item row="5" column="1">
           <widget class="LSwitchButton" name="fousButton" native="true"/>
          </item>
+         <item row="6" column="0">
+          <widget class="QLabel" name="Label_6">
+           <property name="text">
+            <string>打开窗口相对鼠标位置</string>
+           </property>
+          </widget>
+         </item>
          <item row="6" column="1">
           <widget class="QComboBox" name="PointComboBox">
            <item>
@@ -200,6 +207,16 @@
             </property>
            </item>
           </widget>
+         </item>
+         <item row="7" column="0">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>打开窗口自动复制选中内容</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="1">
+          <widget class="LSwitchButton" name="autoCopyButton" native="true"/>
          </item>
          <item row="8" column="0">
           <widget class="QLabel" name="promptLabel_2">
@@ -250,13 +267,6 @@
            </property>
           </widget>
          </item>
-         <item row="6" column="0">
-          <widget class="QLabel" name="Label_6">
-           <property name="text">
-            <string>打开窗口相对鼠标位置</string>
-           </property>
-          </widget>
-         </item>
          <item row="11" column="0">
           <widget class="QLabel" name="Label_7">
            <property name="text">
@@ -266,16 +276,6 @@
          </item>
          <item row="11" column="1">
           <widget class="LSwitchButton" name="showTimeButton" native="true"/>
-         </item>
-         <item row="7" column="0">
-          <widget class="QLabel" name="label_2">
-           <property name="text">
-            <string>打开窗口自动复制选中内容</string>
-           </property>
-          </widget>
-         </item>
-         <item row="7" column="1">
-          <widget class="LSwitchButton" name="autoCopyButton" native="true"/>
          </item>
          <item row="12" column="0">
           <widget class="QLabel" name="aILabel">
@@ -287,7 +287,28 @@
          <item row="12" column="1">
           <widget class="QComboBox" name="aIComboBox"/>
          </item>
+         <item row="13" column="0">
+          <widget class="QLabel" name="autoUpdateLabel">
+           <property name="text">
+            <string>程序启动检测更新</string>
+           </property>
+          </widget>
+         </item>
+         <item row="13" column="1">
+          <widget class="LSwitchButton" name="autoUpdateButton" native="true"/>
+         </item>
         </layout>
+       </item>
+       <item row="0" column="0">
+        <widget class="QPushButton" name="updatePushButton">
+         <property name="text">
+          <string>检查更新</string>
+         </property>
+         <property name="icon">
+          <iconset resource="AiTools.qrc">
+           <normaloff>:/AiTools/icon/updateApp.png</normaloff>:/AiTools/icon/updateApp.png</iconset>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>

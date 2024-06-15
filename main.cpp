@@ -1,7 +1,7 @@
 ﻿#include "AiTools.h"
 #include <QTranslator>
 #include <LWidget>
-#include <QMessageBox>
+#include <Update.h>
 
 int main(int argc, char* argv[])
 {
@@ -11,7 +11,7 @@ int main(int argc, char* argv[])
 	bool isShow = false;
 	if (argc > 1)
 	{
-		isShow = strcmp(argv[1], StrMgr::str.runArg) == 0;
+		isShow = strcmp(argv[1], StrMgr::str.runArg.toStdString().c_str()) == 0;
 	}
 
 	LSingleApplication app(argc, argv);
@@ -25,10 +25,12 @@ int main(int argc, char* argv[])
 	Widget widget(titleBar, tool);
 	app.setMainWindow(&widget);
 	app.setQuitOnLastWindowClosed(false);
+
 	if (isShow)
 	{
 		widget.show();
 	}
-
+	if (Config::instance().autoUpdate.value.toBool())
+		Update();
 	return app.exec();
 }

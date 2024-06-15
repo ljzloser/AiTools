@@ -39,6 +39,7 @@ public:
 	FIELD(width, 300);
 	FIELD(height, 200);
 	FIELD(pluginInfo, QVariant::fromValue(new PluginInfo(StrMgr::str.defaultPluginFile, StrMgr::str.defaultPluginName)));
+	FIELD(autoUpdate, true);
 #undef FIELD
 
 	static Config& instance();
