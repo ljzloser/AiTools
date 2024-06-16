@@ -38,6 +38,7 @@ namespace UpdateProgram
 
                     if (result == DialogResult.Yes)
                     {
+                        Console.WriteLine("更新中...");
                         string appName = "AiTools";
                         KillApp(appName);
                         Application.EnableVisualStyles();
@@ -131,6 +132,7 @@ namespace UpdateProgram
                     }));
 
                     await taskCompletionSource.Task;  // 等待任务完成
+
                     System.Diagnostics.Process.Start(tempPath);
                 }
             }
