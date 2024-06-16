@@ -111,10 +111,12 @@ ConfigDialog::ConfigDialog(QWidget* parent)
 	: QDialog(parent)
 {
 	ui.setupUi(this);
+	ui.updateLabel->setText(ui.updateLabel->text() + StrMgr::str.version);
 	this->setWindowFlag(Qt::Tool);
-	QDir dir = LFunc::FString(QApplication::applicationDirPath(), "/", StrMgr::str.pluginDir);
-	// 遍历里面的每一个文件夹
+	QDir appDir(QApplication::applicationDirPath());
+	QDir dir(appDir.filePath(StrMgr::str.pluginDir));
 
+	// 遍历里面的每一个文件夹
 	QStringList pluginDirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
 	ui.aIComboBox->addItems(pluginDirs);
 
@@ -136,7 +138,7 @@ ConfigDialog::ConfigDialog(QWidget* parent)
 	connect(ui.buttonBox->button(QDialogButtonBox::Cancel), &QPushButton::clicked, this, &QDialog::reject);
 	connect(ui.pushButton, &QPushButton::clicked, [=]()
 		{
-			const QString path = LFunc::FString("file:///", QApplication::applicationDirPath(), "/", StrMgr::str.promptFile);
+			const QString path = LFunc::FString("file:///", QDir(QApplication::applicationDirPath()).filePath(StrMgr::str.promptFile));
 			QDesktopServices::openUrl(QUrl(path));
 		});
 	connect(ui.updatePushButton, &QPushButton::clicked, [=]()

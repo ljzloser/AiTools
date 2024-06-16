@@ -163,11 +163,13 @@ void AiTools::initTratIcon()
 	_trayMenu->QWidget::addAction(_loginAction);
 	_settingAction->setIcon(QIcon(StrMgr::rc.set));
 	_trayMenu->QWidget::addAction(_settingAction);
+	_aboutAction->setIcon(QIcon(StrMgr::rc.about));
+	_trayMenu->QWidget::addAction(_aboutAction);
 	_quitAction->setIcon(QIcon(StrMgr::rc.quit));
 	_trayMenu->QWidget::addAction(_quitAction);
 	_trayIcon->setIcon(QIcon(StrMgr::rc.icon));
 	_trayIcon->setContextMenu(_trayMenu);
-	_trayIcon->setToolTip(StrMgr::str.appName);
+	_trayIcon->setToolTip(QString("%1-V%2").arg(StrMgr::str.appName, StrMgr::str.version));
 	_trayIcon->show();
 }
 
@@ -189,16 +191,12 @@ void AiTools::initConnect()
 	connect(_clearButton, &QPushButton::clicked, _textEdit, &LTextEdit::clear);
 	connect(_openButton, &QPushButton::clicked, this, &AiTools::openLoginDialog);
 	connect(_loginAction, &QAction::triggered, this, &AiTools::openLoginDialog);
+	connect(_aboutAction, &QAction::triggered, this, &AiTools::openAboutLink);
 	connect(_promptComboBox->lineEdit(), &QLineEdit::returnPressed, this, &AiTools::sendMessage);
 	connect(_copyButton, &QPushButton::clicked, [=]() {QApplication::clipboard()->setText(_textEdit->toPlainText()); });
 	connect(_settingAction, &QAction::triggered, this, &AiTools::openSettingDialog);
 	connect(_settingButton, &QPushButton::clicked, this, &AiTools::openSettingDialog);
-	connect(_updatePromptAction, &QAction::triggered, [=]()
-		{
-			const QString path = "file:///" + QApplication::applicationDirPath() + "/" + StrMgr::str.promptFile;
-			QDesktopServices::openUrl(QUrl(path));
-			_parent->hide();
-		});
+	connect(_updatePromptAction, &QAction::triggered, this, &AiTools::openPromptFile);
 	connect(_debugButton, &QPushButton::clicked, this, &AiTools::debugButtonClicked);
 }
 
@@ -444,4 +442,17 @@ void AiTools::debugButtonClicked()
 	{
 		_webDialog->setMaximumHeight(1);
 	}
+}
+
+void AiTools::openAboutLink()
+{
+	QDesktopServices::openUrl(QUrl(StrMgr::str.aboutUrl));
+	_parent->hide();
+}
+
+void AiTools::openPromptFile()
+{
+	const QString path = "file:///" + QApplication::applicationDirPath() + "/" + StrMgr::str.promptFile;
+	QDesktopServices::openUrl(QUrl(path));
+	_parent->hide();
 }

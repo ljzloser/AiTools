@@ -1,5 +1,5 @@
 ﻿#pragma once
-
+#include <QString>
 // 字符串管理类
 class StrMgr
 {
@@ -49,6 +49,8 @@ class StrMgr
 		STATIC_STR(defaultPluginName, "智谱清言");
 		STATIC_STR(defaultKeySequence, "Ctrl+G");
 		STATIC_STR(autoUpdate, "autoUpdate");
+		STATIC_STR(about, "关于");
+		STATIC_STR(aboutUrl, "https://github.com/ljzloser/AiTools");
 	};
 	/*
 	 * 资源
@@ -65,6 +67,7 @@ class StrMgr
 		STATIC_STR(debug, ":/AiTools/icon/Debug.png");
 		STATIC_STR(login, ":/AiTools/icon/login.png");
 		STATIC_STR(quit, ":/AiTools/icon/exit.png");
+		STATIC_STR(about, ":/AiTools/icon/about.png");
 		STATIC_STR(updateApp, ":/AiTools/icon/updateApp.png");
 		STATIC_STR(darkQss, ":/qdarkstyle/dark/darkstyle.qss");
 		STATIC_STR(lightQss, ":/qdarkstyle/light/lightstyle.qss");

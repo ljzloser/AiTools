@@ -5,10 +5,11 @@
 #include "BasePlugin.h"
 #include <LCore>
 #include "StringManager.h"
+// 插件信息
 struct PluginInfo
 {
-	QString fileName;
-	QString name;
+	QString fileName;	// 文件名
+	QString name;		// 插件名
 	PluginInfo() = default;
 	PluginInfo(const QString& fileName, const QString& name) : fileName(fileName), name(name) {}
 	QString toString() const { return QString("%1;%2").arg(fileName, name); }
@@ -16,11 +17,11 @@ struct PluginInfo
 Q_DECLARE_METATYPE(PluginInfo)
 class Config
 {
-private:
+	// 字段
 	struct Field
 	{
-		QString name;
-		QVariant value;
+		QString name;	// 字段名
+		QVariant value;	// 字段值
 		Field(const QString& name, const QVariant& value) : name(name), value(value) {}
 	};
 public:
@@ -42,16 +43,37 @@ public:
 	FIELD(autoUpdate, true);
 #undef FIELD
 
+	/**
+	 * 返回配置实例
+	 * @return 配置实例
+	 */
 	static Config& instance();
+	/**
+	 * 将配置转为json对象
+	 * @return json对象
+	 */
 	[[nodiscard]] QJsonObject toJson() const;
+	/**
+	 * 从json对象中恢复配置
+	 * @param obj json对象
+	 * @param init 是否初始化
+	 */
 	void fromJson(const QJsonObject& obj, bool init = false);
+	/**
+	 * 返回配置文件指针
+	 * @return 配置文件
+	 */
 	LJsonConfig* config();
+	/**
+	 * 返回当前选择的插件
+	 * @return 插件
+	 */
 	BasePlugin* plugin();
 
 private:
 	Config();
 	~Config();
-	LJsonConfig* _config{ new LJsonConfig(QApplication::applicationDirPath() + "/" + StrMgr::str.configFile) };
+	LJsonConfig* _config{ new LJsonConfig(QDir(QApplication::applicationDirPath()).filePath(StrMgr::str.configFile)) };
 };
 
 class ConfigDialog final : public QDialog

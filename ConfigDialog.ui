@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>306</width>
-    <height>451</height>
+    <width>316</width>
+    <height>502</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,7 +26,14 @@
    <property name="bottomMargin">
     <number>5</number>
    </property>
-   <item row="0" column="0">
+   <item row="2" column="0">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
     <widget class="QScrollArea" name="scrollArea">
      <property name="horizontalScrollBarPolicy">
       <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -39,11 +46,11 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>294</width>
-        <height>410</height>
+        <width>304</width>
+        <height>461</height>
        </rect>
       </property>
-      <layout class="QGridLayout" name="gridLayout" rowstretch="0,0" columnstretch="0" rowminimumheight="0,0" columnminimumwidth="0">
+      <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0" columnstretch="0">
        <property name="leftMargin">
         <number>5</number>
        </property>
@@ -59,30 +66,48 @@
        <property name="spacing">
         <number>5</number>
        </property>
-       <item row="1" column="0">
+       <item row="2" column="0">
         <layout class="QFormLayout" name="formLayout">
          <item row="0" column="0">
+          <widget class="QLabel" name="updateLabel">
+           <property name="text">
+            <string>当前版本为V</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QPushButton" name="updatePushButton">
+           <property name="text">
+            <string>检查更新</string>
+           </property>
+           <property name="icon">
+            <iconset resource="AiTools.qrc">
+             <normaloff>:/AiTools/icon/updateApp.png</normaloff>:/AiTools/icon/updateApp.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
           <widget class="QLabel" name="Label">
            <property name="text">
             <string>窗口透明度</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
+         <item row="1" column="1">
           <widget class="QDoubleSpinBox" name="transparentDoubleSpinBox">
            <property name="maximum">
             <double>1.000000000000000</double>
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
+         <item row="2" column="0">
           <widget class="QLabel" name="Label_2">
            <property name="text">
             <string>主题</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="1">
+         <item row="2" column="1">
           <widget class="QComboBox" name="themeComboBox">
            <item>
             <property name="text">
@@ -101,34 +126,34 @@
            </item>
           </widget>
          </item>
-         <item row="2" column="0">
+         <item row="3" column="0">
           <widget class="QLabel" name="Label_3">
            <property name="text">
             <string>自动填充剪切板内容</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="1">
+         <item row="3" column="1">
           <widget class="LSwitchButton" name="autoFillButton" native="true"/>
          </item>
-         <item row="3" column="0">
+         <item row="4" column="0">
           <widget class="QLabel" name="Label_4">
            <property name="text">
             <string>打开窗口快捷键</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="1">
+         <item row="4" column="1">
           <widget class="QKeySequenceEdit" name="keySequenceEdit"/>
          </item>
-         <item row="4" column="0">
+         <item row="5" column="0">
           <widget class="QLabel" name="label">
            <property name="text">
             <string>打开窗口后焦点位置</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="1">
+         <item row="5" column="1">
           <widget class="QComboBox" name="focusPointComboBox">
            <item>
             <property name="text">
@@ -142,24 +167,24 @@
            </item>
           </widget>
          </item>
-         <item row="5" column="0">
+         <item row="6" column="0">
           <widget class="QLabel" name="Label_5">
            <property name="text">
             <string>失去焦点自动隐藏</string>
            </property>
           </widget>
          </item>
-         <item row="5" column="1">
+         <item row="6" column="1">
           <widget class="LSwitchButton" name="fousButton" native="true"/>
          </item>
-         <item row="6" column="0">
+         <item row="7" column="0">
           <widget class="QLabel" name="Label_6">
            <property name="text">
             <string>打开窗口相对鼠标位置</string>
            </property>
           </widget>
          </item>
-         <item row="6" column="1">
+         <item row="7" column="1">
           <widget class="QComboBox" name="PointComboBox">
            <item>
             <property name="text">
@@ -208,34 +233,34 @@
            </item>
           </widget>
          </item>
-         <item row="7" column="0">
+         <item row="8" column="0">
           <widget class="QLabel" name="label_2">
            <property name="text">
             <string>打开窗口自动复制选中内容</string>
            </property>
           </widget>
          </item>
-         <item row="7" column="1">
+         <item row="8" column="1">
           <widget class="LSwitchButton" name="autoCopyButton" native="true"/>
          </item>
-         <item row="8" column="0">
+         <item row="9" column="0">
           <widget class="QLabel" name="promptLabel_2">
            <property name="text">
             <string>保留上次prompt</string>
            </property>
           </widget>
          </item>
-         <item row="8" column="1">
+         <item row="9" column="1">
           <widget class="LSwitchButton" name="lastPromptButton" native="true"/>
          </item>
-         <item row="9" column="0">
+         <item row="10" column="0">
           <widget class="QLabel" name="promptLabel_3">
            <property name="text">
             <string>prompt附加位置</string>
            </property>
           </widget>
          </item>
-         <item row="9" column="1">
+         <item row="10" column="1">
           <widget class="QComboBox" name="promptPointComboBox">
            <item>
             <property name="text">
@@ -249,14 +274,14 @@
            </item>
           </widget>
          </item>
-         <item row="10" column="0">
+         <item row="11" column="0">
           <widget class="QLabel" name="promptLabel">
            <property name="text">
             <string>prompt</string>
            </property>
           </widget>
          </item>
-         <item row="10" column="1">
+         <item row="11" column="1">
           <widget class="QPushButton" name="pushButton">
            <property name="text">
             <string>修改</string>
@@ -267,58 +292,74 @@
            </property>
           </widget>
          </item>
-         <item row="11" column="0">
+         <item row="12" column="0">
           <widget class="QLabel" name="Label_7">
            <property name="text">
             <string>标题栏显示时间</string>
            </property>
           </widget>
          </item>
-         <item row="11" column="1">
+         <item row="12" column="1">
           <widget class="LSwitchButton" name="showTimeButton" native="true"/>
          </item>
-         <item row="12" column="0">
+         <item row="13" column="0">
           <widget class="QLabel" name="aILabel">
            <property name="text">
             <string>AI插件</string>
            </property>
           </widget>
          </item>
-         <item row="12" column="1">
+         <item row="13" column="1">
           <widget class="QComboBox" name="aIComboBox"/>
          </item>
-         <item row="13" column="0">
+         <item row="14" column="0">
           <widget class="QLabel" name="autoUpdateLabel">
            <property name="text">
             <string>程序启动检测更新</string>
            </property>
           </widget>
          </item>
-         <item row="13" column="1">
+         <item row="14" column="1">
           <widget class="LSwitchButton" name="autoUpdateButton" native="true"/>
          </item>
         </layout>
        </item>
        <item row="0" column="0">
-        <widget class="QPushButton" name="updatePushButton">
-         <property name="text">
-          <string>检查更新</string>
+        <widget class="QLabel" name="label_3">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>20</height>
+          </size>
          </property>
-         <property name="icon">
-          <iconset resource="AiTools.qrc">
-           <normaloff>:/AiTools/icon/updateApp.png</normaloff>:/AiTools/icon/updateApp.png</iconset>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/ljzloser/AiTools&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0083bd;&quot;&gt;关于&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::RichText</enum>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="openExternalLinks">
+          <bool>true</bool>
+         </property>
+         <property name="textInteractionFlags">
+          <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse</set>
          </property>
         </widget>
        </item>
       </layout>
      </widget>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
     </widget>
    </item>
   </layout>
