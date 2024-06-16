@@ -31,20 +31,58 @@ public:
 	explicit AiTools(QWidget* parent = nullptr);
 	~AiTools() override;
 private:
+	/**
+	 * @brief 初始化Ui
+	 */
 	void initUi();
+	/**
+	 * @brief 初始化托盘图标
+	 */
 	void initTratIcon();
+	/**
+	 * @brief 初始化信号槽
+	 */
 	void initConnect();
 signals:
+	/**
+	 * @brief 向Ai插件发送请求
+	 */
 	void request(const QString& text);
 public slots:
+	/**
+	 * @brief 接收Ai插件的回复
+	 */
 	void reply(const QString& text);
+	/**
+	 * @brief 加载配置
+	 * @param init 是否初始化
+	 */
 	void loadConfig(bool init = false);
 private slots:
+	/**
+	 * @brief 全局热键激活槽函数用于显示主界面
+	 */
 	void onHotkeyPressed();
+	/**
+	 * @brief 托盘图标激活槽函数
+	 * @param reason 激活原因
+	 */
 	void systemTrayIconActivated(QSystemTrayIcon::ActivationReason reason);
+	/**
+	 * @brief 向Ai插件发送消息
+	 */
 	void sendMessage() const;
+	/**
+	 * @brief 打开登录对话框
+	 */
 	void openLoginDialog();
+	/**
+	 * @brief 打开设置对话框
+	 */
 	void openSettingDialog();
+	/**
+	 * @brief 调试按钮点击槽函数
+	 */
 	void debugButtonClicked();
 private:
 	QHotkey* _showHotkey{ new QHotkey(QKeySequence(), true, this) };

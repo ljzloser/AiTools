@@ -1,5 +1,5 @@
 ﻿#pragma once
-
+#include <QString>
 // 字符串管理类
 class StrMgr
 {

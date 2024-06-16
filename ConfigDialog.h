@@ -7,8 +7,8 @@
 #include "StringManager.h"
 struct PluginInfo
 {
-	QString fileName;
-	QString name;
+	QString fileName;	// 文件名
+	QString name;		// 插件名
 	PluginInfo() = default;
 	PluginInfo(const QString& fileName, const QString& name) : fileName(fileName), name(name) {}
 	QString toString() const { return QString("%1;%2").arg(fileName, name); }
@@ -19,8 +19,8 @@ class Config
 private:
 	struct Field
 	{
-		QString name;
-		QVariant value;
+		QString name;	// 字段名
+		QVariant value;	// 字段值
 		Field(const QString& name, const QVariant& value) : name(name), value(value) {}
 	};
 public:
@@ -41,11 +41,31 @@ public:
 	FIELD(pluginInfo, QVariant::fromValue(new PluginInfo(StrMgr::str.defaultPluginFile, StrMgr::str.defaultPluginName)));
 	FIELD(autoUpdate, true);
 #undef FIELD
-
+	/**
+	 * @brief 返回一个配置对象单例
+	 * @return 
+	 */
 	static Config& instance();
+	/**
+	 * @brief 将配置转换为json对象
+	 * @return 
+	 */
 	[[nodiscard]] QJsonObject toJson() const;
+	/**
+	 * @brief 从json对象中加载配置
+	 * @param obj json对象
+	 * @param init 是否初始化
+	 */
 	void fromJson(const QJsonObject& obj, bool init = false);
+	/**
+	 * @brief 返回配置文件类指针
+	 * @return 
+	 */
 	LJsonConfig* config();
+	/**
+	 * @brief 返回Ai插件类指针
+	 * @return 
+	 */
 	BasePlugin* plugin();
 
 private:

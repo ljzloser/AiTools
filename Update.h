@@ -1,9 +1,10 @@
-#pragma once
+ï»¿#pragma once
 #include <QApplication>
 #include <QProcess>
 #include <StringManager.h>
-/*
- * @Param show ÊÇ·ñµ¯³öÎŞĞè¸üĞÂÌáÊ¾¡£
+ /*
+ * @brief è°ƒç”¨æ›´æ–°ç¨‹åºã€‚
+ * @param show æ˜¯å¦å¼¹å‡ºæ— éœ€æ›´æ–°æç¤ºã€‚
  */
 static void Update(bool show = false)
 {
