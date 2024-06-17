@@ -11,7 +11,7 @@ class StrMgr
 	{
 		// 程序名
 		STATIC_STR(appName, "AiTools");
-		STATIC_STR(version, "1.3");
+		STATIC_STR(version, "1.4");
 		STATIC_STR(quit, "退出");
 		STATIC_STR(bootStart, "开机启动");
 		STATIC_STR(login, "登录");
