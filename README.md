@@ -19,3 +19,8 @@ git clone https://github.com/ljzloser/AiTools.git
 
 ### Fourth
 Please note whether the inclusion paths and library directories of the above two project libraries within the project are correct, as well as whether the script commands in the post-build events of this project are correct.
+
+### about
+Regarding the AI plugin, please inherit from the two classes in BasePlugin.h and implement the pure virtual functions within them. 
+Please note that during implementation, you need to add specific macros. 
+For detailed content, you can refer to the already implemented ZhiPuAi and TongYiAi plugins.

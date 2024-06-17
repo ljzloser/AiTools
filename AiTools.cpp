@@ -404,7 +404,7 @@ void AiTools::sendMessage() const
 		return;
 	QString prompt = _promptComboBox->currentData().toString();
 	const QString comboBoxText = _promptComboBox->lineEdit()->text();
-	prompt = comboBoxText == QString("%1(%2)").arg(_promptComboBox->currentText(), prompt) ? prompt : comboBoxText;
+	prompt = comboBoxText == _promptComboBox->currentText() ? prompt : comboBoxText;
 	const QString question = Config::instance().promptPoint.value.toInt() == 0 ? (prompt + " " + text) : (text + " " + prompt);
 	if (_webDialog)
 		_webDialog->request(question);
