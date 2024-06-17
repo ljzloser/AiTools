@@ -2,7 +2,10 @@
 #include <QClipboard>
 #include <Windows.h>
 #include <QDesktopServices>
-
+/**
+ * @brief 模拟 Ctrl+C
+ * @return 成功返回 1, 失败返回 0
+ */
 static UINT simulateCtrlC() {
 	INPUT inputs[4];
 
