@@ -2,7 +2,10 @@
 #include <QClipboard>
 #include <Windows.h>
 #include <QDesktopServices>
-
+/**
+ * @brief 模拟 Ctrl+C
+ * @return 成功返回 1, 失败返回 0
+ */
 static UINT simulateCtrlC() {
 	INPUT inputs[4];
 
@@ -260,7 +263,7 @@ void AiTools::loadConfig(bool init)
 	_parent->setWindowOpacity(Config::instance().transparent.value.toDouble());
 	_showHotkey->setShortcut(Config::instance().keySequence.value.toString(), true);
 
-	LJsonConfig prompt(QApplication::applicationDirPath() + "/" + StrMgr::str.promptFile);
+	LJsonConfig prompt(QDir(QApplication::applicationDirPath()).filePath(StrMgr::str.promptFile));
 	QJsonDocument doc = prompt.readJson();
 	if (doc.isNull()) // 初始化防止有人吧prompt.json删了
 		prompt.init(QJsonDocument::fromJson("{}"));
@@ -409,8 +412,6 @@ void AiTools::sendMessage() const
 
 void AiTools::openLoginDialog()
 {
-	// 打开指定网页
-	//QDesktopServices::openUrl(QUrl("https://chatglm.cn/main/alltoolsdetail"));
 	if (_loginDialog != nullptr) _loginDialog->deleteLater();
 	_loginDialog = Config::instance().plugin();
 	if (_loginDialog == nullptr) return;
@@ -446,13 +447,13 @@ void AiTools::debugButtonClicked()
 
 void AiTools::openAboutLink()
 {
-	QDesktopServices::openUrl(QUrl(StrMgr::str.aboutUrl));
+	QDesktopServices::openUrl(QUrl(StrMgr::url.about));
 	_parent->hide();
 }
 
 void AiTools::openPromptFile()
 {
-	const QString path = "file:///" + QApplication::applicationDirPath() + "/" + StrMgr::str.promptFile;
+	const QString path = "file:///" + QDir(QApplication::applicationDirPath()).filePath(StrMgr::str.promptFile);
 	QDesktopServices::openUrl(QUrl(path));
 	_parent->hide();
 }

@@ -1,17 +1,20 @@
-#pragma once
+ï»¿#pragma once
 #include <QApplication>
 #include <QProcess>
 #include <StringManager.h>
 /*
- * @Param show ÊÇ·ñµ¯³öÎŞĞè¸üĞÂÌáÊ¾¡£
- */
+* @brief è°ƒç”¨æ›´æ–°ç¨‹åºã€‚
+* @param show æ˜¯å¦å¼¹å‡ºæ— éœ€æ›´æ–°æç¤ºã€‚
+*/
 static void Update(bool show = false)
 {
 	QProcess process;
-	QString updateProgram = QApplication::applicationDirPath() + "/updateProgram.exe";
+	QString updateProgram = QDir(QApplication::applicationDirPath()).filePath(StrMgr::str.updateProgram);
 	QStringList paramList;
+	paramList.append(StrMgr::str.appName);
+	paramList.append(StrMgr::url.update);
 	paramList.append(StrMgr::str.version);
 	if (show)
-		paramList.append("show");
+		paramList.append(StrMgr::str.runArg);
 	process.startDetached(updateProgram, paramList);
 }

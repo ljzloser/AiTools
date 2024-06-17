@@ -15,8 +15,18 @@ namespace UpdateProgram
         [STAThread]
         private static void Main(string[] args)
         {
-            // 获取第一个参数
-            string param = args.Length > 0 ? args[0] : "";
+            Console.WriteLine("updateProgram start");
+            if (args.Length < 3)
+            {
+                Console.WriteLine($"There should be three parameters, first is appName, second is url, third is version, but there are only {args.Length} param");
+                return;
+            }
+            // 名称
+            string appName = args[0];
+            // 更新地址
+            string url = args[1];
+            // 当前版本号
+            string param = args[2];
             if (param != "")
             {
                 double version;
@@ -26,10 +36,10 @@ namespace UpdateProgram
                 }
                 catch
                 {
-                    Console.WriteLine("param error, version must be a number");
+                    Console.WriteLine("the three param error, version must be a number");
                     return;
                 }
-                double newVersion = GetNewVersion();
+                double newVersion = GetNewVersion(url);
 
                 if (version < newVersion)
                 {
@@ -38,17 +48,16 @@ namespace UpdateProgram
 
                     if (result == DialogResult.Yes)
                     {
-                        Console.WriteLine("更新中...");
-                        string appName = "AiTools";
                         KillApp(appName);
                         Application.EnableVisualStyles();
                         Application.SetCompatibleTextRenderingDefault(false);
-                        Task.Run(async () => await CheckForUpdates(version)).Wait();
+                        Task.Run(async () => await CheckForUpdates(version, url)).Wait();
                     }
                 }
                 else
                 {
-                    if (args.Length > 1)
+                    Console.WriteLine($"the version {version} is latest, no need to update.");
+                    if (args.Length > 4)
                     {
                         MessageBox.Show($"当前版本(V{version})为最新版本！", "AiTools更新提示",
                             MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -59,6 +68,7 @@ namespace UpdateProgram
 
         private static void KillApp(string appName)
         {
+            Console.WriteLine($"kill {appName} process");
             Process[] processes = Process.GetProcessesByName(appName);
             if (processes.Length > 0)
             {
@@ -69,10 +79,9 @@ namespace UpdateProgram
             }
         }
 
-        private static double GetNewVersion()
+        private static double GetNewVersion(string url)
         {
-            string url = "https://api.github.com/repos/ljzloser/AiTools/releases/latest";
-
+            Console.WriteLine($"get new version from {url}");
             // 配置 HttpClient
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.UserAgent.TryParseAdd("request"); // 设置 User-Agent 头
@@ -84,13 +93,13 @@ namespace UpdateProgram
             JObject obj = JObject.Parse(result);
             string tagName = obj["tag_name"]?.ToString().ToUpper();
             double versionNum = double.Parse(tagName.Replace("V", ""));
+            Console.WriteLine($"new version is {versionNum}");
             return versionNum;
         }
 
-        private static async Task CheckForUpdates(double version)
+        private static async Task CheckForUpdates(double version, string url)
         {
             string path = Path.GetDirectoryName(Path.GetTempPath());
-            string url = "https://api.github.com/repos/ljzloser/AiTools/releases/latest";
 
             // 配置 HttpClient
             HttpClient client = new HttpClient();
@@ -103,9 +112,9 @@ namespace UpdateProgram
             // 转换为json对象
             JObject obj = JObject.Parse(result);
             string tagName = obj["tag_name"]?.ToString().ToUpper();
-            double versionNum = double.Parse(tagName.Replace("V", ""));
+            double newVersion = double.Parse(tagName.Replace("V", ""));
 
-            if (versionNum > version)
+            if (newVersion > version)
             {
                 JArray assets = (JArray)obj["assets"];
                 if (assets.Count > 0)
@@ -113,27 +122,31 @@ namespace UpdateProgram
                     JObject asset = (JObject)assets[0];
                     string downloadUrl = asset["browser_download_url"]?.ToString();
                     string name = asset["name"]?.ToString();
-                    string tempPath = Path.Combine(path, name);
-
-                    if (File.Exists(tempPath))
+                    if (path != null && downloadUrl != null && name != null)
                     {
-                        File.Delete(tempPath);
+                        string tempPath = Path.Combine(path, name);
+
+                        if (File.Exists(tempPath))
+                        {
+                            File.Delete(tempPath);
+                        }
+                        Console.WriteLine($"download {name} from {downloadUrl}");
+                        var progressBar = new ProgressBarForm();
+
+                        var taskCompletionSource = new TaskCompletionSource<bool>();
+
+                        // 在UI线程中显示进度条窗口
+                        Application.Run(new TaskSchedulerContext(progressBar, async () =>
+                        {
+                            await DownloadFileWithProgressAsync(client, downloadUrl, tempPath, progressBar);
+                            taskCompletionSource.SetResult(true);  // 下载完成后设置任务完成
+                        }));
+
+                        await taskCompletionSource.Task;  // 等待任务完成
+                        Console.WriteLine($"download {name} {newVersion} success");
+                        Console.WriteLine($"open {name}, and updateProgram process over");
+                        System.Diagnostics.Process.Start(tempPath);
                     }
-
-                    var progressBar = new ProgressBarForm();
-
-                    var taskCompletionSource = new TaskCompletionSource<bool>();
-
-                    // 在UI线程中显示进度条窗口
-                    Application.Run(new TaskSchedulerContext(progressBar, async () =>
-                    {
-                        await DownloadFileWithProgressAsync(client, downloadUrl, tempPath, progressBar);
-                        taskCompletionSource.SetResult(true);  // 下载完成后设置任务完成
-                    }));
-
-                    await taskCompletionSource.Task;  // 等待任务完成
-
-                    System.Diagnostics.Process.Start(tempPath);
                 }
             }
         }
@@ -157,26 +170,24 @@ namespace UpdateProgram
             const int bufferSize = 81920;
             byte[] buffer = new byte[bufferSize];
             long totalBytesRead = 0;
-            int bytesRead;
 
             using (FileStream fileStream = new FileStream(destinationPath, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize, true))
             {
+                int bytesRead;
                 while ((bytesRead = await contentStream.ReadAsync(buffer, 0, buffer.Length)) != 0)
                 {
                     await fileStream.WriteAsync(buffer, 0, bytesRead);
                     totalBytesRead += bytesRead;
 
-                    if (totalDownloadSize.HasValue)
+                    if (!totalDownloadSize.HasValue) continue;
+                    int percentComplete = (int)(totalBytesRead * 100 / totalDownloadSize.Value);
+                    if (progressBar.InvokeRequired)
                     {
-                        int percentComplete = (int)(totalBytesRead * 100 / totalDownloadSize.Value);
-                        if (progressBar.InvokeRequired)
-                        {
-                            progressBar.BeginInvoke(new Action<int>(progressBar.UpdateProgress), percentComplete);
-                        }
-                        else
-                        {
-                            progressBar.UpdateProgress(percentComplete);
-                        }
+                        progressBar.BeginInvoke(new Action<int>(progressBar.UpdateProgress), percentComplete);
+                    }
+                    else
+                    {
+                        progressBar.UpdateProgress(percentComplete);
                     }
                 }
             }
@@ -185,7 +196,7 @@ namespace UpdateProgram
 
     public class ProgressBarForm : Form
     {
-        private ProgressBar progressBar;
+        private readonly ProgressBar _progressBar;
 
         protected override void OnClosed(EventArgs e)
         {
@@ -202,7 +213,7 @@ namespace UpdateProgram
             this.Icon = Icon.FromHandle(Properties.Resources.Ai.GetHicon());
             this.StartPosition = FormStartPosition.CenterScreen;
 
-            progressBar = new ProgressBar
+            _progressBar = new ProgressBar
             {
                 Dock = DockStyle.Fill,
                 Style = ProgressBarStyle.Continuous,
@@ -210,16 +221,14 @@ namespace UpdateProgram
                 Maximum = 100
             };
 
-            this.Controls.Add(progressBar);
+            this.Controls.Add(_progressBar);
         }
 
         public void UpdateProgress(int percent)
         {
-            if (percent >= 0 && percent <= 100)
-            {
-                progressBar.Value = percent;
-                this.Text = $"Downloading... AiTools {percent}%";
-            }
+            if (percent < 0 || percent > 100) return;
+            _progressBar.Value = percent;
+            this.Text = $"Downloading... AiTools {percent}%";
         }
     }
 

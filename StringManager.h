@@ -50,7 +50,7 @@ class StrMgr
 		STATIC_STR(defaultKeySequence, "Ctrl+G");
 		STATIC_STR(autoUpdate, "autoUpdate");
 		STATIC_STR(about, "关于");
-		STATIC_STR(aboutUrl, "https://github.com/ljzloser/AiTools");
+		STATIC_STR(updateProgram, "updateProgram.exe");
 	};
 	/*
 	 * 资源
@@ -80,9 +80,16 @@ class StrMgr
 		STATIC_STR(light, "#fafafa");
 		STATIC_STR(dark, "#19232D");
 	};
+	// 链接
+	struct Url
+	{
+		STATIC_STR(about, "https://github.com/ljzloser/AiTools");
+		STATIC_STR(update, "https://api.github.com/repos/ljzloser/AiTools/releases/latest");
+	};
 public:
 	inline static const Str str; // 字符串
 	inline static const Rc rc; //资源文件
 	inline static const Color color; //颜色
+	inline static const Url url; //链接
 #undef STATIC_STR
 };
