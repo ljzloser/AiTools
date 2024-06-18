@@ -75,7 +75,8 @@
     </Link>
     <PostBuildEvent>
       <Command>xcopy /r /y $(LocalDebuggerWorkingDirectory)..\QHotkey\QHotkey\$(Configuration)\QHotkey1.dll $(TargetDir)
-xcopy /r /y $(LocalDebuggerWorkingDirectory)..\LClass\x64\$(Configuration)\*.dll $(TargetDir)</Command>
+xcopy /r /y $(LocalDebuggerWorkingDirectory)..\LClass\x64\$(Configuration)\*.dll $(TargetDir)
+xcopy /r /y $(LocalDebuggerWorkingDirectory)\Font\*.ttf $(TargetDir)Font\</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -87,6 +88,7 @@ xcopy /r /y $(LocalDebuggerWorkingDirectory)..\LClass\x64\$(Configuration)\*.dll
     <PostBuildEvent>
       <Command>xcopy /r /y $(LocalDebuggerWorkingDirectory)..\QHotkey\QHotkey\$(Configuration)\QHotkey1.dll $(TargetDir)
 xcopy /r /y $(LocalDebuggerWorkingDirectory)..\LClass\x64\$(Configuration)\L*.dll $(TargetDir)
+xcopy /r /y $(LocalDebuggerWorkingDirectory)\Font\*.ttf $(TargetDir)Font\
 cd/d  $(TargetDir)
 $(QtDllPath)/windeployqt $(TargetFileName)</Command>
     </PostBuildEvent>

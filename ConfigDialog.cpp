@@ -28,7 +28,9 @@ QJsonObject Config::toJson() const
 		ConfigPair(height, int),
 		ConfigPair(pluginInfo, PluginInfo*,->fileName),
 		ConfigPair(autoUpdate, bool),
-		ConfigPair(aiUrlKeySequence,QString)
+		ConfigPair(aiUrlKeySequence,QString),
+		ConfigPair(font, QString),
+		ConfigPair(fontSize, int),
 	};
 #undef ConfigPair
 }
@@ -67,7 +69,14 @@ void Config::fromJson(const QJsonObject& obj, bool init)
 		aiUrlKeySequence.value = newObj.value(aiUrlKeySequence.name).toString();
 	else
 		newObj.insert(aiUrlKeySequence.name, aiUrlKeySequence.value.toString());
-
+	if (newObj.contains(font.name))
+		font.value = QFont(newObj.value(font.name).toString());
+	else
+		newObj.insert(font.name, font.value.value<QFont>().family());
+	if (newObj.contains(fontSize.name))
+		fontSize.value = newObj.value(fontSize.name).toInt();
+	else
+		newObj.insert(fontSize.name, fontSize.value.toInt());
 	if (!init)
 	{
 		config()->init(QJsonDocument(newObj));
@@ -142,6 +151,8 @@ ConfigDialog::ConfigDialog(QWidget* parent)
 	ui.aIComboBox->setCurrentText(Config::instance().pluginInfo.value.value<PluginInfo*>()->fileName);
 	ui.autoUpdateButton->setChecked(Config::instance().autoUpdate.value.toBool());
 	ui.AiUrlKeySequenceEdit->setKeySequence(Config::instance().aiUrlKeySequence.value.toString());
+	ui.fontComboBox->setCurrentFont(Config::instance().font.value.value<QFont>());
+	ui.fontSizeSpinBox->setValue(Config::instance().fontSize.value.toInt());
 
 	connect(ui.buttonBox->button(QDialogButtonBox::Ok), &QPushButton::clicked, this, &QDialog::accept);
 	connect(ui.buttonBox->button(QDialogButtonBox::Cancel), &QPushButton::clicked, this, &QDialog::reject);
@@ -174,7 +185,9 @@ void ConfigDialog::accept()
 	{ StrMgr::str.showTime, ui.showTimeButton->isChecked() },
 	{ StrMgr::str.pluginInfo, ui.aIComboBox->currentText() },
 	{ StrMgr::str.autoUpdate, ui.autoUpdateButton->isChecked() },
-	{StrMgr::str.aiUrlKeySequence, ui.AiUrlKeySequenceEdit->keySequence().toString()}
+	{ StrMgr::str.aiUrlKeySequence, ui.AiUrlKeySequenceEdit->keySequence().toString() },
+	{ StrMgr::str.font, ui.fontComboBox->currentText() },
+	{ StrMgr::str.fontSize, ui.fontSizeSpinBox->value() }
 		});
 	emit saved(false);
 	QDialog::accept();

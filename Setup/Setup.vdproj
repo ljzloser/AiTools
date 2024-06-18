@@ -93,6 +93,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_100E5C97CA5A4DB195780F86ADBB48EA"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_11341D54F14B4D85AA89715DC1E1BDA5"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -185,6 +191,12 @@
         {
         "MsmKey" = "8:_2C3CD9C90E2FBA3EE0A33534F09C06D1"
         "OwnerKey" = "8:_D168416BC8054D429135BC9DD6F091F9"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2F7BDAF4C342435FA4651CA4EDDA345B"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -819,6 +831,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_C74CF505AA624C86B1CFB7576879D1B8"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_C96F4C8CAD7C426FAFE88659194EFE97"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -1152,7 +1170,7 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "FrameworkVersion" = "8:v4.7.2          "
+                "FrameworkVersion" = "8:v4.7.2           "
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=863262"
                 }
@@ -1406,6 +1424,26 @@
             "TargetName" = "8:qt_hu.qm"
             "Tag" = "8:"
             "Folder" = "8:_59BE42DC4B594E60AB1E7FC248201760"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_100E5C97CA5A4DB195780F86ADBB48EA"
+            {
+            "SourcePath" = "8:..\\x64\\Release\\Font\\HarmonyOS_Sans_SC_Bold.ttf"
+            "TargetName" = "8:HarmonyOS_Sans_SC_Bold.ttf"
+            "Tag" = "8:"
+            "Folder" = "8:_E14B66DBC3A04ECC99874FC1937CFEAA"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1738,6 +1776,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2F7BDAF4C342435FA4651CA4EDDA345B"
+            {
+            "SourcePath" = "8:..\\x64\\Release\\Font\\HarmonyOS_Sans_SC_Light.ttf"
+            "TargetName" = "8:HarmonyOS_Sans_SC_Light.ttf"
+            "Tag" = "8:"
+            "Folder" = "8:_E14B66DBC3A04ECC99874FC1937CFEAA"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_31C903BBB41A4E959301E13063301429"
@@ -3773,6 +3831,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C74CF505AA624C86B1CFB7576879D1B8"
+            {
+            "SourcePath" = "8:..\\x64\\Release\\Font\\HarmonyOS_Sans_SC_Black.ttf"
+            "TargetName" = "8:HarmonyOS_Sans_SC_Black.ttf"
+            "Tag" = "8:"
+            "Folder" = "8:_E14B66DBC3A04ECC99874FC1937CFEAA"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C96F4C8CAD7C426FAFE88659194EFE97"
             {
             "SourcePath" = "8:..\\x64\\Release\\Qt6QuickWidgets.dll"
@@ -4625,6 +4703,17 @@
                         {
                         }
                     }
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_E14B66DBC3A04ECC99874FC1937CFEAA"
+                    {
+                    "Name" = "8:Font"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_E6C3C0A2C5474A53A3C4AF3CD43439EE"
+                        "Folders"
+                        {
+                        }
+                    }
                 }
             }
             "{1525181F-901A-416C-8A58-119130FE478E}:_43AC067D12FE4450A72573CA987940BC"
@@ -4676,15 +4765,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:AiTools"
-        "ProductCode" = "8:{7D5A1537-4E4C-4B70-8423-4FFC6E3F3C87}"
-        "PackageCode" = "8:{17048A6F-ABE1-4F84-95BD-D979F15D1350}"
+        "ProductCode" = "8:{B540E60E-1CCB-44CA-9DE2-FE90AC8E31E7}"
+        "PackageCode" = "8:{1872DE98-D4C8-4CBC-A63D-28CA378FB744}"
         "UpgradeCode" = "8:{64E8D631-57C3-4C0A-8A00-545DB4FC9E1F}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.5"
+        "ProductVersion" = "8:1.6"
         "Manufacturer" = "8:LJZ"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:https://github.com/ljzloser"
@@ -5268,7 +5357,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_C023933D0B04469AB0808B92B5396A28"
             {
-            "SourcePath" = "8:..\\UpdateProgram\\obj\\Debug\\UpdateProgram.exe"
+            "SourcePath" = "8:..\\UpdateProgram\\obj\\Release\\UpdateProgram.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_26ECEF6C6819406F90BE56012970530E"

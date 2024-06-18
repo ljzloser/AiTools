@@ -47,7 +47,7 @@ void TitleBar::paintEvent(QPaintEvent* event)
 	LTitleBar::paintEvent(event);
 	if (!Config::instance().showTime.value.toBool()) return;
 	QPainter painter(this);
-	QFont font = this->font();
+	QFont font = QApplication::font();
 	font.setBold(true);
 	painter.setFont(font);
 	const QString dateTime = QDateTime::currentDateTime().toString(StrMgr::str.dateFormat);
@@ -268,7 +268,14 @@ void AiTools::loadConfig(bool init)
 	_parent->setWindowOpacity(Config::instance().transparent.value.toDouble());
 	_showHotkey->setShortcut(Config::instance().keySequence.value.toString(), true);
 	_showLoginHotKey->setShortcut(Config::instance().aiUrlKeySequence.value.toString(), true);
-
+	QFont font = QApplication::font();
+	font.setFamily(Config::instance().font.value.value<QFont>().family());
+	font.setPixelSize(Config::instance().fontSize.value.toInt());
+	QApplication::setFont(font);
+	_parent->setFont(font);
+	_inputLineEdit->setFont(font);
+	_promptComboBox->setFont(font);
+	_textEdit->setFont(font);
 	LJsonConfig prompt(QDir(QApplication::applicationDirPath()).filePath(StrMgr::str.promptFile));
 	QJsonDocument doc = prompt.readJson();
 	if (doc.isNull()) // 初始化防止有人吧prompt.json删了
@@ -446,6 +453,8 @@ void AiTools::openLoginDialog()
 	}
 
 	connect(_loginDialog, &BasePlugin::closed, _webDialog, &BasePlugin::load);
+	// 移动到最前面
+	_loginDialog->activateWindow();
 }
 
 void AiTools::openSettingDialog()

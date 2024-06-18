@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>320</width>
+    <width>343</width>
     <height>427</height>
    </rect>
   </property>
@@ -312,6 +312,40 @@
           <widget class="QDoubleSpinBox" name="transparentDoubleSpinBox">
            <property name="maximum">
             <double>1.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.100000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_5">
+           <property name="text">
+            <string>字体</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QFontComboBox" name="fontComboBox">
+           <property name="writingSystem">
+            <enum>QFontDatabase::SimplifiedChinese</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="label_6">
+           <property name="text">
+            <string>字体大小</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QSpinBox" name="fontSizeSpinBox">
+           <property name="minimum">
+            <number>12</number>
+           </property>
+           <property name="maximum">
+            <number>20</number>
            </property>
           </widget>
          </item>

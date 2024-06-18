@@ -28,7 +28,7 @@ private slots:
 	void timeouted();
 
 private:
-	QWebEngineProfile* _profile{ new QWebEngineProfile(QString::fromLatin1("AiTools.%1").arg(qWebEngineChromiumVersion())) };
+	QWebEngineProfile* _profile{ new QWebEngineProfile(QString::fromLatin1("ZhiPuAi.%1").arg(qWebEngineChromiumVersion())) };
 	QWebEnginePage* _page{ new QWebEnginePage(_profile) };
 	QWebEngineView* _view{ new QWebEngineView() };
 	QString _lastHash{ "" };

@@ -44,6 +44,8 @@ public:
 	FIELD(pluginInfo, QVariant::fromValue(new PluginInfo(StrMgr::str.defaultPluginFile, StrMgr::str.defaultPluginName)));
 	FIELD(autoUpdate, true);
 	FIELD(aiUrlKeySequence, StrMgr::str.defaultAiUrlKeySequence);
+	FIELD(font, QFont(StrMgr::str.defaultFont));
+	FIELD(fontSize, 15);
 #undef FIELD
 
 	/**
