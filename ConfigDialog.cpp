@@ -28,6 +28,7 @@ QJsonObject Config::toJson() const
 		ConfigPair(height, int),
 		ConfigPair(pluginInfo, PluginInfo*,->fileName),
 		ConfigPair(autoUpdate, bool),
+		ConfigPair(aiUrlKeySequence,QString)
 	};
 #undef ConfigPair
 }
@@ -62,6 +63,11 @@ void Config::fromJson(const QJsonObject& obj, bool init)
 		autoUpdate.value = newObj.value(autoUpdate.name).toBool();
 	else
 		newObj.insert(autoUpdate.name, autoUpdate.value.toBool());
+	if (newObj.contains(aiUrlKeySequence.name))
+		aiUrlKeySequence.value = newObj.value(aiUrlKeySequence.name).toString();
+	else
+		newObj.insert(aiUrlKeySequence.name, aiUrlKeySequence.value.toString());
+
 	if (!init)
 	{
 		config()->init(QJsonDocument(newObj));
@@ -108,11 +114,13 @@ Config::~Config()
 }
 
 ConfigDialog::ConfigDialog(QWidget* parent)
-	: QDialog(parent)
+	: QDialog(parent, Qt::WindowTitleHint | Qt::CustomizeWindowHint)
 {
 	ui.setupUi(this);
+	ui.tabWidget->tabBar()->setStyle(new HorTabStyle());
 	ui.updateLabel->setText(ui.updateLabel->text() + StrMgr::str.version);
-	this->setWindowFlag(Qt::Tool);
+	//this->setWindowFlag(Qt::Tool);
+	//this->setWindowFlags(this->windowFlags() & ~Qt::WindowCloseButtonHint);
 	QDir appDir(QApplication::applicationDirPath());
 	QDir dir(appDir.filePath(StrMgr::str.pluginDir));
 
@@ -133,6 +141,7 @@ ConfigDialog::ConfigDialog(QWidget* parent)
 	ui.showTimeButton->setChecked(Config::instance().showTime.value.toBool());
 	ui.aIComboBox->setCurrentText(Config::instance().pluginInfo.value.value<PluginInfo*>()->fileName);
 	ui.autoUpdateButton->setChecked(Config::instance().autoUpdate.value.toBool());
+	ui.AiUrlKeySequenceEdit->setKeySequence(Config::instance().aiUrlKeySequence.value.toString());
 
 	connect(ui.buttonBox->button(QDialogButtonBox::Ok), &QPushButton::clicked, this, &QDialog::accept);
 	connect(ui.buttonBox->button(QDialogButtonBox::Cancel), &QPushButton::clicked, this, &QDialog::reject);
@@ -165,7 +174,54 @@ void ConfigDialog::accept()
 	{ StrMgr::str.showTime, ui.showTimeButton->isChecked() },
 	{ StrMgr::str.pluginInfo, ui.aIComboBox->currentText() },
 	{ StrMgr::str.autoUpdate, ui.autoUpdateButton->isChecked() },
+	{StrMgr::str.aiUrlKeySequence, ui.AiUrlKeySequenceEdit->keySequence().toString()}
 		});
 	emit saved(false);
 	QDialog::accept();
+}
+
+void HorTabStyle::drawItemText(QPainter* painter, const QRect& rect, int flags, const QPalette& pal, bool enabled,
+	const QString& text, QPalette::ColorRole textRole) const
+{
+	if (_orientation != Qt::Horizontal)
+		QProxyStyle::drawItemText(painter, rect, flags, pal, enabled, text, textRole);
+
+	if (text.isEmpty())
+		return;
+	QPen savedPen;
+	if (textRole != QPalette::NoRole) {
+		savedPen = painter->pen();
+		painter->setPen(QPen(pal.brush(textRole), savedPen.widthF()));
+	}
+	if (!enabled) {
+		if (proxy()->styleHint(SH_DitherDisabledText)) {
+			QRect br;
+			this->drawHorItemText(painter, rect, flags, text);
+			painter->fillRect(br, QBrush(painter->background().color(), Qt::Dense5Pattern));
+			return;
+		}
+		else if (proxy()->styleHint(SH_EtchDisabledText)) {
+			QPen pen = painter->pen();
+			painter->setPen(pal.light().color());
+			this->drawHorItemText(painter, rect.adjusted(1, 1, 1, 1), flags, text);
+			painter->setPen(pen);
+		}
+	}
+	this->drawHorItemText(painter, rect, flags, text);
+	if (textRole != QPalette::NoRole)
+		painter->setPen(savedPen);
+}
+
+void HorTabStyle::drawHorItemText(QPainter* painter, QRect rect, int flags, QString text) const
+{
+	auto textRect = painter->boundingRect(rect, flags, text);
+	for (int i = 0; i < text.size(); ++i)
+	{
+		auto c = text[text.size() - 1 - i];
+		painter->save();
+		painter->translate(textRect.left() + textRect.width() / text.size() * (i + 0.5), textRect.top() + textRect.height() / 2.0);
+		painter->rotate(90);
+		painter->drawText(-textRect.height() / 2.0, textRect.width() / text.size() / 2.0, c);
+		painter->restore();
+	}
 }

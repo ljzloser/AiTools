@@ -96,6 +96,7 @@ private slots:
 	void openPromptFile();
 private:
 	QHotkey* _showHotkey{ new QHotkey(QKeySequence(), true, this) };
+	QHotkey* _showLoginHotKey{ new QHotkey(QKeySequence(), true, this) };
 	QLineEdit* _inputLineEdit{ new QLineEdit(this) };
 	LCompleteComboBox* _promptComboBox{ new LCompleteComboBox(this) };
 	LTextEdit* _textEdit{ new LTextEdit(this) };

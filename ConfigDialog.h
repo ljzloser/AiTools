@@ -4,7 +4,9 @@
 #include "ui_ConfigDialog.h"
 #include "BasePlugin.h"
 #include <LCore>
+#include <QProxyStyle>
 #include "StringManager.h"
+
 // 插件信息
 struct PluginInfo
 {
@@ -41,6 +43,7 @@ public:
 	FIELD(height, 200);
 	FIELD(pluginInfo, QVariant::fromValue(new PluginInfo(StrMgr::str.defaultPluginFile, StrMgr::str.defaultPluginName)));
 	FIELD(autoUpdate, true);
+	FIELD(aiUrlKeySequence, StrMgr::str.defaultAiUrlKeySequence);
 #undef FIELD
 
 	/**
@@ -87,4 +90,14 @@ public:
 	void accept() override;
 private:
 	Ui::ConfigDialogClass ui;
+};
+class HorTabStyle : public QProxyStyle
+{
+	Q_OBJECT
+public:
+	HorTabStyle(Qt::Orientation orientation = Qt::Horizontal) : _orientation(orientation) {}
+	void drawItemText(QPainter* painter, const QRect& rect, int flags, const QPalette& pal, bool enabled, const QString& text, QPalette::ColorRole textRole) const override;
+	void drawHorItemText(QPainter* painter, QRect rect, int flags, QString text) const;
+private:
+	Qt::Orientation _orientation = Qt::Horizontal;
 };

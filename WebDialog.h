@@ -20,7 +20,7 @@ signals:
 	void reply(const QString& text);
 	void closed();
 public slots:
-	void request(const QString& text) override;
+	void request(const QString& text, bool running = true) override;
 	void setReplyRunning(bool running) override;
 	void load() override;
 private slots:

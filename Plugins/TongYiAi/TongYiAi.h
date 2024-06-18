@@ -17,7 +17,7 @@ public:
 	~TongYiAi() = default;
 	QString getName() override { return "通义千问"; }
 public slots:
-	void request(const QString& text) override;
+	void request(const QString& text, bool running = true) override;
 	void setReplyRunning(bool running) override;
 	void setReply(const QString& text) override;
 	void load() override;

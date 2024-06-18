@@ -201,6 +201,7 @@ void AiTools::initConnect()
 	connect(_settingButton, &QPushButton::clicked, this, &AiTools::openSettingDialog);
 	connect(_updatePromptAction, &QAction::triggered, this, &AiTools::openPromptFile);
 	connect(_debugButton, &QPushButton::clicked, this, &AiTools::debugButtonClicked);
+	connect(_showLoginHotKey, SIGNAL(activated()), this, SLOT(openLoginDialog()));
 }
 
 void AiTools::loadConfig(bool init)
@@ -213,11 +214,15 @@ void AiTools::loadConfig(bool init)
 			this->layout()->removeWidget(_webDialog);
 			_webDialog->deleteLater();
 			_webDialog = nullptr;
+			_loginDialog->deleteLater();
+			_loginDialog = nullptr;
 		}
 	}
 	if (_webDialog == nullptr)
 	{
 		_webDialog = Config::instance().plugin();
+		_loginDialog = Config::instance().plugin();
+		_loginDialog->setReplyRunning(false);
 		if (_webDialog)
 		{
 			_webDialog->setMaximumHeight(1);
@@ -262,6 +267,7 @@ void AiTools::loadConfig(bool init)
 	}
 	_parent->setWindowOpacity(Config::instance().transparent.value.toDouble());
 	_showHotkey->setShortcut(Config::instance().keySequence.value.toString(), true);
+	_showLoginHotKey->setShortcut(Config::instance().aiUrlKeySequence.value.toString(), true);
 
 	LJsonConfig prompt(QDir(QApplication::applicationDirPath()).filePath(StrMgr::str.promptFile));
 	QJsonDocument doc = prompt.readJson();
@@ -412,12 +418,33 @@ void AiTools::sendMessage() const
 
 void AiTools::openLoginDialog()
 {
-	if (_loginDialog != nullptr) _loginDialog->deleteLater();
-	_loginDialog = Config::instance().plugin();
+	QObject* sender = this->sender();
+	// 如果是QHotKey* 类型
+	bool isHotkey = sender == _showLoginHotKey;
+	if (isHotkey && Config::instance().autoCopy.value.toBool())
+		simulateCtrlC();
+	if (_loginDialog != nullptr && _loginDialog->getName() != _webDialog->getName())
+	{
+		_loginDialog->deleteLater();
+		_loginDialog = nullptr;
+	}
+	if (_loginDialog == nullptr)
+		_loginDialog = Config::instance().plugin();
 	if (_loginDialog == nullptr) return;
-	_loginDialog->setWindowFlag(Qt::Tool);
+	//_loginDialog->setWindowFlag(Qt::Tool);
 	_loginDialog->resize(1600, 900);
+	_loginDialog->setWindowTitle(_loginDialog->getName());
 	_loginDialog->show();
+	_loginDialog->setReplyRunning(false);
+
+	if (isHotkey && Config::instance().autoFill.value.toBool())
+	{
+		//connect(_loginDialog, &BasePlugin::loadFinished, [&]()
+		//	{
+		_loginDialog->request(QApplication::clipboard()->text(), false);
+		//});
+	}
+
 	connect(_loginDialog, &BasePlugin::closed, _webDialog, &BasePlugin::load);
 }
 

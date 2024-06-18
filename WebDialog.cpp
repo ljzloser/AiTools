@@ -7,7 +7,7 @@ WebDialog::WebDialog(QWidget* parent)
 
 WebDialog::~WebDialog() = default;
 
-void WebDialog::request(const QString& text)
+void WebDialog::request(const QString& text, bool running)
 {
 }
 

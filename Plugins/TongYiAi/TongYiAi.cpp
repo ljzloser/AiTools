@@ -12,22 +12,26 @@ TongYiAi::TongYiAi(QWidget* parent)
 	this->setLayout(layout);
 	_timer->setInterval(100);
 	connect(_timer, &QTimer::timeout, this, &TongYiAi::timeouted);
+	connect(_view, &QWebEngineView::loadFinished, this, &TongYiAi::loadFinish);
 }
 
-void TongYiAi::request(const QString& text)
+void TongYiAi::request(const QString& text, bool running)
 {
-	QString jsCode = QString(R"(
+	QString jsCode;
+	if (running)
+	{
+		jsCode = QString(R"(
 
-		var button = document.evaluate('/html/body/div[1]/div/div/div[4]/div[4]/div[3]/div[2]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-	    if (button) {
-	        button.click();
-	    } else {
-	        console.log("Button not found");
-	    }
-	)");
-	_view->page()->runJavaScript(jsCode);
-	QThread::sleep(0.1);
-	jsCode = QString(R"(
+			var button = document.evaluate('/html/body/div[1]/div/div/div[4]/div[4]/div[3]/div[2]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+		    if (button) {
+		        button.click();
+		    } else {
+		        console.log("Button not found");
+		    }
+		)");
+		_view->page()->runJavaScript(jsCode);
+		QThread::sleep(0.1);
+		jsCode = QString(R"(
 			(function() {
 				var newButton = document.evaluate('/html/body/div[1]/div[1]/div/div[3]/button', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
 				if(newButton){
@@ -35,8 +39,9 @@ void TongYiAi::request(const QString& text)
 				}
 			})();
 		)");
-	_view->page()->runJavaScript(jsCode);
-	QThread::sleep(0.3);
+		_view->page()->runJavaScript(jsCode);
+		QThread::sleep(0.3);
+	}
 	jsCode = QString(R"(
 				(function() {
 				    var textarea = document.querySelector('.chatInput--eJzBH8LP .chatTextarea--tMt0p9_a .textareaWrap--x_vNvkR2 textarea');
@@ -62,17 +67,19 @@ void TongYiAi::request(const QString& text)
 			)").arg(LFunc::escapeString(text, true));
 
 	_view->page()->runJavaScript(jsCode);
-	QThread::sleep(0.3);
-	jsCode = QString(R"(
-
-		var button = document.evaluate('/html/body/div[1]/div/div/div[4]/div[4]/div[3]/div[2]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-	    if (button) {
-	        button.click();
-	    } else {
-	        console.log("Button not found");
-	    }
-	)");
-	_view->page()->runJavaScript(jsCode);
+	if (running)
+	{
+		QThread::sleep(0.3);
+		jsCode = QString(R"(
+			var button = document.evaluate('/html/body/div[1]/div/div/div[4]/div[4]/div[3]/div[2]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+		    if (button) {
+		        button.click();
+		    } else {
+		        console.log("Button not found");
+		    }
+		)");
+		_view->page()->runJavaScript(jsCode);
+	}
 }
 
 void TongYiAi::setReplyRunning(bool running)

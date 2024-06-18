@@ -9,7 +9,7 @@ public:
 	~BasePlugin() override;
 	/**
 	 * @brief 获取插件名称
-	 * @return 
+	 * @return
 	 */
 	virtual QString getName() = 0;
 signals:
@@ -17,9 +17,11 @@ signals:
 	void reply(const QString& text);
 	// 窗口关闭信号
 	void closed();
+	// 加载完成
+	void loadFinished();
 public slots:
 	// 接受用户发送的请求
-	virtual void request(const QString& text) = 0;
+	virtual void request(const QString& text, bool running = true) = 0;
 	/**
 	 * @brief 是否可以发送回复
 	 * @param running
@@ -33,6 +35,8 @@ public slots:
 	 *@brief 发送回复的文本
 	 */
 	virtual	void setReply(const QString& text);
+
+	virtual void loadFinish();
 
 protected:
 	void closeEvent(QCloseEvent* event) override;
@@ -52,16 +56,22 @@ inline void BasePlugin::setReply(const QString& text)
 
 inline void BasePlugin::closeEvent(QCloseEvent* event)
 {
-	QWidget::closeEvent(event);
+	this->hide();
+	//QWidget::closeEvent(event);
 	emit closed();
 }
+inline void BasePlugin::loadFinish()
+{
+	emit loadFinished();
+}
+
 // 插件工厂
 class BasePluginFactory
 {
 public:
 	/**
 	 * @brief 创建插件
-	 * @return 
+	 * @return
 	 */
 	virtual BasePlugin* create() = 0;
 	virtual ~BasePluginFactory() = default;

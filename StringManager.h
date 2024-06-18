@@ -11,7 +11,7 @@ class StrMgr
 	{
 		// 程序名
 		STATIC_STR(appName, "AiTools");
-		STATIC_STR(version, "1.4");
+		STATIC_STR(version, "1.5");
 		STATIC_STR(quit, "退出");
 		STATIC_STR(bootStart, "开机启动");
 		STATIC_STR(login, "登录");
@@ -48,6 +48,8 @@ class StrMgr
 		STATIC_STR(defaultPluginFile, "ZhiPuAi");
 		STATIC_STR(defaultPluginName, "智谱清言");
 		STATIC_STR(defaultKeySequence, "Ctrl+G");
+		STATIC_STR(defaultAiUrlKeySequence, "Ctrl+L");
+		STATIC_STR(aiUrlKeySequence, "aiUrlKeySequence");
 		STATIC_STR(autoUpdate, "autoUpdate");
 		STATIC_STR(about, "关于");
 		STATIC_STR(updateProgram, "updateProgram.exe");

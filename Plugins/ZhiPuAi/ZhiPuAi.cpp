@@ -18,15 +18,19 @@ ZhiPuAi::ZhiPuAi(QWidget* parent)
 	this->setLayout(layout);
 	_timer->setInterval(100);
 	ZhiPuAi::connect(_timer, &QTimer::timeout, this, &ZhiPuAi::timeouted);
+	connect(_view, &QWebEngineView::loadFinished, this, &ZhiPuAi::loadFinish);
 }
 
 ZhiPuAi::~ZhiPuAi()
 {
 };
 
-void ZhiPuAi::request(const QString& text)
+void ZhiPuAi::request(const QString& text, bool running)
 {
-	QString jsCode = QString(R"(
+	QString jsCode;
+	if (running)
+	{
+		jsCode = QString(R"(
 			(function() {
 				var button = document.evaluate('/html/body/div[1]/div/section/main/div/div[2]/div[2]/div/div/div[2]/div[3]/div[1]/div[1]/div[4]/div/div/div/div[3]/img', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
 				if(button){
@@ -34,9 +38,9 @@ void ZhiPuAi::request(const QString& text)
 				}
 			})();
 		)");
-	_view->page()->runJavaScript(jsCode);
-	QThread::sleep(0.1);
-	jsCode = QString(R"(
+		_view->page()->runJavaScript(jsCode);
+		QThread::sleep(0.1);
+		jsCode = QString(R"(
 			(function() {
 				var newButton = document.evaluate('/html/body/div[1]/div/section/main/div/div[1]/div/div[1]/div[2]/div', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
 				if(newButton){
@@ -44,8 +48,9 @@ void ZhiPuAi::request(const QString& text)
 				}
 			})();
 		)");
-	_view->page()->runJavaScript(jsCode);
-	QThread::sleep(0.5);
+		_view->page()->runJavaScript(jsCode);
+		QThread::sleep(0.5);
+	}
 	jsCode = QString(R"(
 				(function() {
 					var textarea = document.evaluate('/html/body/div[1]/div/section/main/div/div[2]/div[2]/div/div/div[2]/div[3]/div[1]/div[1]/div[4]/div/div/div/div[2]/textarea', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
@@ -61,11 +66,11 @@ void ZhiPuAi::request(const QString& text)
 					else {
 						console.log("textarea not found");
 					}
-					if (button) {
+					if (button && "%2" == "true") {
 						button.click();
 					}
 				})();
-			)").arg(LFunc::escapeString(text, true));
+			)").arg(LFunc::escapeString(text, true), running ? "true" : "false");
 
 	_view->page()->runJavaScript(jsCode);
 }
