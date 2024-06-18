@@ -57,7 +57,7 @@ namespace UpdateProgram
                 else
                 {
                     Console.WriteLine($"the version {version} is latest, no need to update.");
-                    if (args.Length > 4)
+                    if (args.Length == 4)
                     {
                         MessageBox.Show($"当前版本(V{version})为最新版本！", "AiTools更新提示",
                             MessageBoxButtons.OK, MessageBoxIcon.Information);
