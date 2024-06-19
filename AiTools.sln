@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AfterInstall", "AfterInstal
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpdateProgram", "UpdateProgram\UpdateProgram.csproj", "{31E7745A-1E73-473A-93EF-6B73B1A84C4E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChatGpt", "Plugins\ChatGpt\ChatGpt.vcxproj", "{DC0C51A9-E48A-4186-9269-CECF313C5CB3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,14 @@ Global
 		{31E7745A-1E73-473A-93EF-6B73B1A84C4E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{31E7745A-1E73-473A-93EF-6B73B1A84C4E}.Release|x64.ActiveCfg = Release|Any CPU
 		{31E7745A-1E73-473A-93EF-6B73B1A84C4E}.Release|x64.Build.0 = Release|Any CPU
+		{DC0C51A9-E48A-4186-9269-CECF313C5CB3}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{DC0C51A9-E48A-4186-9269-CECF313C5CB3}.Debug|Any CPU.Build.0 = Debug|x64
+		{DC0C51A9-E48A-4186-9269-CECF313C5CB3}.Debug|x64.ActiveCfg = Debug|x64
+		{DC0C51A9-E48A-4186-9269-CECF313C5CB3}.Debug|x64.Build.0 = Debug|x64
+		{DC0C51A9-E48A-4186-9269-CECF313C5CB3}.Release|Any CPU.ActiveCfg = Release|x64
+		{DC0C51A9-E48A-4186-9269-CECF313C5CB3}.Release|Any CPU.Build.0 = Release|x64
+		{DC0C51A9-E48A-4186-9269-CECF313C5CB3}.Release|x64.ActiveCfg = Release|x64
+		{DC0C51A9-E48A-4186-9269-CECF313C5CB3}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -82,6 +92,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{667D29AA-23EE-4125-843B-5A054427596B} = {420FDB40-B89F-4E2A-943C-FAC0751DD1D9}
 		{BC981CF7-0FCC-460B-8D35-4E5B0DBBF317} = {420FDB40-B89F-4E2A-943C-FAC0751DD1D9}
+		{DC0C51A9-E48A-4186-9269-CECF313C5CB3} = {420FDB40-B89F-4E2A-943C-FAC0751DD1D9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {44F6DA5E-3563-4E6A-B2EF-67C34AC6FE31}
