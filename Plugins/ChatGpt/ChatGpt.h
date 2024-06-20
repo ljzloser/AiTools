@@ -15,7 +15,9 @@ class ChatGpt_EXPORT ChatGpt : public BasePlugin
 public:
 	explicit ChatGpt(QWidget* parent = nullptr);
 	~ChatGpt();
-	QString getName() override { return "ChatGpt"; };
+	QString getName() override { return "ChatGpt"; }
+	QString getUrl() override { return _url.toString(); }
+	QIcon getIcon() override { return QIcon(":/icon/ChatGpt.ico"); };
 	[[nodiscard]] QWebEngineView* view() const { return _view; }
 signals:
 	void reply(const QString& text);
@@ -33,6 +35,7 @@ private:
 	QWebEngineView* _view{ new QWebEngineView() };
 	QString _lastHash{ "" };
 	QTimer* _timer{ new QTimer(this) };
+	QUrl _url{ "https://chat.openai.com/" };
 };
 
 class ChatGpt_EXPORT ChatGptPlugin : public QObject, public BasePluginFactory

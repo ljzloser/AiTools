@@ -1,5 +1,9 @@
 ﻿#pragma once
 #include "QWidget"
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkRequest>
+#include <QEventLoop>
 // 插件基类
 class BasePlugin : public QWidget
 {
@@ -12,6 +16,8 @@ public:
 	 * @return
 	 */
 	virtual QString getName() = 0;
+	virtual QString getUrl() = 0;
+	virtual QIcon getIcon();
 signals:
 	// 回复信号
 	void reply(const QString& text);
@@ -19,6 +25,7 @@ signals:
 	void closed();
 	// 加载完成
 	void loadFinished();
+	void reSized(QSize size);
 public slots:
 	// 接受用户发送的请求
 	virtual void request(const QString& text, bool running = true) = 0;
@@ -40,6 +47,7 @@ public slots:
 
 protected:
 	void closeEvent(QCloseEvent* event) override;
+	void resizeEvent(QResizeEvent* event) override;
 };
 
 inline BasePlugin::BasePlugin(QWidget* parent)
@@ -63,6 +71,17 @@ inline void BasePlugin::closeEvent(QCloseEvent* event)
 inline void BasePlugin::loadFinish()
 {
 	emit loadFinished();
+}
+
+inline void BasePlugin::resizeEvent(QResizeEvent* event)
+{
+	QWidget::resizeEvent(event);
+	emit reSized(this->size());
+}
+
+inline QIcon BasePlugin::getIcon()
+{
+	return QIcon();
 }
 
 // 插件工厂

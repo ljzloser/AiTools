@@ -9,10 +9,12 @@ TongYiAi::TongYiAi(QWidget* parent)
 	_view->load(_url);
 	_view->setZoomFactor(1.2);
 	layout->addWidget(_view);
+	layout->setContentsMargins(0, 0, 0, 0);
 	this->setLayout(layout);
 	_timer->setInterval(100);
 	connect(_timer, &QTimer::timeout, this, &TongYiAi::timeouted);
 	connect(_view, &QWebEngineView::loadFinished, this, &TongYiAi::loadFinish);
+	this->setWindowIcon(this->getIcon());
 }
 
 void TongYiAi::request(const QString& text, bool running)

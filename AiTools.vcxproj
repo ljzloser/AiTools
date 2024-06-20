@@ -60,11 +60,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <IncludePath>$(LocalDebuggerWorkingDirectory)..\LClass\LCore\include\;$(LocalDebuggerWorkingDirectory)..\LClass\LWidget\include\;$(LocalDebuggerWorkingDirectory)..\QHotkey\QHotkey\;$(IncludePath)</IncludePath>
+    <IncludePath>$(LocalDebuggerWorkingDirectory)..\LClass\LCore\include\;$(LocalDebuggerWorkingDirectory)..\LClass\LWidget\include\;$(LocalDebuggerWorkingDirectory)..\QHotkey\QHotkey\;$(LocalDebuggerWorkingDirectory)include;$(IncludePath)</IncludePath>
     <GenerateManifest>true</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <IncludePath>$(LocalDebuggerWorkingDirectory)..\LClass\LCore\include\;$(LocalDebuggerWorkingDirectory)..\LClass\LWidget\include\;$(LocalDebuggerWorkingDirectory)..\QHotkey\QHotkey\;$(IncludePath)</IncludePath>
+    <IncludePath>$(LocalDebuggerWorkingDirectory)..\LClass\LCore\include\;$(LocalDebuggerWorkingDirectory)..\LClass\LWidget\include\;$(LocalDebuggerWorkingDirectory)..\QHotkey\QHotkey\;$(LocalDebuggerWorkingDirectory)include;$(IncludePath)</IncludePath>
     <GenerateManifest>true</GenerateManifest>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -122,11 +122,10 @@ $(QtDllPath)/windeployqt $(TargetFileName)</Command>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ConfigDialog.cpp" />
-    <ClCompile Include="WebDialog.cpp" />
+    <ClCompile Include="src\AiTools.cpp" />
+    <ClCompile Include="src\ConfigDialog.cpp" />
+    <ClCompile Include="src\WebDialog.cpp" />
     <QtRcc Include="AiTools.qrc" />
-    <QtMoc Include="AiTools.h" />
-    <ClCompile Include="AiTools.cpp" />
     <ClCompile Include="main.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
@@ -135,12 +134,6 @@ $(QtDllPath)/windeployqt $(TargetFileName)</Command>
     </ClCompile>
     <QtRcc Include="dark\darkstyle.qrc" />
     <QtRcc Include="light\lightstyle.qrc" />
-  </ItemGroup>
-  <ItemGroup>
-    <QtMoc Include="ConfigDialog.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <QtUic Include="ConfigDialog.ui" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="AI.ico" />
@@ -155,16 +148,23 @@ $(QtDllPath)/windeployqt $(TargetFileName)</Command>
     <QtMoc Include="BasePlugin.h" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="WebDialog.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="StringManager.h" />
-    <ClInclude Include="Update.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="UpdateProgram\UpdateProgram.csproj">
       <Project>{31e7745a-1e73-473a-93ef-6b73b1a84c4e}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="ui\ConfigDialog.ui" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="include\AiTools.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="include\ConfigDialog.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\StringManager.h" />
+    <ClInclude Include="include\Update.h" />
+    <QtMoc Include="include\WebDialog.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

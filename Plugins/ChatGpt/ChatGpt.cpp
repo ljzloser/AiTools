@@ -12,13 +12,15 @@ ChatGpt::ChatGpt(QWidget* parent)
 	QVBoxLayout* layout = new QVBoxLayout();
 	_view->setPage(_page);
 
-	_view->load(QUrl("https://chat.openai.com"));
+	_view->load(_url);
 	_view->setZoomFactor(1.2);
 	layout->addWidget(_view);
 	this->setLayout(layout);
+	layout->setContentsMargins(0, 0, 0, 0);
 	_timer->setInterval(100);
 	ChatGpt::connect(_timer, &QTimer::timeout, this, &ChatGpt::timeouted);
 	connect(_view, &QWebEngineView::loadFinished, this, &ChatGpt::loadFinish);
+	this->setWindowIcon(this->getIcon());
 }
 
 ChatGpt::~ChatGpt()
@@ -27,15 +29,17 @@ ChatGpt::~ChatGpt()
 
 void ChatGpt::request(const QString& text, bool running)
 {
-	/*
+	qDebug() << text;
 	QString jsCode;
 	if (running)
 	{
 		jsCode = QString(R"(
 			(function() {
-				var button = document.evaluate('/html/body/div[1]/div/section/main/div/div[2]/div[2]/div/div/div[2]/div[3]/div[1]/div[1]/div[4]/div/div/div/div[3]/img', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+				var button = document.evaluate('/html/body/div[1]/div[1]/div[2]/main/div[1]/div[2]/div[1]/div/form/div[2]/div[2]/div/div/button',
+					document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
 				if(button){
-					newButton.click();
+					console.log( button);
+					button.click();
 				}
 			})();
 		)");
@@ -43,9 +47,10 @@ void ChatGpt::request(const QString& text, bool running)
 		QThread::sleep(0.1);
 		jsCode = QString(R"(
 			(function() {
-				var newButton = document.evaluate('/html/body/div[1]/div/section/main/div/div[1]/div/div[1]/div[2]/div', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-				if(newButton){
-					newButton.click();
+				var button = document.evaluate('/html/body/div[1]/div[1]/div[1]/div/div/div/div/nav/div[2]/div[1]/div/a/div[3]/span',
+					document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+				if(button){
+					button.click();
 				}
 			})();
 		)");
@@ -54,9 +59,7 @@ void ChatGpt::request(const QString& text, bool running)
 	}
 	jsCode = QString(R"(
 				(function() {
-					var textarea = document.evaluate('/html/body/div[1]/div/section/main/div/div[2]/div[2]/div/div/div[2]/div[3]/div[1]/div[1]/div[4]/div/div/div/div[2]/textarea', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-					var button = document.evaluate('/html/body/div[1]/div/section/main/div/div[2]/div[2]/div/div/div[2]/div[3]/div[1]/div[1]/div[4]/div/div/div/div[3]/img', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-
+					var textarea = document.evaluate('/html/body/div[1]/div[1]/div[2]/main/div[1]/div[2]/div[1]/div/form/div[2]/div[2]/div/div/div[2]/textarea', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
 					if (textarea) {
 						textarea.value = "%1";
 						var event = new Event('input', { bubbles: true });
@@ -67,26 +70,36 @@ void ChatGpt::request(const QString& text, bool running)
 					else {
 						console.log("textarea not found");
 					}
-					if (button && "%2" == "true") {
-						button.click();
-					}
 				})();
-			)").arg(LFunc::escapeString(text, true), running ? "true" : "false");
-
+			)").arg(LFunc::escapeString(text, true));
+	qDebug() << jsCode;
 	_view->page()->runJavaScript(jsCode);
-	*/
+	QThread::sleep(0.1);
+	jsCode = QString(R"(
+		(function() {
+			var button = document.evaluate('/html/body/div[1]/div[1]/div[2]/main/div[1]/div[2]/div[1]/div/form/div[2]/div[2]/div/div/button', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+			if (button && "%2" == "true") {
+				button.click();
+			}
+		})();
+	)").arg(running ? "true" : "false");
+	_view->page()->runJavaScript(jsCode);
 }
 
 void ChatGpt::timeouted()
 {
-	/*
 	QString jsCode = R"(
-			var node = document.querySelector('.answer-content-wrap');
-			if (node) {
-				node.outerHTML;
-			} else {
-				"Node not found";
-			}
+			(function() {
+				var xpath = "/html/body/div[1]/div[1]/div[2]/main/div[1]/div[1]/div/div/div/div/div[3]/div/div/div[2]/div/div[1]";
+				var result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+				var targetElement = result.singleNodeValue; // Use a different variable name
+
+				if (targetElement) {
+					targetElement.innerHTML
+				} else {
+					console.log("Element not found");
+				}
+			})();
 		)";
 	_view->page()->runJavaScript(jsCode, [&](const QVariant& result)
 		{
@@ -101,23 +114,22 @@ void ChatGpt::timeouted()
 				this->setReply(text);
 			}
 		});
-		*/
 }
 
 void ChatGpt::setReplyRunning(const bool running)
 {
-	//if (running)
-	//{
-	//	_timer->start();
-	//}
-	//else
-	//{
-	//	_timer->stop();
-	//}
+	if (running)
+	{
+		_timer->start();
+	}
+	else
+	{
+		_timer->stop();
+	}
 }
 
 void ChatGpt::load()
 {
-	//_view->load(QUrl("https://chat.openai.com"));
-	//_view->reload();
+	_view->load(_url);
+	_view->reload();
 }

@@ -46,6 +46,8 @@ public:
 	FIELD(aiUrlKeySequence, StrMgr::str.defaultAiUrlKeySequence);
 	FIELD(font, QFont(StrMgr::str.defaultFont));
 	FIELD(fontSize, 15);
+	FIELD(loginDialogWidth, 1600);
+	FIELD(loginDialogHeight, 900);
 #undef FIELD
 
 	/**

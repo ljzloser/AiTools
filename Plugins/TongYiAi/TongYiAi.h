@@ -16,6 +16,8 @@ public:
 	explicit TongYiAi(QWidget* parent = nullptr);
 	~TongYiAi() = default;
 	QString getName() override { return "通义千问"; }
+	QString getUrl() override { return _url.toString(); }
+	QIcon getIcon() override { return QIcon(":/icon/icon.png"); }
 public slots:
 	void request(const QString& text, bool running = true) override;
 	void setReplyRunning(bool running) override;
@@ -29,7 +31,7 @@ protected:
 	QWebEngineView* _view{ new QWebEngineView() };
 	QString _lastHash{ "" };
 	QTimer* _timer{ new QTimer(this) };
-	QUrl _url{ QUrl("https://tongyi.aliyun.com/qianwen/?spm=5176.28326591.0.0.40f76ee1zBYunq") };
+	QUrl _url{ QUrl("https://tongyi.aliyun.com/qianwen/") };
 };
 
 class TONGYIAI_EXPORT TongYiAiPlugin : public QObject, public BasePluginFactory

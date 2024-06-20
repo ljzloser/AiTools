@@ -315,6 +315,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_5AB8A736E8484F18B3070575DFF708F7"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_5AF9CE6B10CB47D9A50C1AC9B4EFD81B"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -388,6 +394,12 @@
         "Entry"
         {
         "MsmKey" = "8:_6CB9977901924092B020F995774AF98A"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_6CC4E8F9F7E04424B9DBED18B8CC4BF5"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -945,6 +957,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_E78BCF4D9F364FEFA99D9F129C11DB3B"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_E93C821489364E5A90D1B80B21811741"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -1170,7 +1188,7 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "FrameworkVersion" = "8:v4.7.2           "
+                "FrameworkVersion" = "8:v4.7.2            "
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=863262"
                 }
@@ -2178,6 +2196,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5AB8A736E8484F18B3070575DFF708F7"
+            {
+            "SourcePath" = "8:..\\x64\\Release\\Plugins\\ChatGpt\\ChatGpt.exp"
+            "TargetName" = "8:ChatGpt.exp"
+            "Tag" = "8:"
+            "Folder" = "8:_DAA42094659347B2A6923538BE9AE63A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5AF9CE6B10CB47D9A50C1AC9B4EFD81B"
             {
             "SourcePath" = "8:..\\x64\\Release\\translations\\qtwebengine_locales\\pt-BR.pak"
@@ -2424,6 +2462,26 @@
             "TargetName" = "8:qgif.dll"
             "Tag" = "8:"
             "Folder" = "8:_7F74DD02349A42709F555D11B9A7919B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6CC4E8F9F7E04424B9DBED18B8CC4BF5"
+            {
+            "SourcePath" = "8:..\\x64\\Release\\Plugins\\ChatGpt\\ChatGpt.lib"
+            "TargetName" = "8:ChatGpt.lib"
+            "Tag" = "8:"
+            "Folder" = "8:_DAA42094659347B2A6923538BE9AE63A"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -4191,6 +4249,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E78BCF4D9F364FEFA99D9F129C11DB3B"
+            {
+            "SourcePath" = "8:..\\x64\\Release\\Plugins\\ChatGpt\\ChatGpt.dll"
+            "TargetName" = "8:ChatGpt.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_DAA42094659347B2A6923538BE9AE63A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E93C821489364E5A90D1B80B21811741"
             {
             "SourcePath" = "8:..\\x64\\Release\\translations\\qt_hr.qm"
@@ -4569,6 +4647,17 @@
                                 {
                                 }
                             }
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_DAA42094659347B2A6923538BE9AE63A"
+                            {
+                            "Name" = "8:ChatGpt"
+                            "AlwaysCreate" = "11:FALSE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_9D404E0293194D77BC6B121C87237DCB"
+                                "Folders"
+                                {
+                                }
+                            }
                         }
                     }
                     "{9EF0B969-E518-4E46-987F-47570745A589}:_0DFF8887F09C43DD92FE854279E09BCE"
@@ -4765,15 +4854,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:AiTools"
-        "ProductCode" = "8:{B540E60E-1CCB-44CA-9DE2-FE90AC8E31E7}"
-        "PackageCode" = "8:{1872DE98-D4C8-4CBC-A63D-28CA378FB744}"
+        "ProductCode" = "8:{6EEACCD8-A6EA-412E-AA65-0A767D1C40EB}"
+        "PackageCode" = "8:{AB77FAFA-8313-4A3A-872C-688EA195D3D9}"
         "UpgradeCode" = "8:{64E8D631-57C3-4C0A-8A00-545DB4FC9E1F}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.6"
+        "ProductVersion" = "8:1.7"
         "Manufacturer" = "8:LJZ"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:https://github.com/ljzloser"

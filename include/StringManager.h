@@ -11,7 +11,7 @@ class StrMgr
 	{
 		// 程序名
 		STATIC_STR(appName, "AiTools");
-		STATIC_STR(version, "1.6");
+		STATIC_STR(version, "1.7");
 		STATIC_STR(quit, "退出");
 		STATIC_STR(bootStart, "开机启动");
 		STATIC_STR(login, "登录");
@@ -56,6 +56,8 @@ class StrMgr
 		STATIC_STR(defaultFont, "HarmonyOS Sans SC Black");
 		STATIC_STR(font, "font");
 		STATIC_STR(fontSize, "fontSize");
+		STATIC_STR(loginDialogWidth, "loginDialogWidth");
+		STATIC_STR(loginDialogHeight, "loginDialogHeight");
 	};
 	/*
 	 * 资源

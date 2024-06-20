@@ -15,7 +15,9 @@ class ZHIPUAI_EXPORT ZhiPuAi : public BasePlugin
 public:
 	explicit ZhiPuAi(QWidget* parent = nullptr);
 	~ZhiPuAi();
-	QString getName() override { return "智谱清言"; };
+	QString getName() override { return "智谱清言"; }
+	QString getUrl() override { return _url.toString(); }
+	QIcon getIcon() override { return QIcon(":/icon/ZhiPuAi.ico"); }
 	[[nodiscard]] QWebEngineView* view() const { return _view; }
 signals:
 	void reply(const QString& text);
@@ -33,6 +35,7 @@ private:
 	QWebEngineView* _view{ new QWebEngineView() };
 	QString _lastHash{ "" };
 	QTimer* _timer{ new QTimer(this) };
+	QUrl _url{ "https://chatglm.cn/main/alltoolsdetail" };
 };
 
 class ZHIPUAI_EXPORT ZhiPuAiPlugin : public QObject, public BasePluginFactory

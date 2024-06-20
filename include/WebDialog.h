@@ -16,6 +16,7 @@ public:
 	~WebDialog() override;
 	[[nodiscard]] QWebEngineView* view() const { return _view; }
 	QString getName() override { return "WebDialog"; }
+	QString getUrl() override { return "https://www.baidu.com"; }
 signals:
 	void reply(const QString& text);
 	void closed();

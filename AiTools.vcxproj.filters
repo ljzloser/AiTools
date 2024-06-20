@@ -29,12 +29,6 @@
     <QtRcc Include="AiTools.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
-    <QtMoc Include="AiTools.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <ClCompile Include="AiTools.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <QtRcc Include="light\lightstyle.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
@@ -43,31 +37,32 @@
     </QtRcc>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ConfigDialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WebDialog.cpp">
+    <ClCompile Include="src\AiTools.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ConfigDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\WebDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="ConfigDialog.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="BasePlugin.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="WebDialog.h">
+    <QtMoc Include="include\AiTools.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-  </ItemGroup>
-  <ItemGroup>
-    <QtUic Include="ConfigDialog.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
+    <QtMoc Include="include\ConfigDialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="include\WebDialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <Image Include="AI.ico">
@@ -85,10 +80,15 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="StringManager.h">
+    <QtUic Include="ui\ConfigDialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\StringManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Update.h">
+    <ClInclude Include="include\Update.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

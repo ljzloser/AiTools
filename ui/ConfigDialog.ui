@@ -26,7 +26,7 @@
       <enum>QTabWidget::West</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="Widget">
       <attribute name="title">
@@ -197,7 +197,7 @@
             <string>修改</string>
            </property>
            <property name="icon">
-            <iconset resource="AiTools.qrc">
+            <iconset resource="../AiTools.qrc">
              <normaloff>:/AiTools/icon/update.png</normaloff>:/AiTools/icon/update.png</iconset>
            </property>
           </widget>
@@ -369,7 +369,7 @@
          <property name="maximumSize">
           <size>
            <width>16777215</width>
-           <height>20</height>
+           <height>40</height>
           </size>
          </property>
          <property name="frameShape">
@@ -407,7 +407,7 @@
             <string>检查更新</string>
            </property>
            <property name="icon">
-            <iconset resource="AiTools.qrc">
+            <iconset resource="../AiTools.qrc">
              <normaloff>:/AiTools/icon/updateApp.png</normaloff>:/AiTools/icon/updateApp.png</iconset>
            </property>
           </widget>
@@ -447,7 +447,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="AiTools.qrc"/>
+  <include location="../AiTools.qrc"/>
  </resources>
  <connections/>
 </ui>

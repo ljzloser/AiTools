@@ -166,10 +166,10 @@ void AiTools::initTratIcon()
 	_trayMenu->QWidget::addAction(_loginAction);
 	_settingAction->setIcon(QIcon(StrMgr::rc.set));
 	_trayMenu->QWidget::addAction(_settingAction);
-	_aboutAction->setIcon(QIcon(StrMgr::rc.about));
-	_trayMenu->QWidget::addAction(_aboutAction);
 	_quitAction->setIcon(QIcon(StrMgr::rc.quit));
 	_trayMenu->QWidget::addAction(_quitAction);
+	_aboutAction->setIcon(QIcon(StrMgr::rc.about));
+	_trayMenu->QWidget::addAction(_aboutAction);
 	_trayIcon->setIcon(QIcon(StrMgr::rc.icon));
 	_trayIcon->setContextMenu(_trayMenu);
 	_trayIcon->setToolTip(QString("%1-V%2").arg(StrMgr::str.appName, StrMgr::str.version));
@@ -222,6 +222,7 @@ void AiTools::loadConfig(bool init)
 	{
 		_webDialog = Config::instance().plugin();
 		_loginDialog = Config::instance().plugin();
+		_loginDialog->resize(QSize(Config::instance().loginDialogWidth.value.toInt(), Config::instance().loginDialogHeight.value.toInt()));
 		_loginDialog->setReplyRunning(false);
 		if (_webDialog)
 		{
@@ -281,6 +282,7 @@ void AiTools::loadConfig(bool init)
 	if (doc.isNull()) // 初始化防止有人吧prompt.json删了
 		prompt.init(QJsonDocument::fromJson("{}"));
 	auto obj = prompt.readJson().object();
+
 	if (!obj.isEmpty())
 	{
 		_promptComboBox->clear();
@@ -436,23 +438,40 @@ void AiTools::openLoginDialog()
 		_loginDialog = nullptr;
 	}
 	if (_loginDialog == nullptr)
+	{
 		_loginDialog = Config::instance().plugin();
+		_loginDialog->resize(QSize(Config::instance().loginDialogWidth.value.toInt(), Config::instance().loginDialogHeight.value.toInt()));
+	}
 	if (_loginDialog == nullptr) return;
-	//_loginDialog->setWindowFlag(Qt::Tool);
-	_loginDialog->resize(1600, 900);
 	_loginDialog->setWindowTitle(_loginDialog->getName());
 	_loginDialog->show();
 	_loginDialog->setReplyRunning(false);
 
 	if (isHotkey && Config::instance().autoFill.value.toBool())
-	{
-		//connect(_loginDialog, &BasePlugin::loadFinished, [&]()
-		//	{
 		_loginDialog->request(QApplication::clipboard()->text(), false);
-		//});
-	}
 
 	connect(_loginDialog, &BasePlugin::closed, _webDialog, &BasePlugin::load);
+	connect(_loginDialog, &BasePlugin::reSized, [=](QSize size)
+		{
+			Config::instance().loginDialogWidth.value = size.width();
+			Config::instance().loginDialogHeight.value = size.height();
+		});
+	//_loginDialog->hide();
+	QRect rect = _loginDialog->geometry();
+	rect.moveCenter(QCursor::pos());
+	QRect maxRect = QGuiApplication::primaryScreen()->availableGeometry();
+	if (rect.y() < 30)
+		rect.moveTop(30);
+	if (rect.right() > maxRect.right())
+		rect.moveRight(maxRect.right());
+	if (rect.bottom() > maxRect.bottom())
+		rect.moveBottom(maxRect.bottom());
+	if (rect.left() < 0)
+		rect.moveLeft(0);
+	_loginDialog->setGeometry(rect);
+	if (_loginDialog->isMinimized())
+		_loginDialog->showNormal();
+	_loginDialog->show();
 	// 移动到最前面
 	_loginDialog->activateWindow();
 }

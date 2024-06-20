@@ -31,6 +31,8 @@ QJsonObject Config::toJson() const
 		ConfigPair(aiUrlKeySequence,QString),
 		ConfigPair(font, QString),
 		ConfigPair(fontSize, int),
+		ConfigPair(loginDialogWidth, int),
+		ConfigPair(loginDialogHeight, int),
 	};
 #undef ConfigPair
 }
@@ -77,6 +79,14 @@ void Config::fromJson(const QJsonObject& obj, bool init)
 		fontSize.value = newObj.value(fontSize.name).toInt();
 	else
 		newObj.insert(fontSize.name, fontSize.value.toInt());
+	if (newObj.contains(loginDialogWidth.name))
+		loginDialogWidth.value = newObj.value(loginDialogWidth.name).toInt();
+	else
+		newObj.insert(loginDialogWidth.name, loginDialogWidth.value.toInt());
+	if (newObj.contains(loginDialogHeight.name))
+		loginDialogHeight.value = newObj.value(loginDialogHeight.name).toInt();
+	else
+		newObj.insert(loginDialogHeight.name, loginDialogHeight.value.toInt());
 	if (!init)
 	{
 		config()->init(QJsonDocument(newObj));
