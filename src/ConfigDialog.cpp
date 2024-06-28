@@ -2,6 +2,15 @@
 #include <QPluginLoader>
 #include <QDesktopServices>
 #include "Update.h"
+
+void Config::Field::setValue(QJsonObject& obj)
+{
+	if (obj.contains(name))
+		value = obj.value(name).toVariant();
+	else
+		obj[name] = value.toJsonValue();
+}
+
 Config& Config::instance()
 {
 	static Config instance;
@@ -29,7 +38,7 @@ QJsonObject Config::toJson() const
 		ConfigPair(pluginInfo, PluginInfo*,->fileName),
 		ConfigPair(autoUpdate, bool),
 		ConfigPair(aiUrlKeySequence,QString),
-		ConfigPair(font, QString),
+		ConfigPair(font, QFont,.toString()),
 		ConfigPair(fontSize, int),
 		ConfigPair(loginDialogWidth, int),
 		ConfigPair(loginDialogHeight, int),
@@ -40,7 +49,33 @@ QJsonObject Config::toJson() const
 void Config::fromJson(const QJsonObject& obj, bool init)
 {
 	auto newObj = obj;
-	transparent.value = newObj.value(transparent.name).toDouble();
+	transparent.setValue(newObj);
+	theme.setValue(newObj);
+	autoFill.setValue(newObj);
+	focusPoint.setValue(newObj);
+	focusHide.setValue(newObj);
+	pointMode.setValue(newObj);
+	autoCopy.setValue(newObj);
+	lastPrompt.setValue(newObj);
+	promptPoint.setValue(newObj);
+	keySequence.setValue(newObj);
+	showTime.setValue(newObj);
+	if (newObj.contains(pluginInfo.name))
+		pluginInfo.value.value<PluginInfo*>()->fileName = newObj.value(pluginInfo.name).toString();
+	else
+		newObj.insert(pluginInfo.name, pluginInfo.value.value<PluginInfo*>()->fileName);
+	width.setValue(newObj);
+	height.setValue(newObj);
+	autoUpdate.setValue(newObj);
+	aiUrlKeySequence.setValue(newObj);
+	if (newObj.contains(font.name))
+		font.value = QFont(newObj.value(font.name).toString());
+	else
+		newObj.insert(font.name, font.value.value<QFont>().family());
+	fontSize.setValue(newObj);
+	loginDialogWidth.setValue(newObj);
+	loginDialogHeight.setValue(newObj);
+	/*transparent.value = newObj.value(transparent.name).toDouble();
 	theme.value = newObj.value(theme.name).toInt();
 	autoFill.value = newObj.value(autoFill.name).toBool();
 	focusPoint.value = newObj.value(focusPoint.name).toInt();
@@ -51,10 +86,7 @@ void Config::fromJson(const QJsonObject& obj, bool init)
 	promptPoint.value = newObj.value(promptPoint.name).toInt();
 	keySequence.value = newObj.value(keySequence.name).toString();
 	showTime.value = newObj.value(showTime.name).toBool();
-	if (newObj.contains(pluginInfo.name))
-		pluginInfo.value.value<PluginInfo*>()->fileName = newObj.value(pluginInfo.name).toString();
-	else
-		newObj.insert(pluginInfo.name, pluginInfo.value.value<PluginInfo*>()->fileName);
+
 	if (newObj.contains(width.name))
 		width.value = newObj.value(width.name).toInt();
 	else
@@ -71,10 +103,7 @@ void Config::fromJson(const QJsonObject& obj, bool init)
 		aiUrlKeySequence.value = newObj.value(aiUrlKeySequence.name).toString();
 	else
 		newObj.insert(aiUrlKeySequence.name, aiUrlKeySequence.value.toString());
-	if (newObj.contains(font.name))
-		font.value = QFont(newObj.value(font.name).toString());
-	else
-		newObj.insert(font.name, font.value.value<QFont>().family());
+
 	if (newObj.contains(fontSize.name))
 		fontSize.value = newObj.value(fontSize.name).toInt();
 	else
@@ -86,7 +115,7 @@ void Config::fromJson(const QJsonObject& obj, bool init)
 	if (newObj.contains(loginDialogHeight.name))
 		loginDialogHeight.value = newObj.value(loginDialogHeight.name).toInt();
 	else
-		newObj.insert(loginDialogHeight.name, loginDialogHeight.value.toInt());
+		newObj.insert(loginDialogHeight.name, loginDialogHeight.value.toInt());*/
 	if (!init)
 	{
 		config()->init(QJsonDocument(newObj));
@@ -102,16 +131,14 @@ BasePlugin* Config::plugin()
 {
 	QString path = QString("%1/%2/%3/%3.dll").arg(QApplication::applicationDirPath(), StrMgr::str.pluginDir, pluginInfo.value.value<PluginInfo*>()->fileName);
 	QPluginLoader loader(path);
-	QObject* plugin = loader.instance();
-	if (plugin)
+	if (QObject* plugin = loader.instance())
 	{
-		BasePluginFactory* factory = qobject_cast<BasePluginFactory*>(plugin);
-		if (factory)
+		if (BasePluginFactory* factory = qobject_cast<BasePluginFactory*>(plugin))
 		{
-			BasePlugin* plugin = factory->create();
-			plugin->setObjectName(pluginInfo.value.value<PluginInfo*>()->fileName);
-			pluginInfo.value.value<PluginInfo*>()->name = plugin->getName();
-			return plugin;
+			BasePlugin* basePlugin = factory->create();
+			basePlugin->setObjectName(pluginInfo.value.value<PluginInfo*>()->fileName);
+			pluginInfo.value.value<PluginInfo*>()->name = basePlugin->getName();
+			return basePlugin;
 		}
 	}
 	return nullptr;
@@ -127,8 +154,8 @@ Config::Config()
 
 Config::~Config()
 {
-	delete pluginInfo.value.value<PluginInfo*>();
 	_config->init(QJsonDocument(this->toJson()));
+	delete pluginInfo.value.value<PluginInfo*>();
 	delete _config;
 }
 
@@ -138,8 +165,6 @@ ConfigDialog::ConfigDialog(QWidget* parent)
 	ui.setupUi(this);
 	ui.tabWidget->tabBar()->setStyle(new HorTabStyle());
 	ui.updateLabel->setText(ui.updateLabel->text() + StrMgr::str.version);
-	//this->setWindowFlag(Qt::Tool);
-	//this->setWindowFlags(this->windowFlags() & ~Qt::WindowCloseButtonHint);
 	QDir appDir(QApplication::applicationDirPath());
 	QDir dir(appDir.filePath(StrMgr::str.pluginDir));
 
@@ -175,6 +200,7 @@ ConfigDialog::ConfigDialog(QWidget* parent)
 		{
 			Update(true);
 		});
+	ui.tabWidget->setCurrentIndex(0);
 }
 
 ConfigDialog::~ConfigDialog() = default;
@@ -240,7 +266,7 @@ void HorTabStyle::drawHorItemText(QPainter* painter, QRect rect, int flags, QStr
 	auto textRect = painter->boundingRect(rect, flags, text);
 	for (int i = 0; i < text.size(); ++i)
 	{
-		auto c = text[text.size() - 1 - i];
+		auto& c = text[text.size() - 1 - i];
 		painter->save();
 		painter->translate(textRect.left() + textRect.width() / text.size() * (i + 0.5), textRect.top() + textRect.height() / 2.0);
 		painter->rotate(90);

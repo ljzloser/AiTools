@@ -16,7 +16,7 @@ struct PluginInfo
 	PluginInfo(const QString& fileName, const QString& name) : fileName(fileName), name(name) {}
 	QString toString() const { return QString("%1;%2").arg(fileName, name); }
 };
-Q_DECLARE_METATYPE(PluginInfo)
+Q_DECLARE_METATYPE(PluginInfo*)
 class Config
 {
 	// 字段
@@ -25,6 +25,11 @@ class Config
 		QString name;	// 字段名
 		QVariant value;	// 字段值
 		Field(const QString& name, const QVariant& value) : name(name), value(value) {}
+		/*
+		 * 给字段赋值，如果obj中没有该字段，那么就将Field的值赋给obj
+		 * @param obj json对象
+		 */
+		void setValue(QJsonObject& obj);
 	};
 public:
 #define FIELD(name,val) Field name = { StrMgr::str.name, val }
@@ -99,7 +104,7 @@ class HorTabStyle : public QProxyStyle
 {
 	Q_OBJECT
 public:
-	HorTabStyle(Qt::Orientation orientation = Qt::Horizontal) : _orientation(orientation) {}
+	explicit HorTabStyle(const Qt::Orientation orientation = Qt::Horizontal) : _orientation(orientation) {}
 	void drawItemText(QPainter* painter, const QRect& rect, int flags, const QPalette& pal, bool enabled, const QString& text, QPalette::ColorRole textRole) const override;
 	void drawHorItemText(QPainter* painter, QRect rect, int flags, QString text) const;
 private:

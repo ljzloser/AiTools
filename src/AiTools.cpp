@@ -7,7 +7,7 @@
  * @return 成功返回 1, 失败返回 0
  */
 static UINT simulateCtrlC() {
-	INPUT inputs[4];
+	INPUT inputs[4]{};
 
 	// 按下 Ctrl
 	inputs[0].type = INPUT_KEYBOARD;
@@ -282,7 +282,7 @@ void AiTools::loadConfig(bool init)
 	if (doc.isNull()) // 初始化防止有人吧prompt.json删了
 		prompt.init(QJsonDocument::fromJson("{}"));
 	auto obj = prompt.readJson().object();
-
+	QString lastPrompt = _promptComboBox->currentText();
 	if (!obj.isEmpty())
 	{
 		_promptComboBox->clear();
@@ -291,7 +291,7 @@ void AiTools::loadConfig(bool init)
 			_promptComboBox->addItem(it.key() + QString("(%1)").arg(it.value().toString()), it.value().toString());
 		}
 	}
-	_promptComboBox->setCurrentIndex(-1);
+	_promptComboBox->setCurrentText(lastPrompt);
 }
 
 void AiTools::reply(const QString& text)
@@ -446,28 +446,28 @@ void AiTools::openLoginDialog()
 	_loginDialog->setWindowTitle(_loginDialog->getName());
 	_loginDialog->show();
 	_loginDialog->setReplyRunning(false);
-
 	if (isHotkey && Config::instance().autoFill.value.toBool())
 		_loginDialog->request(QApplication::clipboard()->text(), false);
-
 	connect(_loginDialog, &BasePlugin::closed, _webDialog, &BasePlugin::load);
 	connect(_loginDialog, &BasePlugin::reSized, [=](QSize size)
 		{
 			Config::instance().loginDialogWidth.value = size.width();
 			Config::instance().loginDialogHeight.value = size.height();
 		});
-	//_loginDialog->hide();
 	QRect rect = _loginDialog->geometry();
 	rect.moveCenter(QCursor::pos());
-	QRect maxRect = QGuiApplication::primaryScreen()->availableGeometry();
-	if (rect.y() < 30)
-		rect.moveTop(30);
+	QScreen* screen = QGuiApplication::screenAt(rect.center());
+	if (!screen)
+		screen = QGuiApplication::primaryScreen();
+	QRect maxRect = screen->availableGeometry();
+	if (rect.y() < maxRect.top() - 30)
+		rect.moveTop(maxRect.top() - 30);
 	if (rect.right() > maxRect.right())
 		rect.moveRight(maxRect.right());
 	if (rect.bottom() > maxRect.bottom())
 		rect.moveBottom(maxRect.bottom());
-	if (rect.left() < 0)
-		rect.moveLeft(0);
+	if (rect.left() < maxRect.left())
+		rect.moveLeft(maxRect.left());
 	_loginDialog->setGeometry(rect);
 	if (_loginDialog->isMinimized())
 		_loginDialog->showNormal();
@@ -495,9 +495,7 @@ void AiTools::debugButtonClicked()
 		_webDialog->resize(_webDialog->width(), 200);
 	}
 	else
-	{
 		_webDialog->setMaximumHeight(1);
-	}
 }
 
 void AiTools::openAboutLink()
