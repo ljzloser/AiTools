@@ -261,7 +261,7 @@ void HorTabStyle::drawItemText(QPainter* painter, const QRect& rect, int flags, 
 		painter->setPen(savedPen);
 }
 
-void HorTabStyle::drawHorItemText(QPainter* painter, QRect rect, int flags, QString text) const
+void HorTabStyle::drawHorItemText(QPainter* painter, QRect rect, int flags, QString text)
 {
 	auto textRect = painter->boundingRect(rect, flags, text);
 	for (int i = 0; i < text.size(); ++i)

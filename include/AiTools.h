@@ -10,8 +10,10 @@
 #include "StringManager.h"
 class TitleBar final :public LTitleBar
 {
+	Q_OBJECT
 public:
 	explicit TitleBar(QWidget* parent = nullptr);
+	~TitleBar() override = default;
 protected:
 	void paintEvent(QPaintEvent* event) override;
 };
@@ -19,9 +21,14 @@ class Widget final : public LWidget
 {
 	Q_OBJECT
 public:
-	Widget(LBaseTitleBar* titleBar, QWidget* mainWidget, QWidget* parent = nullptr);
+	explicit Widget(LBaseTitleBar* titleBar, QWidget* mainWidget, QWidget* parent = nullptr);
+	~Widget() override = default;
+protected:
 	void changeEvent(QEvent* event) override;
 	void resizeEvent(QResizeEvent* event) override;
+	void showEvent(QShowEvent* event) override;
+private:
+	LAnimationOpacityEffect* _effect = new LAnimationOpacityEffect(this);
 };
 
 class AiTools final : public QWidget

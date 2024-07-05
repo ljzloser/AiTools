@@ -59,6 +59,8 @@ void TitleBar::paintEvent(QPaintEvent* event)
 Widget::Widget(LBaseTitleBar* titleBar, QWidget* mainWidget, QWidget* parent)
 	: LWidget(titleBar, mainWidget, parent)
 {
+	this->setGraphicsEffect(_effect);
+	_effect->setDuration(300);
 	AiTools* tool = static_cast<AiTools*>(mainWidget);
 	connect(this, &LWidget::systemSettingsChanged, [tool]() { tool->loadConfig(false); });
 	tool->loadConfig(true);
@@ -70,14 +72,25 @@ Widget::Widget(LBaseTitleBar* titleBar, QWidget* mainWidget, QWidget* parent)
 void Widget::changeEvent(QEvent* event)
 {
 	if (event->type() == QEvent::ActivationChange)
+	{
 		if (!isActiveWindow() && Config::instance().focusHide.value.toBool())
+		{
 			this->hide();
+		}
+		else
+		{
+			_effect->setRange(0, Config::instance().transparent.value.toInt());
+			_effect->inAnimationStart();
+		}
+	}
 	if (event->type() == QEvent::WindowStateChange)
+	{
 		if (this->isMinimized())
 		{
 			this->showNormal();
 			this->hide();
 		}
+	}
 	QWidget::changeEvent(event);
 }
 
@@ -86,6 +99,11 @@ void Widget::resizeEvent(QResizeEvent* event)
 	LWidget::resizeEvent(event);
 	Config::instance().width.value = this->width();
 	Config::instance().height.value = this->height();
+}
+
+void Widget::showEvent(QShowEvent* event)
+{
+	LWidget::showEvent(event);
 }
 
 AiTools::AiTools(QWidget* parent)
@@ -366,8 +384,10 @@ void AiTools::onHotkeyPressed()
 			break;
 		}
 		this->parentWidget()->setGeometry(rect);
+
+		if (!_parent->isActiveWindow())
+			_parent->activateWindow();
 		this->parentWidget()->show();
-		_parent->activateWindow();
 		_inputLineEdit->setText(Config::instance().autoFill.value.toBool() ? QApplication::clipboard()->text() : "");
 		switch (Config::instance().focusPoint.value.toInt())
 		{

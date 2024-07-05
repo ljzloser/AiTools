@@ -106,7 +106,7 @@ class HorTabStyle : public QProxyStyle
 public:
 	explicit HorTabStyle(const Qt::Orientation orientation = Qt::Horizontal) : _orientation(orientation) {}
 	void drawItemText(QPainter* painter, const QRect& rect, int flags, const QPalette& pal, bool enabled, const QString& text, QPalette::ColorRole textRole) const override;
-	void drawHorItemText(QPainter* painter, QRect rect, int flags, QString text) const;
+	static void drawHorItemText(QPainter* painter, QRect rect, int flags, QString text);
 private:
 	Qt::Orientation _orientation = Qt::Horizontal;
 };
